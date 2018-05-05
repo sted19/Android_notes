@@ -1,0 +1,128 @@
+/*LOG MESSAGES
+Log.x(String TAG,String message);
+di solito si usa il nome della classe come Tag
+-comunicare info sulle applicazioni come caricamento di dati o errori
+-livelli
+--WTF	 ->errori che non devono accadere
+--ERROR  ->per errori							(x=e)
+--WARN 	 ->errori che non fanno crashare l app	(x=w)
+--INFO	 ->per informazioni di servizio			(x=i)
+--DEBUG	 ->(fase di debug)
+--VERBOSE->(fase di debug)
+*/
+
+/*<EditText
+	android:hint="testo che si vedrà quando l EditText sarà vuoto"
+/>
+<TextView
+	android:textSize="num sp" per definire la dimsione del testo/>
+*/
+
+
+/*res Directory
+dove vanno messe cose come immagini, stringhe e layouts
+	tipiche risorse
+	-name->cosa è contenuto
+	-values->file xml che contiene valori semplici
+	-drawable-> contiene file come immagini ecc
+	-layouts->contiene file xml 
+	animator	XML files for property animations
+	-anim	XML files for tween animations
+	-color	XML files that define state list colors
+	-mipmap	Drawable files for launcher icons
+	-menu	XML files that define application menus
+	-raw	Resource file for arbitrary files saved in their raw form. For example, you could put audio files here. (You might also be interested in the assets folder, depending on how you use that audio)
+	-xml	Arbitrary XML; if you have XML configuration files, this is a good place to put them 
+
+conviene mantenere questi file separati per poterli aggiornare facilmente
+
+R.layout è una classe statica che serve per riferirsi alle risorse
+
+salvando stringhe in res -> values -> strings.xml, e chiamando getString(id della stringa)
+si possono acquisire stringhe dal file.
+
+ <string name="today">Today</string> l'id della stringa Today è "today"
+*/
+
+/*CREARE UN MENU
+<menu //nella cartella res->menu creare un file .xml 
+    <item
+	app:showAsAction="ifRoom"/> //lo mostra solo se c è spazio   	//showAsAction serve per dire ad android di mostrare il bottone
+</menu>
+
+
+	public boolean onCreateOptionsMenu(Menu menu) {//nella MainActivity.java
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+	
+	public boolean onOptionsItemSelected(MenuItem item) {//a seguio del click su un oggetto del menu "parte" questa funzione
+        int itemThatWasClickedId = item.getItemId();
+        if (itemThatWasClickedId == R.id.action_search) {
+            Context context = MainActivity.this;
+            String textToShow = "Search clicked";
+            Toast.makeText(context, textToShow, Toast.LENGTH_SHORT).show();//fa comparire una stringa in basso 
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+		
+    }
+*/
+
+	
+	
+*/URL
+		Uri ur=Uri.parse(GITHUB_BASE_URL).buildUpon().appendQueryParameter(PARAM_QUERY,githubSearchQuery).appendQueryParameter(PARAM_SORT,sortBy).build();
+        //creo il baseUri             //creo Uri    //parametri per la query a                                                       //produce uri per fare la query a gitHub
+        URL url=null;
+        try {
+            url=new URL(ur.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+*/
+
+
+/*connessione a internet
+HttpUrlConnection c=(HttpUrlConnection) url.openCOnnection(); //abbiamo solo creato un oggetto
+InputStreamIn in=c.getInputStreamIn();
+Scanner scanner=new Scanner(in);		//lo scanner assocaiato all inputStream dell oggetto http
+scanner.useDelimiter("\\A") 			//forziamo lo scanner a leggere tutto il blocco di informazioni
+
+<uses-permission android:name="android.permission.INTERNET" /> //nell Manifest->androidaManifest.xml per richiedere permesso di connessione
+
+*/
+
+
+/* thread
+public class Classe extends AsyncTask<Params(tipo di paramtri della funzione), Progress(tipo del dato per aggiornare la computazione in background), Result>
+										(doInBackground)							(inProgressUpdate)													(onPostExecute)
+per eseguire una azione "asincrona", chiamo execute(paramtri)
+nella classe che estende AsyncTask faccio l override delle funzioni che voglio modificare
+
+protected String doInBackground(URL... params)//i tre ... indicano che l input è un vettore
+*/
+
+
+/*progress Bar
+<ProgressBar
+	android:id="@+id/pb_loading_indicator"
+    android:layout_width="42dp"
+    android:layout_height="42dp"
+    android:layout_gravity="center"/>
+*/
+
+/*	JSON Format
+vettore di elementi[
+	{//singolo elemento dentro le graffe
+		"chiave":"valore",
+		"chiave2":"valore2"}
+	{
+	...
+	}
+]
+
+
+
