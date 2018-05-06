@@ -1,9 +1,0 @@
-R.id --> R represents a static class generated for us to reference resources in java code.
-
-in res/values/strings.xml you can save strings, then you access those strings by
-calling (in an activity	)"getString" passing the resource id.
-
-Access a String named "today" in Strings.xml:
-	JAVA--> String myString = getString(R.string.today);
-	XML-->	<TextView text=”@string/today” />
-	
