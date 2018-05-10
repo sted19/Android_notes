@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     {
         Log.e("Tap", "Right");
         Toast.makeText(getApplicationContext(), "Next Image",
-                Toast.LENGTH_LONG).show();
+                Toast.LENGTH_SHORT).show();
         switcher.setImageResource(R.drawable.gigidag);
     }
 
@@ -102,4 +102,6 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
     }
+
+
 }
