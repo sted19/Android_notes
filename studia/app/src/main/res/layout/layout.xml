@@ -11,6 +11,36 @@
         android:layout_height="match_parent"
         android:adjustViewBounds="true"/>
 
+    <ImageButton
+        android:id="@+id/swipeUp"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:scaleType="centerInside"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/swipeup"
+        android:background="@null"/>
+
+    <ImageButton
+        android:id="@+id/dislike"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="centerInside"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/dislike"
+        android:background="@null"/>
+
+    <ImageButton
+        android:id="@+id/like"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="centerInside"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/like"
+        android:background="@null"/>
+
 </RelativeLayout>
 
 
