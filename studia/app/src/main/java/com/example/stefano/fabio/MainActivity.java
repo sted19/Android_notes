@@ -1,8 +1,12 @@
 package com.example.stefano.fabio;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -16,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageView image;
     private ImageSwitcher switcher;
+    private int DisplayWidth = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,28 +50,56 @@ public class MainActivity extends AppCompatActivity {
 
         Animation animation = AnimationUtils.loadAnimation(this,android.R.anim.slide_in_left);
 
-        Button b2 = (Button) findViewById(R.id.button2);
-        Button b1 = (Button) findViewById(R.id.button);
-
-        b1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switcher.setImageResource(R.drawable.gigiproietti);
-            }
-        });
-
-        b2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Next Image",
-                        Toast.LENGTH_LONG).show();
-                switcher.setImageResource(R.drawable.gigidag);
-            }
-        });
-
+        //Button b2 = (Button) findViewById(R.id.button2);
+        //Button b1 = (Button) findViewById(R.id.button);
 
     }
 
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        (new TapCalculation()).doInBackground(event);
+        return true;
+    }
 
+    private void LeftTap()
+    {
+        Log.e("Tap", "Left");
+        switcher.setImageResource(R.drawable.gigiproietti);
+    }
+
+    private void RightTap()
+    {
+        Log.e("Tap", "Right");
+        Toast.makeText(getApplicationContext(), "Next Image",
+                Toast.LENGTH_LONG).show();
+        switcher.setImageResource(R.drawable.gigidag);
+    }
+
+    public class TapCalculation extends AsyncTask<MotionEvent, Void, Void>
+    {
+
+        @Override
+        protected Void doInBackground(MotionEvent... motionEvents) {
+            MotionEvent event = motionEvents[0];
+            int x = (int)event.getX();
+            int y = (int)event.getY();
+
+            if(DisplayWidth == 0)
+            {
+                //calculate displayWidth
+                DisplayMetrics metrics = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                DisplayWidth = metrics.widthPixels;
+            }
+
+            boolean isLeftTap= x < DisplayWidth /2;
+
+            if(isLeftTap)
+                LeftTap();
+            else
+                RightTap();
+            return null;
+        }
+    }
 }
