@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.ViewSwitcher;
@@ -18,6 +19,9 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageView image;
     private ImageSwitcher switcher;
+    private ImageButton like;
+    private ImageButton dislike;
+    private ImageButton swipeUp;
     private int DisplayWidth = 0;
 
     @Override
@@ -26,6 +30,30 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.layout);
 
         switcher = (ImageSwitcher) findViewById(R.id.switcher);
+        like = (ImageButton) findViewById(R.id.like);
+        dislike = (ImageButton) findViewById(R.id.dislike);
+        swipeUp = (ImageButton) findViewById(R.id.swipeUp);
+
+        like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new LikeComputing().doInBackground();
+            }
+        });
+
+        dislike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DislikeComputing().doInBackground();
+            }
+        });
+
+        swipeUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new SwipeUpComputing().doInBackground();
+            }
+        });
 
         View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN |
@@ -49,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
 
         switcher.setImageResource(R.drawable.gigiproietti);
 
+
+
         //Animation animation = AnimationUtils.loadAnimation(this,android.R.anim.slide_in_left);
 
     }
@@ -68,6 +98,34 @@ public class MainActivity extends AppCompatActivity {
     private void RightTap()
     {
         switcher.setImageResource(R.drawable.gigidag);
+    }
+
+    public class LikeComputing extends AsyncTask<Void,Void,Void>
+    {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Log.e("like","prova tasto");
+            return null;
+        }
+    }
+
+    public class DislikeComputing extends AsyncTask<Void,Void,Void>
+    {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            return null;
+        }
+    }
+
+    public class SwipeUpComputing extends AsyncTask<Void,Void,Void>
+    {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            return null;
+        }
     }
 
     public class TapCalculation extends AsyncTask<MotionEvent, Void, Void>
