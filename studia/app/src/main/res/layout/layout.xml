@@ -13,13 +13,13 @@
 
     <ImageButton
         android:id="@+id/swipeUp"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:scaleType="centerInside"
+        android:layout_width="80dp"
+        android:layout_height="72dp"
+        android:layout_alignTop="@+id/dislike"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:src="@drawable/swipeup"
-        android:background="@null"/>
+        android:background="@null"
+        android:scaleType="centerInside"
+        android:src="@drawable/swipeicon" />
 
     <ImageButton
         android:id="@+id/dislike"
