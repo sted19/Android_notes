@@ -6,11 +6,9 @@ import android.widget.ProgressBar;
 
 public class ProgressAnimatorListener implements Animator.AnimatorListener {
     private ProgressBarWrapper progressBar;
-    private ValueAnimator valueAnimator;
 
-    public ProgressAnimatorListener(ProgressBarWrapper progressBar, ValueAnimator valueAnimator) {
+    public ProgressAnimatorListener(ProgressBarWrapper progressBar) {
         this.progressBar = progressBar;
-        this.valueAnimator = valueAnimator;
     }
 
     @Override
@@ -20,7 +18,7 @@ public class ProgressAnimatorListener implements Animator.AnimatorListener {
 
     @Override
     public void onAnimationEnd(Animator animation) {
-        progressBar.reinitialize();
+
     }
 
     @Override
@@ -31,6 +29,5 @@ public class ProgressAnimatorListener implements Animator.AnimatorListener {
     @Override
     public void onAnimationRepeat(Animator animation) {
         progressBar.reinitialize();
-        animation.start();
     }
 }

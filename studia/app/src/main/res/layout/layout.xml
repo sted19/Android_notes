@@ -55,7 +55,8 @@
         android:layout_centerHorizontal="true"
         android:progress="0"
         android:max="1000"
-        android:progressTint="@android:color/background_light"/>
+        android:progressTint="@android:color/background_light"
+        android:progressTintMode="multiply"/>
 
 
 </RelativeLayout>

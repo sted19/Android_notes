@@ -4,42 +4,44 @@ import android.animation.ValueAnimator;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.view.animation.LinearInterpolator;
-import android.widget.ImageSwitcher;
 import android.widget.ProgressBar;
 
 import com.example.stefano.fabio.MainActivity;
-import com.example.stefano.fabio.R;
 
 public class ProgressBarWrapper {
     private ProgressBar progressBar;
     private int SwitchingDuration= MainActivity.SwitchingDuration;
     private ValueAnimator valueAnimator;
     private SwitchingAnimatorListener animatorListener;
-    private  ImageSwitcher imageSwitcher;
+    private MainActivity mainActivity;
 
-    public ProgressBarWrapper(ProgressBar progressBar, ImageSwitcher imageSwitcher) {
+    public ProgressBarWrapper(ProgressBar progressBar, MainActivity mainActivity) {
         this.progressBar = progressBar;
-        this.imageSwitcher=imageSwitcher;
-
+        this.mainActivity= mainActivity;
         setUpBar();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public void stopBar()
+    public void stopBarAnimation()
     {
         valueAnimator.pause();
     }
 
     //after a stop
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public void restartBar()
+    public void resumeBarAnimation()
     {
         valueAnimator.resume();
     }
 
     public void reinitialize()
     {
-        imageSwitcher.setImageResource(R.drawable.gigidag);
+        mainActivity.RightTap();
+    }
+
+    public void restartAnimation()
+    {
+        valueAnimator.start();
     }
 
     private void setUpBar()
@@ -57,7 +59,7 @@ public class ProgressBarWrapper {
         valueAnimator.setInterpolator(new LinearInterpolator());
 
         //the progressAnimatorListener updates the view when the time of the bar is over
-        valueAnimator.addListener(new ProgressAnimatorListener(this, valueAnimator));
+        valueAnimator.addListener(new ProgressAnimatorListener(this));
 
         valueAnimator.start();
     }
