@@ -1,7 +1,11 @@
 package com.example.stefano.fabio;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.renderscript.Sampler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
@@ -9,11 +13,17 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.ViewSwitcher;
+
+import com.example.stefano.progressBar.ProgressAnimatorListener;
+import com.example.stefano.progressBar.ProgressBarWrapper;
+import com.example.stefano.progressBar.SwitchingAnimatorListener;
+import com.example.stefano.progressBar.ProgressBarWrapper;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,7 +33,10 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton dislike;
     private ImageButton swipeUp;
     private int DisplayWidth = 0;
+    private ProgressBarWrapper progressBarWrapper;
 
+    public static final int SwitchingDuration = 3000;
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,11 +90,10 @@ public class MainActivity extends AppCompatActivity {
 
         switcher.setImageResource(R.drawable.gigiproietti);
 
-
-
-        //Animation animation = AnimationUtils.loadAnimation(this,android.R.anim.slide_in_left);
+        progressBarWrapper = new ProgressBarWrapper((ProgressBar) findViewById(R.id.progressbar), switcher);
 
     }
+
 
 
     @Override

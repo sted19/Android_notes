@@ -41,6 +41,18 @@
         android:src="@drawable/like"
         android:background="@null"/>
 
+    <ProgressBar
+        android:id="@+id/progressbar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="318dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:progress="0"
+        android:max="1000"
+        android:progressTint="@android:color/background_light"/>
+
+
 </RelativeLayout>
 
 
