@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                like.setImageResource(R.drawable.like_pressed);
                 new LikeComputing().doInBackground();
             }
         });
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         dislike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dislike.setImageResource(R.drawable.dislike_pressed);
                 new DislikeComputing().doInBackground();
             }
         });
@@ -88,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         };
         switcher.setFactory(view);
 
-        switcher.setImageResource(R.drawable.gigiproietti);
+        switcher.setImageResource(R.drawable.pants);
 
         progressBarWrapper = new ProgressBarWrapper((ProgressBar) findViewById(R.id.progressbar), switcher);
 
@@ -104,12 +106,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void LeftTap()
     {
-        switcher.setImageResource(R.drawable.gigiproietti);
+        switcher.setImageResource(R.drawable.pants);
     }
 
     private void RightTap()
     {
-        switcher.setImageResource(R.drawable.gigidag);
+        switcher.setImageResource(R.drawable.shirt);
     }
 
     public class LikeComputing extends AsyncTask<Void,Void,Void>
@@ -117,10 +119,10 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            Log.e("like","prova tasto");
             return null;
         }
     }
+
 
     public class DislikeComputing extends AsyncTask<Void,Void,Void>
     {
