@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
@@ -25,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton swipeUp;
     private int DisplayWidth = 0;
     private ProgressBarWrapper progressBarWrapper;
+    private boolean like_pressed;
+    private boolean dislike_pressed;
 
     public static final int SwitchingDuration = 3000;
     @SuppressLint("WrongViewCast")
@@ -41,7 +44,16 @@ public class MainActivity extends AppCompatActivity {
         like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                like.setImageResource(R.drawable.like_pressed);
+                if(!like_pressed) {
+                    like_pressed = true;
+                    dislike_pressed=false;
+                    like.setImageResource(R.drawable.like_pressed);
+                    dislike.setImageResource(R.drawable.dislike);
+                }
+                else{
+                    like_pressed = false;
+                    like.setImageResource(R.drawable.like);
+                }
                 new LikeComputing().doInBackground();
             }
         });
@@ -49,7 +61,16 @@ public class MainActivity extends AppCompatActivity {
         dislike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dislike.setImageResource(R.drawable.dislike_pressed);
+                if(!dislike_pressed) {
+                    like_pressed = false;
+                    dislike_pressed=true;
+                    like.setImageResource(R.drawable.like);
+                    dislike.setImageResource(R.drawable.dislike_pressed);
+                }
+                else{
+                    dislike_pressed = false;
+                    dislike.setImageResource(R.drawable.dislike);
+                }
                 new DislikeComputing().doInBackground();
             }
         });
@@ -99,12 +120,20 @@ public class MainActivity extends AppCompatActivity {
     {
         switcher.setImageResource(R.drawable.pants);
         progressBarWrapper.restartAnimation();
+        like.setImageResource(R.drawable.like);
+        dislike.setImageResource(R.drawable.dislike);
+        like_pressed = false;
+        dislike_pressed = false;
     }
 
     public void RightTap()
     {
         switcher.setImageResource(R.drawable.gigidag);
         progressBarWrapper.restartAnimation();
+        like.setImageResource(R.drawable.like);
+        dislike.setImageResource(R.drawable.dislike);
+        like_pressed = false;
+        dislike_pressed = false;
     }
 
     public class LikeComputing extends AsyncTask<Void,Void,Void>

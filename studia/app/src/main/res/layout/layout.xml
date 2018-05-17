@@ -1,14 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+
+
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/top_bar_grad">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Giacomo Miele"
+            android:textStyle="bold"
+            android:fontFamily=""
+            android:textSize="16dp"
+            android:id="@+id/swipe_friend"
+            android:layout_marginLeft="4dp"
+            android:layout_alignBottom="@id/swiped"
+            android:layout_toRightOf="@id/swiped"
+            android:textColor="@android:color/background_light"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" + 200k"
+            android:fontFamily=""
+            android:textSize="14dp"
+            android:id="@+id/swipe_number"
+            android:layout_alignBottom="@id/swiped"
+            android:layout_toRightOf="@id/swipe_friend"
+            android:textColor="@android:color/background_light"/>
+
+
+        <ImageButton
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:id="@+id/back_x"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="6dp"
+            android:scaleType="centerInside"
+            android:background="@null"
+            android:src="@drawable/back_x"/>
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="24dp"
+            android:id="@+id/swiped"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="6dp"
+            android:background="@null"
+            android:scaleType="centerInside"
+            android:src="@drawable/swiped"/>
+    </RelativeLayout>
+
+
+
+
     <ImageSwitcher xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/switcher"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="48dp"
         android:adjustViewBounds="true"/>
 
     <ImageButton
@@ -49,8 +108,10 @@
     <ProgressBar
         android:id="@+id/progressbar"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="318dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="16dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginLeft="24dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:progress="0"
