@@ -1,6 +1,7 @@
 package com.example.stefano.fabio;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean like_pressed;
     private boolean dislike_pressed;
 
-    public static final int SwitchingDuration = 3000;
+    public static final int SwitchingDuration = 6000;
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -106,6 +107,13 @@ public class MainActivity extends AppCompatActivity {
 
         progressBarWrapper = new ProgressBarWrapper((ProgressBar) findViewById(R.id.progressbar),this);
 
+    }
+
+    public void go_back(View view)
+    {
+        Intent intent = new Intent(this,ChoiceActivity.class);
+        //putExtra method to send information to the new Activity
+        startActivity(intent);
     }
 
 
