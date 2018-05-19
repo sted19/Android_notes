@@ -38,7 +38,7 @@ public class ProgressBarWrapper {
     {
         mainActivity.RightTap();
     }
-
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void restartAnimation()
     {
         valueAnimator.start();

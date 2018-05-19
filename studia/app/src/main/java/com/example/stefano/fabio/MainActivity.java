@@ -3,8 +3,10 @@ package com.example.stefano.fabio;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -17,6 +19,9 @@ import android.widget.ProgressBar;
 import android.widget.ViewSwitcher;
 
 import com.example.stefano.progressBar.ProgressBarWrapper;
+
+import static android.view.MotionEvent.ACTION_DOWN;
+import static android.view.MotionEvent.ACTION_UP;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,8 +36,20 @@ public class MainActivity extends AppCompatActivity {
     private boolean dislike_pressed;
 
     public static final int SwitchingDuration = 6000;
-    @SuppressLint("WrongViewCast")
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
+    protected void onResume() {
+        super.onResume();
+        progressBarWrapper.resumeBarAnimation();
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN |
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+    }
+
+    @SuppressLint("WrongViewCast")
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout);
@@ -109,18 +126,67 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void go_back(View view)
     {
+        progressBarWrapper.stopBarAnimation();//per ricominciare?
         Intent intent = new Intent(this,ChoiceActivity.class);
         //putExtra method to send information to the new Activity
         startActivity(intent);
+
     }
 
 
+    float x1=0;
+    float x2=0;
+    long    t1=0;//millisecondi
+    long t2=0;
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        (new TapCalculation()).doInBackground(event);
+        if(event.getAction()==(ACTION_DOWN)){
+            x1=event.getX();
+            t1=event.getEventTime();
+            progressBarWrapper.stopBarAnimation();
+            Log.d("stop","stop");
+        }
+        if(event.getAction()==(ACTION_UP)){
+            x2=event.getX();
+            t2=event.getEventTime();
+            if(t2-t1>500){
+                Log.d("riparte","riparte");
+                x1=0;
+                x2=0;
+                progressBarWrapper.resumeBarAnimation();
+            }
+            else if(x1!=0){
+                if(x1-x2>0.5){//0.5 da decidere, voglio che anche se si muove un po il dito questo non swippi
+                    Log.d("swipe a destra","swipe a destra");
+                    switcher.setImageResource(R.drawable.shirt);
+                    progressBarWrapper.restartAnimation();
+                    like_pressed = false;
+                    dislike_pressed = false;
+                }
+                else if(x2-x1>0.5){//0.5 da decidere, voglio che anche se si muove un po il dito questo non swippi
+                    Log.d("swipe a sinistra","swipe a sinistra");
+                    switcher.setImageResource(R.drawable.gigiproietti);
+                    progressBarWrapper.restartAnimation();
+                    like_pressed = false;
+                    dislike_pressed = false;
+                }
+                else{
+                    (new TapCalculation()).doInBackground(event);
+                    Log.d("tocco semplice", "tocco semplice");
+                }
+                //(new TapCalculation()).doInBackground(event);
+                Log.d("riparte","riparte");
+                x1=0;
+                x2=0;
+            }
+
+        }
+
         return true;
     }
 
@@ -134,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
         dislike_pressed = false;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void RightTap()
     {
         switcher.setImageResource(R.drawable.gigidag);
