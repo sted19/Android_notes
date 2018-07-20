@@ -1,7 +1,10 @@
 package com.example.SwipeUp.swipeUp;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,8 +17,10 @@ import android.widget.ImageButton;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
+import com.example.SwipeUp.swipeUp.asyncTasks.ButtonHider;
 import com.example.SwipeUp.swipeUp.asyncTasks.DislikeComputing;
 import com.example.SwipeUp.swipeUp.asyncTasks.LikeComputing;
 import com.example.SwipeUp.swipeUp.asyncTasks.SwipeUpComputing;
@@ -23,8 +28,12 @@ import com.example.SwipeUp.swipeUp.asyncTasks.TapCalculation;
 import com.example.SwipeUp.progressBar.ProgressBarWrapper;
 import com.example.SwipeUp.wearingFactory.WearingFactory;
 
+import java.util.List;
+
 import static android.view.MotionEvent.ACTION_DOWN;
+import static android.view.MotionEvent.ACTION_MOVE;
 import static android.view.MotionEvent.ACTION_UP;
+import static java.lang.Thread.sleep;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,12 +42,16 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton like;
     private ImageButton dislike;
     private ImageButton swipeUp;
+
     public int DisplayWidth = 0;
     private ProgressBarWrapper progressBarWrapper;
     private boolean like_pressed;
     private boolean dislike_pressed;
     private WearingFactory wearingFactory;
     public static final int SwitchingDuration = 6000;
+    public ButtonHider buttonHider;
+
+    private final static int SWIPE_DISTANCE = 1;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -147,44 +160,59 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if(event.getAction()==(ACTION_DOWN)){
-            x1=event.getX();
-            t1=event.getEventTime();
-            progressBarWrapper.stopBarAnimation();
-            Log.d("stop","stop");
-        }
-        if(event.getAction()==(ACTION_UP)){
-            x2=event.getX();
-            t2=event.getEventTime();
-            if(t2-t1>500){
-                Log.d("riparte","riparte");
-                x1=0;
-                x2=0;
-                progressBarWrapper.resumeBarAnimation();
-            }
-            else if(x1!=0){
-                if(x1-x2>0.5){//0.5 da decidere, voglio che anche se si muove un po il dito questo non swippi
-                    Log.d("swipe a destra","swipe a destra");
-                    switcher.setImageResource(R.drawable.shirt);
-                    progressBarWrapper.restartAnimation();
-                    resetButtons();
-                }
-                else if(x2-x1>0.5){//0.5 da decidere, voglio che anche se si muove un po il dito questo non swippi
-                    Log.d("swipe a sinistra","swipe a sinistra");
-                    switcher.setImageResource(R.drawable.gigiproietti);
-                    progressBarWrapper.restartAnimation();
-                    resetButtons();
-                }
-                else{
-                    (new TapCalculation(this)).doInBackground(event);
-                    Log.d("tocco semplice", "tocco semplice");
-                }
-                //(new TapCalculation()).doInBackground(event);
-                Log.d("riparte","riparte");
-                x1=0;
-                x2=0;
-            }
 
+        int action = event.getActionMasked();
+
+        switch(action) {
+            case ACTION_DOWN:
+                x1 = event.getX();
+                t1 = event.getEventTime();
+                progressBarWrapper.stopBarAnimation();
+                Log.d("stop", "stop");
+                buttonHider = new ButtonHider(this, event);
+                buttonHider.execute();
+                break;
+
+            case ACTION_MOVE:
+                Log.d("Move", "I'm moving to " + event.getX() + " " + event.getY());
+                buttonHider.cancel(true);
+                break;
+
+            case ACTION_UP:
+                x2 = event.getX();
+                t2 = event.getEventTime();
+                buttonHider.cancel(true);
+                if (!buttonHider.getSlept()){
+                    if (x1 - x2 > SWIPE_DISTANCE) {
+                        Log.d("swipe a destra", "swipe a destra");
+                        switcher.setImageResource(R.drawable.shirt);
+                        progressBarWrapper.restartAnimation();
+                        this.resetButtons();
+                    } else if (x2 - x1 > SWIPE_DISTANCE) {
+                        Log.d("swipe a sinistra", "swipe a sinistra");
+                        switcher.setImageResource(R.drawable.gigiproietti);
+                        progressBarWrapper.restartAnimation();
+                        resetButtons();
+                    }
+                    else {
+                        Log.d("tocco semplice", "tocco semplice");
+                        (new TapCalculation(this)).doInBackground(event);
+                    }
+
+                    //(new TapCalculation()).doInBackground(event);
+                    Log.d("riparte", "riparte");
+                    x1 = 0;
+                    x2 = 0;
+
+                }
+                else if (buttonHider.getSlept()) { // long press
+                    Log.d("riparte", "riparte");
+                    x1 = 0;
+                    x2 = 0;
+                    progressBarWrapper.resumeBarAnimation();
+                    this.showButtons();
+                }
+                break;
         }
 
         return true;
@@ -214,4 +242,15 @@ public class MainActivity extends AppCompatActivity {
         dislike_pressed = false;
     }
 
+    public void hideButtons(){
+        this.dislike.setVisibility(View.INVISIBLE);
+        this.like.setVisibility(View.INVISIBLE);
+        this.swipeUp.setVisibility(View.INVISIBLE);
+    }
+
+    public void showButtons(){
+        this.dislike.setVisibility(View.VISIBLE);
+        this.like.setVisibility(View.VISIBLE);
+        this.swipeUp.setVisibility(View.VISIBLE);
+    }
 }
