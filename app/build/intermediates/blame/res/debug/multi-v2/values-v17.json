@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/home/stefano/Desktop/Swipe Up/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v17/values-v17.xml",
+            "outputFile": "/home/francesco/Swipe-Up/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v17/values-v17.xml",
             "map": [
                 {
-                    "source": "/home/stefano/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/cecc65f5bda4282bd1fc0a726b5214af/res/values-v17/values-v17.xml",
+                    "source": "/home/francesco/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/c06fbd61dce58a72bd1fe3e8abe61d8c/res/values-v17/values-v17.xml",
                     "from": {
                         "startLines": "2,5,9,12,15,18,22,26,29,32,35,39,42,46",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4",

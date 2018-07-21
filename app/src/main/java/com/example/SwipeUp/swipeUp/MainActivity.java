@@ -1,10 +1,7 @@
 package com.example.SwipeUp.swipeUp;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,11 +10,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.example.SwipeUp.swipeUp.asyncTasks.ButtonHider;
@@ -27,8 +25,6 @@ import com.example.SwipeUp.swipeUp.asyncTasks.SwipeUpComputing;
 import com.example.SwipeUp.swipeUp.asyncTasks.TapCalculation;
 import com.example.SwipeUp.progressBar.ProgressBarWrapper;
 import com.example.SwipeUp.wearingFactory.WearingFactory;
-
-import java.util.List;
 
 import static android.view.MotionEvent.ACTION_DOWN;
 import static android.view.MotionEvent.ACTION_MOVE;
@@ -64,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
                 View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
                 View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
-
+    Animation pulse;
+    ImageView heart;
     @SuppressLint("WrongViewCast")
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +72,10 @@ public class MainActivity extends AppCompatActivity {
         dislike = (ImageButton) findViewById(R.id.dislike);
         swipeUp = (ImageButton) findViewById(R.id.swipeUp);
 
+        heart = findViewById(R.id.heart);
+        heart.setVisibility(View.INVISIBLE);
+        pulse = AnimationUtils.loadAnimation(this, R.anim.zoom_and_disappearence);
+
         like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,6 +84,11 @@ public class MainActivity extends AppCompatActivity {
                     dislike_pressed=false;
                     like.setImageResource(R.drawable.like_pressed);
                     dislike.setImageResource(R.drawable.dislike);
+
+                    heart.startAnimation(pulse);
+
+
+
                 }
                 else{
                     like_pressed = false;
@@ -224,6 +230,7 @@ public class MainActivity extends AppCompatActivity {
         switcher.setImageDrawable(wearingFactory.getPreviousImage());
         progressBarWrapper.restartAnimation();
         resetButtons();
+        heart.clearAnimation();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -232,6 +239,7 @@ public class MainActivity extends AppCompatActivity {
         switcher.setImageDrawable(wearingFactory.getNextImage());
         progressBarWrapper.restartAnimation();
         resetButtons();
+        heart.clearAnimation();
     }
 
     private void resetButtons()

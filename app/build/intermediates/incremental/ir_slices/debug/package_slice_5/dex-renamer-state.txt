@@ -1,4 +1,4 @@
-#Mon May 21 15:24:16 CEST 2018
-base.0=/home/stefano/Desktop/Swipe Up/app/build/intermediates/transforms/dexMerger/debug/5
+#Sat Jul 21 16:51:49 CEST 2018
+base.0=/home/francesco/Swipe-Up/app/build/intermediates/transforms/dexMerger/debug/5
 path.0=classes.dex
 renamed.0=classes.dex

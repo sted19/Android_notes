@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/home/stefano/Desktop/Swipe Up/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-night-v8/values-night-v8.xml",
+            "outputFile": "/home/francesco/Swipe-Up/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "/home/stefano/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/cecc65f5bda4282bd1fc0a726b5214af/res/values-night-v8/values-night-v8.xml",
+                    "source": "/home/francesco/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/c06fbd61dce58a72bd1fe3e8abe61d8c/res/values-night-v8/values-night-v8.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8",
                         "startColumns": "4,4,4,4,4,4,4",

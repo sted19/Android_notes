@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/home/stefano/Desktop/Swipe Up/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-zh-rCN/values-zh-rCN.xml",
+            "outputFile": "/home/francesco/Swipe-Up/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-zh-rCN/values-zh-rCN.xml",
             "map": [
                 {
-                    "source": "/home/stefano/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/cecc65f5bda4282bd1fc0a726b5214af/res/values-zh-rCN/values-zh-rCN.xml",
+                    "source": "/home/francesco/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/c06fbd61dce58a72bd1fe3e8abe61d8c/res/values-zh-rCN/values-zh-rCN.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -14,7 +14,7 @@
                     }
                 },
                 {
-                    "source": "/home/stefano/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/d0a6b0bb39a042c45623fbef25cfec86/res/values-zh-rCN/values-zh-rCN.xml",
+                    "source": "/home/francesco/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/4c146038a3a5806759e1c5d005dbc7ba/res/values-zh-rCN/values-zh-rCN.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
