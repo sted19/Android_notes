@@ -146,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
 
         wearingFactory = new WearingFactory(this);
         switcher.setImageDrawable(wearingFactory.getNextImage());
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -160,8 +161,6 @@ public class MainActivity extends AppCompatActivity {
 
     float x1=0;
     float x2=0;
-    long t1=0;//millisecondi
-    long t2=0;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -172,55 +171,40 @@ public class MainActivity extends AppCompatActivity {
         switch(action) {
             case ACTION_DOWN:
                 x1 = event.getX();
-                t1 = event.getEventTime();
                 progressBarWrapper.stopBarAnimation();
                 Log.d("stop", "stop");
-                buttonHider = new ButtonHider(this, event);
+                buttonHider = new ButtonHider(this);
                 buttonHider.execute();
                 break;
 
             case ACTION_MOVE:
                 Log.d("Move", "I'm moving to " + event.getX() + " " + event.getY());
-                buttonHider.cancel(true);
+                //TODO: animate here transition between images
                 break;
 
             case ACTION_UP:
                 x2 = event.getX();
-                t2 = event.getEventTime();
-                buttonHider.cancel(true);
-                if (!buttonHider.getSlept()){
-                    if (x1 - x2 > SWIPE_DISTANCE) {
-                        Log.d("swipe a destra", "swipe a destra");
-                        switcher.setImageResource(R.drawable.shirt);
-                        progressBarWrapper.restartAnimation();
-                        this.resetButtons();
-                    } else if (x2 - x1 > SWIPE_DISTANCE) {
-                        Log.d("swipe a sinistra", "swipe a sinistra");
-                        switcher.setImageResource(R.drawable.gigiproietti);
-                        progressBarWrapper.restartAnimation();
-                        resetButtons();
-                    }
-                    else {
-                        Log.d("tocco semplice", "tocco semplice");
-                        (new TapCalculation(this)).doInBackground(event);
-                    }
-
-                    //(new TapCalculation()).doInBackground(event);
-                    Log.d("riparte", "riparte");
-                    x1 = 0;
-                    x2 = 0;
-
+                buttonHider.cancel(true);   //stops previously started buttonHider
+                if (x1 - x2 > SWIPE_DISTANCE) { //right swipe
+                    switcher.setImageResource(R.drawable.shirt);
+                    resetButtons();
+                    progressBarWrapper.restartAnimation();
                 }
-                else if (buttonHider.getSlept()) { // long press
-                    Log.d("riparte", "riparte");
-                    x1 = 0;
-                    x2 = 0;
+                else if (x2 - x1 > SWIPE_DISTANCE) { //left  swipe
+                    switcher.setImageResource(R.drawable.gigiproietti);
+                    resetButtons();
+                    progressBarWrapper.restartAnimation();
+                }
+                else if (!buttonHider.getSlept()){ //Simple tap
+                    (new TapCalculation(this)).doInBackground(event);
+                }
+                else //long press
                     progressBarWrapper.resumeBarAnimation();
+                if(buttonHider.getSlept())
                     this.showButtons();
-                }
+
                 break;
         }
-
         return true;
     }
 

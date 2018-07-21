@@ -1,35 +1,29 @@
 package com.example.SwipeUp.swipeUp.asyncTasks;
 
-import android.app.usage.UsageEvents;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.MotionEvent;
 
-import com.example.SwipeUp.neuralNetwork.Main;
 import com.example.SwipeUp.swipeUp.MainActivity;
 
-import java.util.List;
 
 import static java.lang.Thread.sleep;
 
 public class ButtonHider extends AsyncTask<Void, Void, Void> {
-    public static final int LONG_PRESS_MILLIS = 500;
+    public static final int LONG_PRESS_MILLIS = 300;
 
     private MainActivity mainActivity;
-    private MotionEvent event;
 
     private boolean slept = false;
-    // TODO: improve this
+    // TODO: improve synchronized here
     public synchronized void setSlept(boolean b){
         slept = b;
     }
 
     public synchronized boolean getSlept(){ return slept; }
 
-    public ButtonHider(MainActivity mainActivity, MotionEvent event){
+    public ButtonHider(MainActivity mainActivity){
         super();
         this.mainActivity = mainActivity;
-        this.event = event;
     }
 
     protected Void doInBackground(Void... voids) {
