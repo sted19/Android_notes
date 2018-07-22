@@ -1,10 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/background_light"
-    tools:context=".ChoiceActivity">
+    android:orientation="vertical"
+    tools:context="com.example.SwipeUp.menu.ChoiceActivity">
 
-</android.support.constraint.ConstraintLayout>
+
+    <ImageButton
+        android:layout_width="match_parent"
+        android:layout_height="81dp"
+        android:scaleType="centerInside"
+        android:background="@null"
+        android:src="@drawable/log_in"
+        android:id="@+id/login_button"
+        android:onClick="loginPressed"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="53dp"
+                android:scaleType="centerInside"
+                android:background="@null"
+                android:src="@drawable/top_hits_shuffle"
+                android:id="@+id/top_hits_shuffle_button"
+                android:onClick="topHitsPressed"
+                android:layout_marginTop="20dp"/>
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:scaleType="centerInside"
+                android:background="@null"
+                android:src="@drawable/new_shuffle"
+                android:onClick="newShufflePressed"
+                android:id="@+id/new_shuffle_button"
+                android:layout_marginTop="93dp"/>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</LinearLayout>
