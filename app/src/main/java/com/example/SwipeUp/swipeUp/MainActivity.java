@@ -135,14 +135,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void hideButtons(){
+        Animation disappearence=AnimationUtils.loadAnimation(this, R.anim.disappearence);
         this.dislike.setVisibility(View.INVISIBLE);
         this.like.setVisibility(View.INVISIBLE);
         this.swipeUp.setVisibility(View.INVISIBLE);
+
+        this.dislike.startAnimation(disappearence);
+        this.like.startAnimation(disappearence);
+        this.swipeUp.startAnimation(disappearence);
     }
 
     public void showButtons(){
+        Animation appearance=AnimationUtils.loadAnimation(this, R.anim.appearance);
         this.dislike.setVisibility(View.VISIBLE);
         this.like.setVisibility(View.VISIBLE);
         this.swipeUp.setVisibility(View.VISIBLE);
+
+        this.dislike.startAnimation(appearance);
+        this.like.startAnimation(appearance);
+        this.swipeUp.startAnimation(appearance );
     }
 }
