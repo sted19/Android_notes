@@ -37,6 +37,18 @@ public class ChoiceActivity extends AppCompatActivity {
         Toast.makeText(this.getBaseContext(), "Top hits swiping", Toast.LENGTH_SHORT).show();
     }
 
+    public void pantsShufflePressed(View view){
+        Toast.makeText(this.getBaseContext(), "Pants swiping", Toast.LENGTH_SHORT).show();
+    }
+
+    public void jacketShufflePressed(View view){
+        Toast.makeText(this.getBaseContext(), "Jackets swiping", Toast.LENGTH_SHORT).show();
+    }
+
+    public void tshirtShufflePressed(View view){
+        Toast.makeText(this.getBaseContext(), "T-Shirt swiping", Toast.LENGTH_SHORT).show();
+    }
+
     public void newShufflePressed(View view){
         Toast.makeText(this.getBaseContext(), "New swiping", Toast.LENGTH_SHORT).show();
     }
