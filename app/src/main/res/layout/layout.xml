@@ -64,15 +64,12 @@
             android:src="@drawable/swiped"/>
     </RelativeLayout>
 
-
-
-
     <ImageSwitcher xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/switcher"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="48dp"
-        android:adjustViewBounds="true"/>
+        android:adjustViewBounds="true" />
 
     <ImageButton
         android:id="@+id/swipeUp"
@@ -130,6 +127,9 @@
         android:layout_centerInParent="true"
         android:alpha="1"
         app:srcCompat="@drawable/white_heart" />
+
+
+
 </RelativeLayout>
 
 
