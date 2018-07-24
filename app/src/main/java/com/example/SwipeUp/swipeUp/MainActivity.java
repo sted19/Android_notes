@@ -96,6 +96,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void onPause(){
+        super.onPause();
+        progressBarWrapper.stopBarAnimation();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void go_back(View view)
     {
         progressBarWrapper.stopBarAnimation();//per ricominciare?
