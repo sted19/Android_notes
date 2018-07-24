@@ -5,6 +5,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.example.SwipeUp.swipeUp.MainActivity;
 import com.example.SwipeUp.swipeUp.R;
 import com.example.SwipeUp.swipeUp.asyncTasks.DislikeComputing;

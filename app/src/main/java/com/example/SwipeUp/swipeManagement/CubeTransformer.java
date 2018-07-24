@@ -1,4 +1,4 @@
-package com.example.SwipeUp.swipeUp;
+package com.example.SwipeUp.swipeManagement;
 
 import android.support.v4.view.ViewPager;
 import android.view.View;

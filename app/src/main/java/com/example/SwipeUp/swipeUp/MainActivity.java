@@ -4,40 +4,27 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AbsListView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
-import android.widget.ViewSwitcher;
 
 import com.example.SwipeUp.buttonsListener.ButtonsListener;
-import com.example.SwipeUp.swipeManagement.SwipeTouchListener;
+import com.example.SwipeUp.swipeManagement.CubeTransformer;
+import com.example.SwipeUp.swipeManagement.CustomAdapter;
 import com.example.SwipeUp.swipeUp.asyncTasks.ButtonHider;
 import com.example.SwipeUp.progressBar.ProgressBarWrapper;
 import com.example.SwipeUp.swipeUp.asyncTasks.TapCalculation;
 import com.example.SwipeUp.wearingFactory.WearingFactory;
 
-import java.util.logging.Logger;
-
 import static android.view.MotionEvent.ACTION_DOWN;
-import static android.view.MotionEvent.ACTION_MOVE;
 import static android.view.MotionEvent.ACTION_UP;
 import static java.util.logging.Logger.getLogger;
 
@@ -162,7 +149,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        decorView.setOnTouchListener(new SwipeTouchListener(this));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)

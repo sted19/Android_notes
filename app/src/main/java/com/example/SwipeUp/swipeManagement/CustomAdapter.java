@@ -1,4 +1,4 @@
-package com.example.SwipeUp.swipeUp;
+package com.example.SwipeUp.swipeManagement;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.example.SwipeUp.swipeUp.R;
 import com.example.SwipeUp.wearingFactory.WearingFactory;
 
 import java.util.LinkedList;
@@ -26,6 +28,7 @@ public class CustomAdapter extends PagerAdapter{
     public CustomAdapter(Context ctx, WearingFactory wearingFactory){
         this.ctx = ctx;
         this.wearingFactory = wearingFactory;
+        //per creare una lista di drawables tramite la wearing factory
         for(int i = 0;i<wearingFactory.getAvailableImages(); i++){
             drawables.add(wearingFactory.getNextImage());
         }
@@ -48,8 +51,10 @@ public class CustomAdapter extends PagerAdapter{
         View v = inflater.inflate(R.layout.swipe,container,false);
 
         ImageView image = (ImageView)v.findViewById(R.id.swipe_image);
-        //image.setImageResource(images[position]);
-        image.setImageDrawable(drawables.get(position));
+        Glide
+                .with(v)
+                .load(drawables.get(position))
+                .into(image);
         container.addView(v);
         return v;
     }
