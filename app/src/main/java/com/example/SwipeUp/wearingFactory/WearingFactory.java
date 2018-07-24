@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.util.TypedValue;
+import android.widget.ImageView;
 
 import com.example.SwipeUp.swipeUp.MainActivity;
 
@@ -40,6 +41,19 @@ public class WearingFactory {
             e.printStackTrace();
         }
 
+    }
+
+    public int getAvailableImages()
+    {
+        return availableImages;
+    }
+
+    public int getPosition(){
+        return position;
+    }
+
+    public void setPosition(int position){
+        this.position = position;
     }
 
     public Drawable getNextImage()

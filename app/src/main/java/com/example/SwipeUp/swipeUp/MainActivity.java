@@ -4,32 +4,45 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.util.SparseArray;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AbsListView;
 import android.widget.ImageButton;
-import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.example.SwipeUp.buttonsListener.ButtonsListener;
 import com.example.SwipeUp.swipeManagement.SwipeTouchListener;
 import com.example.SwipeUp.swipeUp.asyncTasks.ButtonHider;
-import com.example.SwipeUp.swipeUp.asyncTasks.DislikeComputing;
-import com.example.SwipeUp.swipeUp.asyncTasks.LikeComputing;
-import com.example.SwipeUp.swipeUp.asyncTasks.SwipeUpComputing;
-import com.example.SwipeUp.swipeUp.asyncTasks.TapCalculation;
 import com.example.SwipeUp.progressBar.ProgressBarWrapper;
+import com.example.SwipeUp.swipeUp.asyncTasks.TapCalculation;
 import com.example.SwipeUp.wearingFactory.WearingFactory;
+
+import java.util.logging.Logger;
+
+import static android.view.MotionEvent.ACTION_DOWN;
+import static android.view.MotionEvent.ACTION_MOVE;
+import static android.view.MotionEvent.ACTION_UP;
+import static java.util.logging.Logger.getLogger;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ImageView image;
-    public ImageSwitcher switcher;
     public ImageButton like;
     public ImageButton dislike;
     private ImageButton swipeUp;
@@ -44,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
 
     private ButtonsListener.LikeListener likeListener;
 
+    private CustomAdapter adapter;
+    private ViewPager viewPager;
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onResume() {
@@ -55,12 +71,74 @@ public class MainActivity extends AppCompatActivity {
                 View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
                 View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
-    @SuppressLint("WrongViewCast")
+    @SuppressLint({"WrongViewCast", "ClickableViewAccessibility"})
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout);
 
-        switcher = (ImageSwitcher) findViewById(R.id.switcher);
+        wearingFactory = new WearingFactory(this);
+
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        adapter = new CustomAdapter(this,wearingFactory);
+        viewPager.setAdapter(adapter);
+        viewPager.setPageTransformer(true, new CubeTransformer());
+
+        viewPager.setOnTouchListener(new View.OnTouchListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getActionMasked();
+
+                switch(action){
+                    case ACTION_DOWN:
+                        progressBarWrapper.stopBarAnimation();
+                        Log.d("stop", "stop");
+                        buttonHider = new ButtonHider(MainActivity.this);
+                        buttonHider.execute();
+                        break;
+
+                    case ACTION_UP:
+                        buttonHider.cancel(true);   //stops previously started buttonHider
+                        if (!buttonHider.getSlept()){ //Simple tap
+                            (new TapCalculation(MainActivity.this)).doInBackground(event);
+                        }
+                        else //long press
+                            progressBarWrapper.resumeBarAnimation();
+                        if(buttonHider.getSlept())
+                            showButtons();
+
+                        break;
+                }
+
+                return false;
+            }
+        });
+
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener(){
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onPageSelected(int position) {
+                progressBarWrapper.restartAnimation();
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                //if (state == ViewPager.SCROLL_STATE_IDLE) showButtons();
+                //else if (state == ViewPager.SCROLL_STATE_DRAGGING) hideButtons();
+            }
+
+
+        });
+
+
+
         like = (ImageButton) findViewById(R.id.like);
         dislike = (ImageButton) findViewById(R.id.dislike);
         swipeUp = (ImageButton) findViewById(R.id.swipeUp);
@@ -80,20 +158,9 @@ public class MainActivity extends AppCompatActivity {
         Thread onFull = new Thread(fullScreen);
         onFull.start();
 
-        ViewSwitcher.ViewFactory view = new ViewSwitcher.ViewFactory() {
-            @Override
-            public View makeView() {
-                image = new ImageView(getApplicationContext());
-                image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                return image;
-            }
-        };
-        switcher.setFactory(view);
-
         progressBarWrapper = new ProgressBarWrapper((ProgressBar) findViewById(R.id.progressbar),this);
 
-        wearingFactory = new WearingFactory(this);
-        switcher.setImageDrawable(wearingFactory.getNextImage());
+
 
         decorView.setOnTouchListener(new SwipeTouchListener(this));
     }
@@ -111,7 +178,6 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void LeftTap()
     {
-        switcher.setImageDrawable(wearingFactory.getPreviousImage());
         progressBarWrapper.restartAnimation();
         resetButtons();
         likeListener.clearAnimation();
@@ -120,7 +186,6 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void RightTap()
     {
-        switcher.setImageDrawable(wearingFactory.getNextImage());
         progressBarWrapper.restartAnimation();
         resetButtons();
         likeListener.clearAnimation();
@@ -155,4 +220,5 @@ public class MainActivity extends AppCompatActivity {
         this.like.startAnimation(appearance);
         this.swipeUp.startAnimation(appearance );
     }
+
 }

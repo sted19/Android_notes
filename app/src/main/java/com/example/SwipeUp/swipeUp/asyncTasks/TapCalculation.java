@@ -1,6 +1,8 @@
 package com.example.SwipeUp.swipeUp.asyncTasks;
 
 import android.os.AsyncTask;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 
@@ -14,6 +16,7 @@ public class TapCalculation extends AsyncTask<MotionEvent, Void, Void>
         this.mainActivity = mainActivity;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public Void doInBackground(MotionEvent... motionEvents) {
         MotionEvent event = motionEvents[0];

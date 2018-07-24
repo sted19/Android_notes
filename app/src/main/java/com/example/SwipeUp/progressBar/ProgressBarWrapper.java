@@ -35,6 +35,7 @@ public class ProgressBarWrapper {
     }
 
     //this function should be used only by ProgressAnimatorListener and SwitchingAnimatorListener if needed
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     void reinitialize()
     {
         mainActivity.RightTap();

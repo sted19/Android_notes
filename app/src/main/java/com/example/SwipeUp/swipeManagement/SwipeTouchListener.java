@@ -3,6 +3,7 @@ package com.example.SwipeUp.swipeManagement;
 
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -49,12 +50,10 @@ public class SwipeTouchListener implements View.OnTouchListener {
                 x2 = event.getX();
                 mainActivity.buttonHider.cancel(true);   //stops previously started buttonHider
                 if (x1 - x2 > SWIPE_DISTANCE) { //right swipe
-                    mainActivity.switcher.setImageResource(R.drawable.shirt);
                     mainActivity.resetButtons();
                     mainActivity.progressBarWrapper.restartAnimation();
                 }
                 else if (x2 - x1 > SWIPE_DISTANCE) { //left  swipe
-                    mainActivity.switcher.setImageResource(R.drawable.gigiproietti);
                     mainActivity.resetButtons();
                     mainActivity.progressBarWrapper.restartAnimation();
                 }
