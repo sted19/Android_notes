@@ -1,5 +1,6 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
+        <!--TODO: improve gradient-->
     <gradient
         android:startColor="@color/top_hits_top"
         android:centerColor="@color/top_hits_bottom"

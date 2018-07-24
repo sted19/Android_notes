@@ -9,5 +9,8 @@
     <color name="black">#000</color>
     <color name="top_hits_bottom">#01d4ff</color>
     <color name="top_hits_top">#d1f6fe</color>
+    <color name="light_grey">#d5d5d5</color>
+    <color name="pressed_button_light_blue">#29adff</color>
+    <color name="white">#fff</color>
 
 </resources>

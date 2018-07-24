@@ -7,4 +7,6 @@
     <string name="thirts">T-SHIRT</string>
     <string name="jackets">GIACCHE</string>
     <string name="top_hits">TOP SWIPE</string>
+    <string name="man">UOMO</string>
+    <string name="woman">DONNA</string>
 </resources>
