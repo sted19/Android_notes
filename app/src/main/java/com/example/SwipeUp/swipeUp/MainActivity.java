@@ -124,8 +124,6 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-
-
         like = (ImageButton) findViewById(R.id.like);
         dislike = (ImageButton) findViewById(R.id.dislike);
         swipeUp = (ImageButton) findViewById(R.id.swipeUp);
@@ -167,6 +165,8 @@ public class MainActivity extends AppCompatActivity {
         progressBarWrapper.restartAnimation();
         resetButtons();
         likeListener.clearAnimation();
+
+        adapter.currentImageView.setImageDrawable(wearingFactory.getPreviousImage());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -175,6 +175,8 @@ public class MainActivity extends AppCompatActivity {
         progressBarWrapper.restartAnimation();
         resetButtons();
         likeListener.clearAnimation();
+
+        adapter.currentImageView.setImageDrawable(wearingFactory.getNextImage());
     }
 
     public void resetButtons()
