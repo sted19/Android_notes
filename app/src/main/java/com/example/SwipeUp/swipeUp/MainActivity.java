@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 import com.example.SwipeUp.buttonsListener.ButtonsListener;
 import com.example.SwipeUp.swipeManagement.CubeTransformer;
 import com.example.SwipeUp.swipeManagement.CustomAdapter;
+import com.example.SwipeUp.menu.ChoiceActivity;
 import com.example.SwipeUp.swipeUp.asyncTasks.ButtonHider;
 import com.example.SwipeUp.progressBar.ProgressBarWrapper;
 import com.example.SwipeUp.swipeUp.asyncTasks.TapCalculation;
@@ -26,7 +27,6 @@ import com.example.SwipeUp.wearingFactory.WearingFactory;
 
 import static android.view.MotionEvent.ACTION_DOWN;
 import static android.view.MotionEvent.ACTION_UP;
-import static java.util.logging.Logger.getLogger;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -133,12 +133,12 @@ public class MainActivity extends AppCompatActivity {
         dislike.setOnClickListener(new ButtonsListener.DislikeListener(this));
         swipeUp.setOnClickListener(new ButtonsListener.SwipeUpListener());
 
+        //sets the application in fullscreen
         View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN |
                 View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
                 View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
                 View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-
         FullScreen fullScreen = new FullScreen(decorView);
         Thread onFull = new Thread(fullScreen);
         onFull.start();
@@ -150,11 +150,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void onPause(){
+        super.onPause();
+        progressBarWrapper.stopBarAnimation();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void go_back(View view)
     {
         progressBarWrapper.stopBarAnimation();//per ricominciare?
         Intent intent = new Intent(this,ChoiceActivity.class);
-        //putExtra method to send information to the new Activity
+        //TODO: putExtra method to send needed information to the new Activity
         startActivity(intent);
 
     }

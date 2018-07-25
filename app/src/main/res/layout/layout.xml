@@ -7,21 +7,22 @@
     android:layout_width="match_parent">
 
     <RelativeLayout
+        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="36dp"
         android:background="@drawable/top_bar_grad">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Giacomo Miele"
+            android:layout_centerHorizontal="true"
             android:textStyle="bold"
             android:fontFamily=""
             android:textSize="16dp"
             android:id="@+id/swipe_friend"
             android:layout_marginLeft="4dp"
             android:layout_alignBottom="@id/swiped"
-            android:layout_toRightOf="@id/swiped"
             android:textColor="@android:color/background_light"/>
 
         <TextView
@@ -36,45 +37,28 @@
             android:textColor="@android:color/background_light"/>
 
 
-        <ImageButton
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:id="@+id/back_x"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="6dp"
-            android:scaleType="centerInside"
-            android:background="@null"
-            android:onClick="go_back"
-            android:src="@drawable/back_x"/>
-
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="24dp"
             android:id="@+id/swiped"
-            android:layout_alignParentLeft="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="6dp"
+            android:layout_width="36dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/swipe_friend"
             android:background="@null"
             android:scaleType="centerInside"
-            android:src="@drawable/swiped"/>
+            android:src="@drawable/swiped" />
     </RelativeLayout>
 
-
-    <android.support.v4.view.ViewPager
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/pager"
-        android:layout_marginTop="48dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
+        android:layout_height="604dp"/>
 
     <ImageButton
         android:id="@+id/swipeUp"
         android:layout_width="72dp"
         android:layout_height="72dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="36dp"
+        android:layout_marginBottom="68dp"
         android:layout_centerHorizontal="true"
         android:background="@null"
         android:scaleType="centerInside"
@@ -86,7 +70,7 @@
         android:layout_height="72dp"
         android:scaleType="centerInside"
         android:layout_marginLeft="24dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="56dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:src="@drawable/dislike"
@@ -97,7 +81,7 @@
         android:layout_width="72dp"
         android:layout_height="72dp"
         android:layout_marginRight="24dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="56dp"
         android:scaleType="centerInside"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
@@ -126,6 +110,19 @@
         android:max="1000"
         android:progressTint="@android:color/background_light"
         android:progressTintMode="multiply"/>
+
+
+    <ImageButton
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:id="@+id/back_x"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="6dp"
+        android:scaleType="centerInside"
+        android:background="@null"
+        android:onClick="go_back"
+        android:src="@drawable/back_x"/>
 
 </RelativeLayout>
 

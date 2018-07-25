@@ -2,4 +2,11 @@
     <string name="app_name">Swipe Up</string>
     <string name="left">left</string>
     <string name="right">right</string>
+    <string name="pants">PANTALONI</string>
+    <string name="new_str">NOVITÀ</string>
+    <string name="thirts">T-SHIRT</string>
+    <string name="jackets">GIACCHE</string>
+    <string name="top_hits">TOP SWIPE</string>
+    <string name="man">UOMO</string>
+    <string name="woman">DONNA</string>
 </resources>
