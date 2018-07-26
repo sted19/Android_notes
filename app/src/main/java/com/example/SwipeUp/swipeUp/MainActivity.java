@@ -1,6 +1,7 @@
 package com.example.SwipeUp.swipeUp;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +31,9 @@ import static android.view.MotionEvent.ACTION_UP;
 
 public class MainActivity extends AppCompatActivity {
 
+    private FullScreen fullScreen;
+    private ViewPager viewPager;
+
     public ImageButton like;
     public ImageButton dislike;
     private ImageButton swipeUp;
@@ -45,26 +49,127 @@ public class MainActivity extends AppCompatActivity {
     private ButtonsListener.LikeListener likeListener;
 
     private CustomAdapter adapter;
-    private ViewPager viewPager;
+
+
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    @SuppressLint({"WrongViewCast", "ClickableViewAccessibility"})
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.layout);
+
+        progressBarWrapper = new ProgressBarWrapper((ProgressBar) findViewById(R.id.progressbar),this);
+
+        /**
+         * Handling Full Screen in a different class
+         */
+
+        fullScreen = new FullScreen(getWindow().getDecorView());
+        fullScreen.setUIFullScreen();
+        fullScreen.fullScreenKeeper();
+
+        /**
+         * Setting up viewPager in a separate function
+         */
+        wearingFactory = new WearingFactory(this);
+        setupViewPager();
+
+
+        /**
+         * Setting up buttons in a separate function (I think we should modify the ButtonsListener)
+         */
+
+        setupButtons();
+
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onResume() {
         super.onResume();
         progressBarWrapper.resumeBarAnimation();
-        View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN |
-                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        fullScreen.setUIFullScreen();
     }
-    @SuppressLint({"WrongViewCast", "ClickableViewAccessibility"})
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout);
 
-        wearingFactory = new WearingFactory(this);
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void onPause(){
+        super.onPause();
+        progressBarWrapper.stopBarAnimation();
+    }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void go_back(View view)
+    {
+        progressBarWrapper.stopBarAnimation();//per ricominciare?
+        Intent intent = new Intent(this,ChoiceActivity.class);
+        //TODO: putExtra method to send needed information to the new Activity
+        startActivity(intent);
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void LeftTap()
+    {
+        progressBarWrapper.restartAnimation();
+        resetButtons();
+        likeListener.clearAnimation();
+
+        //adapter.currentImageView.setImageDrawable(wearingFactory.getPreviousImage());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void RightTap()
+    {
+        progressBarWrapper.restartAnimation();
+        resetButtons();
+        likeListener.clearAnimation();
+
+        //adapter.currentImageView.setImageDrawable(wearingFactory.getNextImage());
+    }
+
+    public void setupButtons(){
+        like = (ImageButton) findViewById(R.id.like);
+        dislike = (ImageButton) findViewById(R.id.dislike);
+        swipeUp = (ImageButton) findViewById(R.id.swipeUp);
+
+        like.setOnClickListener(likeListener = new ButtonsListener.LikeListener(this));
+        dislike.setOnClickListener(new ButtonsListener.DislikeListener(this));
+        swipeUp.setOnClickListener(new ButtonsListener.SwipeUpListener());
+    }
+
+    public void resetButtons()
+    {
+        like.setImageResource(R.drawable.like);
+        dislike.setImageResource(R.drawable.dislike);
+        like_pressed = false;
+        dislike_pressed = false;
+    }
+
+    public void hideButtons(){
+        Animation disappearence=AnimationUtils.loadAnimation(this, R.anim.disappearence);
+        this.dislike.setVisibility(View.INVISIBLE);
+        this.like.setVisibility(View.INVISIBLE);
+        this.swipeUp.setVisibility(View.INVISIBLE);
+
+        this.dislike.startAnimation(disappearence);
+        this.like.startAnimation(disappearence);
+        this.swipeUp.startAnimation(disappearence);
+    }
+
+    public void showButtons(){
+        Animation appearance=AnimationUtils.loadAnimation(this, R.anim.appearance);
+        this.dislike.setVisibility(View.VISIBLE);
+        this.like.setVisibility(View.VISIBLE);
+        this.swipeUp.setVisibility(View.VISIBLE);
+
+        this.dislike.startAnimation(appearance);
+        this.like.startAnimation(appearance);
+        this.swipeUp.startAnimation(appearance );
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    public void setupViewPager(){
         viewPager = (ViewPager) findViewById(R.id.pager);
         adapter = new CustomAdapter(this,wearingFactory);
         viewPager.setAdapter(adapter);
@@ -123,96 +228,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         });
-
-        like = (ImageButton) findViewById(R.id.like);
-        dislike = (ImageButton) findViewById(R.id.dislike);
-        swipeUp = (ImageButton) findViewById(R.id.swipeUp);
-
-        // listener assignments
-        like.setOnClickListener(likeListener = new ButtonsListener.LikeListener(this));
-        dislike.setOnClickListener(new ButtonsListener.DislikeListener(this));
-        swipeUp.setOnClickListener(new ButtonsListener.SwipeUpListener());
-
-        //sets the application in fullscreen
-        View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN |
-                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        FullScreen fullScreen = new FullScreen(decorView);
-        Thread onFull = new Thread(fullScreen);
-        onFull.start();
-
-        progressBarWrapper = new ProgressBarWrapper((ProgressBar) findViewById(R.id.progressbar),this);
-
-
-
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public void onPause(){
-        super.onPause();
-        progressBarWrapper.stopBarAnimation();
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public void go_back(View view)
-    {
-        progressBarWrapper.stopBarAnimation();//per ricominciare?
-        Intent intent = new Intent(this,ChoiceActivity.class);
-        //TODO: putExtra method to send needed information to the new Activity
-        startActivity(intent);
-
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public void LeftTap()
-    {
-        progressBarWrapper.restartAnimation();
-        resetButtons();
-        likeListener.clearAnimation();
-
-        adapter.currentImageView.setImageDrawable(wearingFactory.getPreviousImage());
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public void RightTap()
-    {
-        progressBarWrapper.restartAnimation();
-        resetButtons();
-        likeListener.clearAnimation();
-
-        adapter.currentImageView.setImageDrawable(wearingFactory.getNextImage());
-    }
-
-    public void resetButtons()
-    {
-        like.setImageResource(R.drawable.like);
-        dislike.setImageResource(R.drawable.dislike);
-        like_pressed = false;
-        dislike_pressed = false;
-    }
-
-    public void hideButtons(){
-        Animation disappearence=AnimationUtils.loadAnimation(this, R.anim.disappearence);
-        this.dislike.setVisibility(View.INVISIBLE);
-        this.like.setVisibility(View.INVISIBLE);
-        this.swipeUp.setVisibility(View.INVISIBLE);
-
-        this.dislike.startAnimation(disappearence);
-        this.like.startAnimation(disappearence);
-        this.swipeUp.startAnimation(disappearence);
-    }
-
-    public void showButtons(){
-        Animation appearance=AnimationUtils.loadAnimation(this, R.anim.appearance);
-        this.dislike.setVisibility(View.VISIBLE);
-        this.like.setVisibility(View.VISIBLE);
-        this.swipeUp.setVisibility(View.VISIBLE);
-
-        this.dislike.startAnimation(appearance);
-        this.like.startAnimation(appearance);
-        this.swipeUp.startAnimation(appearance );
     }
 
 }

@@ -15,6 +15,8 @@ import com.example.SwipeUp.swipeUp.R;
 
 public class ChoiceActivity extends AppCompatActivity {
 
+    private FullScreen fullScreen;
+
     private Button manButton;
     private Button womanButton;
     private ScrollView shuffles;
@@ -25,17 +27,11 @@ public class ChoiceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choice);
 
-        Intent intent = getIntent();
+        fullScreen = new FullScreen(getWindow().getDecorView());
+        fullScreen.setUIFullScreen();
+        fullScreen.fullScreenKeeper();
 
-        //sets the application in fullscreen
-        View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN |
-                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        FullScreen fullScreen = new FullScreen(decorView);
-        Thread onFull = new Thread(fullScreen);
-        onFull.start();
+        Intent intent = getIntent();//Non l'ho modificata perché non so se Zappia l'ha messa per qualche ragione, ma non viene usata
 
         findElements();
 
