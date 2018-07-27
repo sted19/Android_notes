@@ -7,31 +7,26 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.example.SwipeUp.shuffleListeners.ButtonsListener;
 import com.example.SwipeUp.shuffleListeners.PageChangeListener;
-import com.example.SwipeUp.shuffleListeners.TouchListener;
 import com.example.SwipeUp.swipeManagement.CubeTransformer;
 import com.example.SwipeUp.swipeManagement.CustomAdapter;
 import com.example.SwipeUp.menu.ChoiceActivity;
 import com.example.SwipeUp.swipeUp.asyncTasks.ButtonHider;
 import com.example.SwipeUp.progressBar.ProgressBarWrapper;
 import com.example.SwipeUp.swipeUp.asyncTasks.TapCalculation;
-import com.example.SwipeUp.swipeUp.asyncTasks.TapRecognizer;
 import com.example.SwipeUp.wearingFactory.WearingFactory;
 
-import static android.view.MotionEvent.ACTION_DOWN;
 import static android.view.MotionEvent.ACTION_UP;
 
 public class MainActivity extends AppCompatActivity {
@@ -53,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     private ButtonsListener.LikeListener likeListener;
 
     private CustomAdapter adapter;
+
+    private ButtonHider buttonHider;
 
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -149,7 +146,8 @@ public class MainActivity extends AppCompatActivity {
         dislike_pressed = false;
     }
 
-    public void hideButtons(){
+    public void hideButtons() {
+
         Animation disappearence=AnimationUtils.loadAnimation(this, R.anim.disappearence);
         this.dislike.setVisibility(View.INVISIBLE);
         this.like.setVisibility(View.INVISIBLE);
@@ -178,13 +176,69 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         viewPager.setPageTransformer(true, new CubeTransformer());
 
-        //setting up viewPager listeners
-        viewPager.setOnTouchListener(new TouchListener(this));
+        /**
+         * Setting Up ViewPager Listeners
+         */
+
         viewPager.addOnPageChangeListener(new PageChangeListener(adapter, progressBarWrapper));
+
+        final GestureDetector gestureDetector = setupGestureDetector(this);
+
+
+        viewPager.setOnTouchListener(new View.OnTouchListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == ACTION_UP){
+                    buttonHider.cancel(true);
+                    if(buttonHider.getSlept()) showButtons();
+                    progressBarWrapper.resumeBarAnimation();
+                }
+                return  gestureDetector.onTouchEvent(event);
+            }
+        });
+
     }
 
-    public CustomAdapter getCustomAdapter(){
-        return  adapter;
+    public GestureDetector setupGestureDetector(final MainActivity mainActivity){
+        GestureDetector gestureDetector = new GestureDetector(mainActivity, new GestureDetector.OnGestureListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public boolean onDown(MotionEvent e) {
+                mainActivity.progressBarWrapper.stopBarAnimation();
+                buttonHider = new ButtonHider(mainActivity);
+                buttonHider.execute();
+                return false;
+            }
+
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onShowPress(MotionEvent e) {
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                (new TapCalculation(mainActivity)).doInBackground(e);
+                return false;
+            }
+
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                return false;
+            }
+
+            @Override
+            public void onLongPress(MotionEvent e) {
+            }
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                return false;
+            }
+        });
+        return gestureDetector;
     }
 
 }

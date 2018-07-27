@@ -20,6 +20,8 @@ public class PageChangeListener implements OnPageChangeListener {
         this.progressBarWrapper = progressBarWrapper;
     }
 
+
+
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
