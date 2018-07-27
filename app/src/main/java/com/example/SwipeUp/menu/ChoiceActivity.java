@@ -51,6 +51,7 @@ public class ChoiceActivity extends AppCompatActivity {
 
     public void topHitsPressed(View view){
         Toast.makeText(this.getBaseContext(), "Top hits swiping", Toast.LENGTH_SHORT).show();
+
     }
 
     public void pantsShufflePressed(View view){
@@ -66,7 +67,8 @@ public class ChoiceActivity extends AppCompatActivity {
     }
 
     public void newShufflePressed(View view){
-        Toast.makeText(this.getBaseContext(), "New swiping", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this.getBaseContext(), "New swiping", Toast.LENGTH_SHORT).show();
+        this.finish();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -95,5 +97,10 @@ public class ChoiceActivity extends AppCompatActivity {
         manButton.setBackgroundResource(R.drawable.button_man_unselected);
 
         shuffles.setVisibility(View.INVISIBLE);
+    }
+    @Override
+    public void finish(){
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_top,R.anim.slide_out_top);
     }
 }
