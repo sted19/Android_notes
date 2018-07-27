@@ -15,9 +15,12 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.example.SwipeUp.buttonsListener.ButtonsListener;
+import com.example.SwipeUp.shuffleListeners.ButtonsListener;
+import com.example.SwipeUp.shuffleListeners.PageChangeListener;
+import com.example.SwipeUp.shuffleListeners.TouchListener;
 import com.example.SwipeUp.swipeManagement.CubeTransformer;
 import com.example.SwipeUp.swipeManagement.CustomAdapter;
 import com.example.SwipeUp.menu.ChoiceActivity;
@@ -49,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
     private ButtonsListener.LikeListener likeListener;
 
     private CustomAdapter adapter;
-
 
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -115,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         resetButtons();
         likeListener.clearAnimation();
 
-        //adapter.currentImageView.setImageDrawable(wearingFactory.getPreviousImage());
+        adapter.currentImageView.setImageDrawable(wearingFactory.getPreviousImage());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -125,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         resetButtons();
         likeListener.clearAnimation();
 
-        //adapter.currentImageView.setImageDrawable(wearingFactory.getNextImage());
+        adapter.currentImageView.setImageDrawable(wearingFactory.getNextImage());
     }
 
     public void setupButtons(){
@@ -175,59 +177,9 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         viewPager.setPageTransformer(true, new CubeTransformer());
 
-        viewPager.setOnTouchListener(new View.OnTouchListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int action = event.getActionMasked();
-
-                switch(action){
-                    case ACTION_DOWN:
-                        progressBarWrapper.stopBarAnimation();
-                        Log.d("stop", "stop");
-                        buttonHider = new ButtonHider(MainActivity.this);
-                        buttonHider.execute();
-                        break;
-
-                    case ACTION_UP:
-                        buttonHider.cancel(true);   //stops previously started buttonHider
-                        if (!buttonHider.getSlept()){ //Simple tap
-                            (new TapCalculation(MainActivity.this)).doInBackground(event);
-                        }
-                        else //long press
-                            progressBarWrapper.resumeBarAnimation();
-                        if(buttonHider.getSlept())
-                            showButtons();
-
-                        break;
-                }
-
-                return false;
-            }
-        });
-
-
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener(){
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onPageSelected(int position) {
-                progressBarWrapper.restartAnimation();
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                //if (state == ViewPager.SCROLL_STATE_IDLE) showButtons();
-                //else if (state == ViewPager.SCROLL_STATE_DRAGGING) hideButtons();
-            }
-
-
-        });
+        //setting up viewPager listeners
+        viewPager.setOnTouchListener(new TouchListener(this));
+        viewPager.addOnPageChangeListener(new PageChangeListener(adapter, progressBarWrapper));
     }
 
 }

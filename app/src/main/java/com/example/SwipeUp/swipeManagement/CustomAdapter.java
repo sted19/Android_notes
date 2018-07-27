@@ -24,6 +24,7 @@ public class CustomAdapter extends PagerAdapter{
     private WearingFactory wearingFactory;
     public ImageView nextImageView;
     public ImageView currentImageView;
+    public ImageView previousImageView;
 
     public CustomAdapter(Context ctx, WearingFactory wearingFactory){
         this.ctx = ctx;
@@ -58,7 +59,7 @@ public class CustomAdapter extends PagerAdapter{
                 .with(v)
                 .load(drawables.get(position))
                 .into(image);
-        container.addView(v);
+        container.addView(v, position);
         return v;
     }
 

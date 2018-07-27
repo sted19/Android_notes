@@ -1,4 +1,4 @@
-package com.example.SwipeUp.buttonsListener;
+package com.example.SwipeUp.shuffleListeners;
 
 import android.os.Build;
 import android.support.annotation.RequiresApi;
