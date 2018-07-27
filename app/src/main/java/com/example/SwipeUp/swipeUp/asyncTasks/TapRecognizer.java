@@ -1,6 +1,5 @@
 package com.example.SwipeUp.swipeUp.asyncTasks;
 
-import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -9,11 +8,8 @@ import com.example.SwipeUp.swipeUp.MainActivity;
 
 import static java.lang.Thread.sleep;
 
-public class ButtonHider extends AsyncTask<Void, Void, Void> {
-    public static final int LONG_PRESS_MILLIS = 300;
-
-    @SuppressLint("StaticFieldLeak")
-    private MainActivity mainActivity;
+public class TapRecognizer extends AsyncTask<Void, Void, Void> {
+    public static final int LONG_PRESS_MILLIS = 75;
 
     private boolean slept = false;
     // TODO: improve synchronized here
@@ -25,9 +21,8 @@ public class ButtonHider extends AsyncTask<Void, Void, Void> {
         return slept;
     }
 
-    public ButtonHider(MainActivity mainActivity){
+    public TapRecognizer(){
         super();
-        this.mainActivity = mainActivity;
     }
 
     protected Void doInBackground(Void... voids) {
@@ -45,6 +40,5 @@ public class ButtonHider extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        mainActivity.hideButtons();
     }
 }

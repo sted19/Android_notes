@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -27,6 +28,7 @@ import com.example.SwipeUp.menu.ChoiceActivity;
 import com.example.SwipeUp.swipeUp.asyncTasks.ButtonHider;
 import com.example.SwipeUp.progressBar.ProgressBarWrapper;
 import com.example.SwipeUp.swipeUp.asyncTasks.TapCalculation;
+import com.example.SwipeUp.swipeUp.asyncTasks.TapRecognizer;
 import com.example.SwipeUp.wearingFactory.WearingFactory;
 
 import static android.view.MotionEvent.ACTION_DOWN;
@@ -47,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean dislike_pressed;
     private WearingFactory wearingFactory;
     public static final int SwitchingDuration = 6000;
-    public ButtonHider buttonHider;
 
     private ButtonsListener.LikeListener likeListener;
 
@@ -173,13 +174,17 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("ClickableViewAccessibility")
     public void setupViewPager(){
         viewPager = (ViewPager) findViewById(R.id.pager);
-        adapter = new CustomAdapter(this,wearingFactory);
+        adapter = new CustomAdapter(this.getApplicationContext(),wearingFactory,this);
         viewPager.setAdapter(adapter);
         viewPager.setPageTransformer(true, new CubeTransformer());
 
         //setting up viewPager listeners
         viewPager.setOnTouchListener(new TouchListener(this));
         viewPager.addOnPageChangeListener(new PageChangeListener(adapter, progressBarWrapper));
+    }
+
+    public CustomAdapter getCustomAdapter(){
+        return  adapter;
     }
 
 }

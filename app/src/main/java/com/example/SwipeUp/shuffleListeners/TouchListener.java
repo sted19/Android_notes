@@ -10,6 +10,7 @@ import android.view.View.OnTouchListener;
 import com.example.SwipeUp.swipeUp.MainActivity;
 import com.example.SwipeUp.swipeUp.asyncTasks.ButtonHider;
 import com.example.SwipeUp.swipeUp.asyncTasks.TapCalculation;
+import com.example.SwipeUp.swipeUp.asyncTasks.TapRecognizer;
 
 import static android.view.MotionEvent.ACTION_DOWN;
 import static android.view.MotionEvent.ACTION_UP;
@@ -17,6 +18,9 @@ import static android.view.MotionEvent.ACTION_UP;
 public class TouchListener implements OnTouchListener {
 
     private MainActivity mainActivity;
+
+    private TapRecognizer tapRecognizer;
+    private ButtonHider buttonHider;
 
     public TouchListener(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
@@ -29,20 +33,25 @@ public class TouchListener implements OnTouchListener {
 
         switch(action){
             case ACTION_DOWN:
+                Log.d("ACTION_DOWN", "stop");
                 mainActivity.progressBarWrapper.stopBarAnimation();
-                Log.d("stop", "stop");
-                mainActivity.buttonHider = new ButtonHider(mainActivity);
-                mainActivity.buttonHider.execute();
+                tapRecognizer = new TapRecognizer();
+                tapRecognizer.execute();
+                buttonHider = new ButtonHider(mainActivity);
+                buttonHider.execute();
                 break;
 
             case ACTION_UP:
-                mainActivity.buttonHider.cancel(true);   //stops previously started buttonHider
-                if (!mainActivity.buttonHider.getSlept()){ //Simple tap
+                buttonHider.cancel(true);       //stops previously started buttonHider
+                tapRecognizer.cancel(true);     //stops previously started tapRecognizer
+                if (!tapRecognizer.getSlept()){
+                    Log.d("SIMPLE TAP","Tocco Semplice");
                     (new TapCalculation(mainActivity)).doInBackground(event);
                 }
-                else //long press
+                else{
                     mainActivity.progressBarWrapper.resumeBarAnimation();
-                if(mainActivity.buttonHider.getSlept())
+                }
+                if(buttonHider.getSlept())
                     mainActivity.showButtons();
 
                 break;
