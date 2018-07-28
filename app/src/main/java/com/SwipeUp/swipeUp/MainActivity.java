@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
+import com.SwipeUp.SwipeUpMenu;
 import com.SwipeUp.shuffleListeners.ButtonsListener;
 import com.SwipeUp.shuffleListeners.PageChangeListener;
 import com.SwipeUp.swipeManagement.CubeTransformer;
@@ -27,12 +29,18 @@ import com.SwipeUp.progressBar.ProgressBarWrapper;
 import com.SwipeUp.swipeUp.asyncTasks.TapCalculation;
 import com.SwipeUp.wearingFactory.WearingFactory;
 
+import static android.view.MotionEvent.ACTION_CANCEL;
+import static android.view.MotionEvent.ACTION_DOWN;
+import static android.view.MotionEvent.ACTION_HOVER_EXIT;
+import static android.view.MotionEvent.ACTION_MOVE;
 import static android.view.MotionEvent.ACTION_UP;
 
 public class MainActivity extends AppCompatActivity {
 
     private FullScreen fullScreen;
     private ViewPager viewPager;
+
+    private boolean isRunning=true;
 
     public ImageButton like;
     public ImageButton dislike;
@@ -88,12 +96,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        this.isRunning=true;
         progressBarWrapper.resumeBarAnimation();
         fullScreen.setUIFullScreen();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void onPause(){
+        this.isRunning=false;
         super.onPause();
         progressBarWrapper.stopBarAnimation();
     }
@@ -104,6 +114,16 @@ public class MainActivity extends AppCompatActivity {
         progressBarWrapper.stopBarAnimation();//per ricominciare?
         Intent intent = new Intent(this,ChoiceActivity.class);
         //TODO: putExtra method to send needed information to the new Activity
+        startActivity(intent);
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void startSwipeUpActivity(View view)
+    {
+        progressBarWrapper.stopBarAnimation();
+        Intent intent = new Intent(this, SwipeUpMenu.class);
+        Log.e("starting","starting");
         startActivity(intent);
 
     }
@@ -135,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
 
         like.setOnClickListener(likeListener = new ButtonsListener.LikeListener(this));
         dislike.setOnClickListener(new ButtonsListener.DislikeListener(this));
-        swipeUp.setOnClickListener(new ButtonsListener.SwipeUpListener());
+        swipeUp.setOnClickListener(new ButtonsListener.SwipeUpListener(this));
     }
 
     public void resetButtons()
@@ -224,6 +244,7 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
                 return false;
@@ -233,8 +254,22 @@ public class MainActivity extends AppCompatActivity {
             public void onLongPress(MotionEvent e) {
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                float dy=e1.getY()-e2.getY();
+                float dx=e1.getX()-e2.getX();
+                if(dx<0)
+                    dx=-dx;
+
+                Log.e("fling","fling");
+                Log.e("dy",""+dy);
+                Log.e("dx",""+dx);
+                Log.e("tempo",""+e2.getDownTime());
+
+                if(mainActivity.isRunning  && dy>0 && (dy>dx)){
+                    startSwipeUpActivity(null);
+                }
                 return false;
             }
         });

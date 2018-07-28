@@ -103,8 +103,16 @@ public class ButtonsListener {
     }
 
     public static class SwipeUpListener implements View.OnClickListener{
+        private MainActivity mainActivity;
+
+        public SwipeUpListener(MainActivity mainActivity) {
+            this.mainActivity = mainActivity;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
         public void onClick(View v) {
+            mainActivity.startSwipeUpActivity(null);
             new SwipeUpComputing().doInBackground();
         }
     }
