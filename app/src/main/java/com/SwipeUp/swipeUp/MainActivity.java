@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
          * Setting Up ViewPager Listeners
          */
 
-        viewPager.addOnPageChangeListener(new PageChangeListener(adapter, progressBarWrapper));
+        viewPager.addOnPageChangeListener(new PageChangeListener(this,adapter, progressBarWrapper));
 
         final GestureDetector gestureDetector = setupGestureDetector(this);
 

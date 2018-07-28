@@ -8,16 +8,19 @@ import android.widget.ProgressBar;
 
 import com.SwipeUp.progressBar.ProgressBarWrapper;
 import com.SwipeUp.swipeManagement.CustomAdapter;
+import com.SwipeUp.swipeUp.MainActivity;
 
 public class PageChangeListener implements OnPageChangeListener {
     private int lastPosition = 0;
     private boolean lastSwipeWasRigth = true;
     private CustomAdapter adapter;
     private ProgressBarWrapper progressBarWrapper;
+    private MainActivity mainActivity;
 
-    public PageChangeListener(CustomAdapter adapter, ProgressBarWrapper progressBarWrapper) {
+    public PageChangeListener(MainActivity mainActivity,CustomAdapter adapter, ProgressBarWrapper progressBarWrapper) {
         this.adapter = adapter;
         this.progressBarWrapper = progressBarWrapper;
+        this.mainActivity=mainActivity;
     }
 
 
@@ -31,6 +34,8 @@ public class PageChangeListener implements OnPageChangeListener {
     @Override
     public void onPageSelected(int position) {
         progressBarWrapper.restartAnimation();
+
+        mainActivity.resetButtons();
 
         int positionsDifference = position - lastPosition;
         boolean isRightSwipe = positionsDifference > 0;
