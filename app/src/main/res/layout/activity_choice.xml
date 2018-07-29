@@ -25,7 +25,6 @@
             android:id="@+id/woman_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_column="0"
             android:layout_marginLeft="-4dp"
             android:layout_weight="1"
             android:background="@drawable/button_woman_unselected"
@@ -33,6 +32,14 @@
             android:text="@string/woman"
             android:textColor="@color/light_grey"
             android:textSize="16sp"/>
+
+        <!--<android.support.v4.widget.Space-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_marginBottom="10dp"-->
+            <!--android:backgroundTint="@color/black"-->
+            <!--android:layout_weight="0.02"/>-->
 
         <Button
             android:id="@+id/man_button"

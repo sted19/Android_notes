@@ -18,7 +18,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
-import com.SwipeUp.SwipeUpMenu;
+import com.SwipeUp.swipeUpMenu.SwipeUpMenu;
 import com.SwipeUp.shuffleListeners.ButtonsListener;
 import com.SwipeUp.shuffleListeners.PageChangeListener;
 import com.SwipeUp.swipeManagement.CubeTransformer;
@@ -29,10 +29,6 @@ import com.SwipeUp.progressBar.ProgressBarWrapper;
 import com.SwipeUp.swipeUp.asyncTasks.TapCalculation;
 import com.SwipeUp.wearingFactory.WearingFactory;
 
-import static android.view.MotionEvent.ACTION_CANCEL;
-import static android.view.MotionEvent.ACTION_DOWN;
-import static android.view.MotionEvent.ACTION_HOVER_EXIT;
-import static android.view.MotionEvent.ACTION_MOVE;
 import static android.view.MotionEvent.ACTION_UP;
 
 public class MainActivity extends AppCompatActivity {
@@ -65,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint({"WrongViewCast", "ClickableViewAccessibility"})
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout);
+        setContentView(R.layout.shuffle_layout);
 
         progressBarWrapper = new ProgressBarWrapper((ProgressBar) findViewById(R.id.progressbar),this);
 

@@ -59,7 +59,7 @@ public class CustomAdapter extends PagerAdapter{
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         inflater = (LayoutInflater) ctx.getSystemService((Context.LAYOUT_INFLATER_SERVICE));
-        View v = inflater.inflate(R.layout.swipe,container,false);
+        View v = inflater.inflate(R.layout.swipe_bar,container,false);
 
         ImageView image = (ImageView)v.findViewById(R.id.swipe_image);
         currentImageView = nextImageView;

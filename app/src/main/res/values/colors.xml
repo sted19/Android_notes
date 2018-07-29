@@ -8,8 +8,9 @@
     <color name="shuffle_background_color">#e6e6e6</color>
     <color name="black">#000</color>
     <color name="top_hits_bottom">#01d4ff</color>
-    <color name="top_hits_top">#d1f6fe</color>
+    <color name="top_hits_top">#d3fffc</color>
     <color name="light_grey">#d5d5d5</color>
+    <color name="dark_grey">#9a9a9a</color>
     <color name="pressed_button_light_blue">#29adff</color>
     <color name="white">#fff</color>
 
