@@ -10,4 +10,19 @@
     <string name="man">UOMO</string>
     <string name="woman">DONNA</string>
     <string name="taglie"><u>Guida alle taglie</u></string>
+    <string name="taglia_spinner"><u>TAGLIA</u></string>
+    <string name="buy_text"><u>AGGIUNGI AL CARRELLO</u></string>
+
+    <string-array name="color_spinner_array">
+        <item>Rosa</item>
+        <item>Blu</item>
+        <item>Fosforescente</item>
+    </string-array>
+
+    <string-array name="taglia_spinner_array">
+        <item>S</item>
+        <item>M</item>
+        <item>L</item>
+        <item>XL</item>
+    </string-array>
 </resources>

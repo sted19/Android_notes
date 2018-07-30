@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <ImageView
@@ -18,7 +15,7 @@
         android:orientation="vertical">
 
         <!--First Group-->
-        <android.support.constraint.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:orientation="horizontal">
@@ -26,15 +23,10 @@
             <!--First Block-->
             <LinearLayout
                 android:id="@+id/info"
-                android:layout_width="225dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="160dp"
-                android:layout_marginRight="160dp"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="60"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/price"
@@ -58,26 +50,18 @@
             </LinearLayout>
 
             <View
-                android:id="@+id/divider1"
                 android:layout_width="1dp"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
-                android:background="@color/dark_grey"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/Guidataglie"
-                app:layout_constraintStart_toEndOf="@+id/info"
-                app:layout_constraintTop_toTopOf="parent"/>
+                android:background="@color/dark_grey"/>
 
+            <!--Second block-->
             <LinearLayout
                 android:id="@+id/Guidataglie"
                 android:layout_width="159dp"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/divider1"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                tools:layout_editor_absoluteX="227dp">
+                android:layout_height="match_parent"
+                android:layout_weight="0.5">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -89,17 +73,90 @@
                     android:textColor="@color/black" />
             </LinearLayout>
 
-        </android.support.constraint.ConstraintLayout>
+        </LinearLayout>
 
+        <!--First horizontal divider-->
         <View
-            android:id="@+id/divider2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/dark_grey"
             android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            />
+            android:layout_marginRight="8dp"/>
 
+        <!--Second Group-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <!--First Block-->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <Spinner
+                    android:id="@+id/color_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Base.Widget.AppCompat.TextView.SpinnerItem"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:popupBackground="@color/white"
+                    android:textAlignment="center"/>
+
+            </RelativeLayout>
+
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/dark_grey"/>
+
+            <!--Second Block-->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <Spinner
+                    android:id="@+id/taglia_spinner"
+                    android:layout_width="wrap_content"
+                    style="@style/Base.Widget.AppCompat.TextView.SpinnerItem"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:popupBackground="@color/white"
+                    android:layout_centerVertical="true"
+                    android:textAlignment="center"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/dark_grey"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"/>
+
+        <!--Last Group-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:paddingHorizontal="30dp"
+                android:background="@color/buy_green"
+                android:text="@string/buy_text" />
+
+        </RelativeLayout>
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

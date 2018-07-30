@@ -3,6 +3,8 @@ package com.SwipeUp.swipeUp;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,7 +20,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
-import com.SwipeUp.swipeUpMenu.SwipeUpMenu;
+import com.SwipeUp.swipeUpMenu.SwipeUpActivity;
 import com.SwipeUp.shuffleListeners.ButtonsListener;
 import com.SwipeUp.shuffleListeners.PageChangeListener;
 import com.SwipeUp.swipeManagement.CubeTransformer;
@@ -28,6 +30,8 @@ import com.SwipeUp.swipeUp.asyncTasks.ButtonHider;
 import com.SwipeUp.progressBar.ProgressBarWrapper;
 import com.SwipeUp.swipeUp.asyncTasks.TapCalculation;
 import com.SwipeUp.wearingFactory.WearingFactory;
+
+import java.io.ByteArrayOutputStream;
 
 import static android.view.MotionEvent.ACTION_UP;
 
@@ -118,7 +122,9 @@ public class MainActivity extends AppCompatActivity {
     public void startSwipeUpActivity(View view)
     {
         progressBarWrapper.stopBarAnimation();
-        Intent intent = new Intent(this, SwipeUpMenu.class);
+
+        Intent intent = new Intent(this, SwipeUpActivity.class);
+
         Log.e("starting","starting");
         startActivity(intent);
 

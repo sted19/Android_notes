@@ -1,6 +1,5 @@
 package com.SwipeUp.menu;
 
-import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
@@ -25,14 +24,15 @@ public class ChoiceActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //setting up animations and layout
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         setContentView(R.layout.activity_choice);
 
+        //keeps the activity in fullscreen
         fullScreen = new FullScreen(getWindow().getDecorView());
         fullScreen.setUIFullScreen();
         fullScreen.fullScreenKeeper();
-
-        Intent intent = getIntent();//Non l'ho modificata perché non so se Zappia l'ha messa per qualche ragione, ma non viene usata
 
         findElements();
 
