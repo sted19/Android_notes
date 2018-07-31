@@ -11,10 +11,11 @@
         android:layout_marginRight="10dp"
         android:paddingTop="10dp"
         android:src="@drawable/down_arrow"
-        app:layout_constraintEnd_toEndOf="@id/swipedUpImage"
+        app:layout_constraintEnd_toEndOf="@id/swipeUp_menu_viewPager"
         android:onClick="backButtonPressed"/>
-    <ImageView
-        android:id="@+id/swipedUpImage"
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/swipeUp_menu_viewPager"
         android:layout_width="match_parent"
         android:layout_height="400dp"/>
 
@@ -164,7 +165,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
-                android:paddingHorizontal="30dp"
+                android:padding="10dp"
                 android:background="@color/buy_green"
                 android:text="@string/buy_text" />
 
