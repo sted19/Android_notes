@@ -2,7 +2,9 @@ package com.SwipeUp.swipeUpMenu;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.SwipeUp.swipeUp.R;
@@ -13,6 +15,7 @@ import java.util.Arrays;
 public class SwipeUpActivity extends AppCompatActivity {
     private Spinner sizeSpinner;
     private Spinner colorSpinner;
+    private ImageView imageView;
 
     private ArrayList<String> sizeArray = new ArrayList<>(
             Arrays.asList("S", "M", "L", "XL"));
@@ -27,11 +30,15 @@ public class SwipeUpActivity extends AppCompatActivity {
         findElements();
 
         setUpSpinners();
+
+//        TODO: image should not be static, this is just a temporary solution
+        imageView.setImageResource(R.drawable.gigiproietti);
     }
 
     public void findElements(){
         sizeSpinner = findViewById(R.id.taglia_spinner);
         colorSpinner = findViewById(R.id.color_spinner);
+        imageView = findViewById(R.id.swipedUpImage);
     }
 
     private void setUpSpinners(){
@@ -46,5 +53,9 @@ public class SwipeUpActivity extends AppCompatActivity {
     public void finish(){
         super.finish();
         overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+    }
+
+    public void backButtonPressed(View v){
+        finish();
     }
 }

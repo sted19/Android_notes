@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <ImageView
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="10dp"
+        android:paddingTop="10dp"
+        android:src="@drawable/down_arrow"
+        app:layout_constraintEnd_toEndOf="@id/swipedUpImage"
+        android:onClick="backButtonPressed"/>
+    <ImageView
+        android:id="@+id/swipedUpImage"
         android:layout_width="match_parent"
         android:layout_height="400dp"/>
 
