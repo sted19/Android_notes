@@ -7,6 +7,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.SwipeUp.swipeUp.FullScreen;
@@ -32,7 +34,7 @@ public class SwipeUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_top);
-        setContentView(R.layout.swipe_up_menu);
+        setContentView(R.layout.swipe_up_menu1);
 
         //keeps the activity in fullscreen
         fullScreen = new FullScreen(getWindow().getDecorView());
@@ -52,6 +54,7 @@ public class SwipeUpActivity extends AppCompatActivity {
         viewPager = (ViewPager)findViewById(R.id.swipeUp_menu_viewPager);
         adapter = new SwipeUpMenuCustomAdapter(SwipeUpActivity.this);
         viewPager.setAdapter(adapter);
+
 
     }
 

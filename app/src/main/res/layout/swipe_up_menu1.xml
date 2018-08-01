@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".70" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".80" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".90" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="1" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".50" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="100" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/subGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".05" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/subGuideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".55" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/subGuideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".71" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/subGuideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".79" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/subGuideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".81" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/subGuideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".89" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/subGuideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".91" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/subGuideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".99" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/subGuideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".95" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/subGuideline9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".01" />
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/swipeUp_menu_viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/guideline2">
+
+    </android.support.v4.view.ViewPager>
+
+    <!-- First Block -->
+
+    <RelativeLayout
+        android:id="@+id/first_block"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toTopOf="@id/guideline2"
+        app:layout_constraintEnd_toStartOf="@id/guideline4"
+        app:layout_constraintStart_toStartOf="@id/guideline5"
+        app:layout_constraintTop_toBottomOf="@id/guideline">
+
+
+    </RelativeLayout>
+
+    <!-- Second block -->
+
+    <RelativeLayout
+        android:id="@+id/second_block"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toTopOf="@id/guideline2"
+        app:layout_constraintEnd_toEndOf="@id/guideline6"
+        app:layout_constraintStart_toStartOf="@id/guideline4"
+        app:layout_constraintTop_toBottomOf="@id/guideline">
+
+
+    </RelativeLayout>
+
+    <!-- Third Block -->
+
+    <RelativeLayout
+        android:id="@+id/third_block"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toTopOf="@id/guideline3"
+        app:layout_constraintEnd_toEndOf="@id/guideline4"
+        app:layout_constraintStart_toStartOf="@id/guideline5"
+        app:layout_constraintTop_toBottomOf="@id/guideline2">
+
+    </RelativeLayout>
+
+    <!-- Fourth block -->
+
+    <RelativeLayout
+        android:id="@+id/fourth_block"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toTopOf="@id/guideline3"
+        app:layout_constraintEnd_toEndOf="@id/guideline6"
+        app:layout_constraintStart_toStartOf="@id/guideline4"
+        app:layout_constraintTop_toBottomOf="@id/guideline2">
+
+    </RelativeLayout>
+
+    <!-- fifth block -->
+
+    <RelativeLayout
+        android:id="@+id/fifth_block"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/guideline7"
+        app:layout_constraintEnd_toEndOf="@id/guideline6"
+        app:layout_constraintStart_toStartOf="@id/guideline5"
+        app:layout_constraintTop_toBottomOf="@id/guideline3">
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/dark_grey"
+        app:layout_constraintBottom_toTopOf="@id/first_block" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/dark_grey"
+        app:layout_constraintBottom_toBottomOf="@id/first_block" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/dark_grey"
+        app:layout_constraintBottom_toBottomOf="@id/third_block" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/dark_grey"
+        app:layout_constraintBottom_toTopOf="@id/subGuideline3"
+        app:layout_constraintLeft_toLeftOf="@id/second_block"
+        app:layout_constraintTop_toTopOf="@id/subGuideline2" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/dark_grey"
+        app:layout_constraintBottom_toBottomOf="@id/subGuideline5"
+        app:layout_constraintLeft_toLeftOf="@id/second_block"
+        app:layout_constraintTop_toBottomOf="@id/subGuideline4" />
+
+
+    <TextView
+        android:id="@+id/brand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/brand"
+        android:textColor="@color/dark_grey"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/subGuideline"
+        app:layout_constraintTop_toBottomOf="@id/subGuideline2" />
+
+    <TextView
+        android:id="@+id/priceTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/priceTag"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/subGuideline3"
+        app:layout_constraintStart_toStartOf="@id/subGuideline" />
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:text="@string/price"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@id/subGuideline3"
+        app:layout_constraintLeft_toRightOf="@id/priceTag" />
+
+    <TextView
+        android:id="@+id/Guidataglie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/guidaTaglie"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@id/subGuideline1"
+        app:layout_constraintTop_toBottomOf="@id/subGuideline2" />
+
+    <Spinner
+        android:id="@+id/color_spinner"
+        style="@style/Base.Widget.AppCompat.TextView.SpinnerItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:popupBackground="@color/white"
+        app:layout_constraintBottom_toTopOf="@id/subGuideline5"
+        app:layout_constraintStart_toStartOf="@id/subGuideline"
+        app:layout_constraintTop_toBottomOf="@id/subGuideline4" />
+
+    <Spinner
+        android:id="@+id/taglia_spinner"
+        style="@style/Base.Widget.AppCompat.TextView.SpinnerItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:popupBackground="@color/white"
+        app:layout_constraintBottom_toTopOf="@id/subGuideline5"
+        app:layout_constraintStart_toStartOf="@id/subGuideline1"
+        app:layout_constraintTop_toBottomOf="@id/subGuideline4" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/buy_green"
+        android:padding="10dp"
+        android:text="@string/buy_text"
+        app:layout_constraintBottom_toTopOf="@id/subGuideline7"
+        app:layout_constraintLeft_toRightOf="@id/subGuideline"
+        app:layout_constraintRight_toLeftOf="@id/subGuideline8"
+        app:layout_constraintTop_toBottomOf="@id/subGuideline6" />
+
+    <ImageView
+        android:id="@+id/downArrow"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:onClick="backButtonPressed"
+        android:src="@drawable/down_arrow"
+        app:layout_constraintRight_toLeftOf="@id/subGuideline8"
+        app:layout_constraintTop_toBottomOf="@id/subGuideline9"/>
+
+
+
+</android.support.constraint.ConstraintLayout>

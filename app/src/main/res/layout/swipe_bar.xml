@@ -1,5 +1,6 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
@@ -34,10 +35,11 @@
             android:layout_height="wrap_content"
             android:text=" + 200k"
             android:fontFamily=""
-            android:textSize="14dp"
+            android:textSize="14sp"
             android:id="@+id/swipe_number"
             android:layout_alignBottom="@id/swiped"
             android:layout_toRightOf="@id/swipe_friend"
+            android:layout_toEndOf="@id/swipe_friend"
             android:textColor="@android:color/background_light"/>
 
 
@@ -47,9 +49,11 @@
             android:layout_height="24dp"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/swipe_friend"
+            android:layout_toStartOf="@+id/swipe_friend"
             android:background="@null"
             android:scaleType="centerInside"
-            android:src="@drawable/swiped" />
+            android:src="@drawable/swiped"
+            tools:ignore="ContentDescription" />
     </RelativeLayout>
 
 </RelativeLayout>
