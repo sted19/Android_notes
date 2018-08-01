@@ -1,36 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="40dp"
-        android:layout_marginRight="10dp"
-        android:paddingTop="10dp"
-        android:src="@drawable/down_arrow"
-        app:layout_constraintEnd_toEndOf="@id/swipeUp_menu_viewPager"
-        android:onClick="backButtonPressed"/>
+    android:orientation="vertical">
 
     <android.support.v4.view.ViewPager
+        android:layout_weight="100"
         android:id="@+id/swipeUp_menu_viewPager"
         android:layout_width="match_parent"
-        android:layout_height="400dp"/>
+        android:layout_height="0dp">
+
+        <!--Arrow Image-->
+        <ImageView
+
+            android:layout_width="30dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:paddingTop="10dp"
+            android:src="@drawable/down_arrow"
+            android:onClick="backButtonPressed"
+            android:layout_marginEnd="10dp" />
+
+    </android.support.v4.view.ViewPager>
+
 
     <!--Bottom section-->
     <LinearLayout
+        android:layout_weight="50"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="400dp"
+        android:layout_height="0dp"
         android:background="@color/white"
         android:orientation="vertical">
 
         <!--First Group-->
         <LinearLayout
+            android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="0dp"
             android:orientation="horizontal">
 
             <!--First Block-->
@@ -99,8 +105,9 @@
         <!--Second Group-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal">
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="1">
 
             <!--First Block-->
             <RelativeLayout
@@ -158,7 +165,8 @@
         <!--Last Group-->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:layout_weight="1.4">
 
             <Button
                 android:layout_width="wrap_content"
@@ -172,4 +180,4 @@
         </RelativeLayout>
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

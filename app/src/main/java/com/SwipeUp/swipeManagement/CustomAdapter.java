@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.SwipeUp.shuffleListeners.ButtonsListener;
 import com.bumptech.glide.Glide;
 import com.SwipeUp.swipeUp.MainActivity;
 import com.SwipeUp.swipeUp.R;

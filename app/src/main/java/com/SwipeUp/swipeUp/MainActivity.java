@@ -3,8 +3,6 @@ package com.SwipeUp.swipeUp;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -30,8 +28,6 @@ import com.SwipeUp.swipeUp.asyncTasks.ButtonHider;
 import com.SwipeUp.progressBar.ProgressBarWrapper;
 import com.SwipeUp.swipeUp.asyncTasks.TapCalculation;
 import com.SwipeUp.wearingFactory.WearingFactory;
-
-import java.io.ByteArrayOutputStream;
 
 import static android.view.MotionEvent.ACTION_UP;
 
@@ -113,13 +109,11 @@ public class MainActivity extends AppCompatActivity {
     {
         progressBarWrapper.stopBarAnimation();//per ricominciare?
         Intent intent = new Intent(this,ChoiceActivity.class);
-        //TODO: putExtra method to send needed information to the new Activity
         startActivity(intent);
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public void startSwipeUpActivity(View view)
+    public void startSwipeUpActivity()
     {
         progressBarWrapper.stopBarAnimation();
 
@@ -270,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("tempo",""+e2.getDownTime());
 
                 if(mainActivity.isRunning  && dy>0 && (dy>dx)){
-                    startSwipeUpActivity(null);
+                    startSwipeUpActivity();
                 }
                 return false;
             }

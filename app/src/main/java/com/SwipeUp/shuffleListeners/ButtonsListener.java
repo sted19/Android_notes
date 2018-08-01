@@ -8,7 +8,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.SwipeUp.swipeUp.R;
-import com.bumptech.glide.Glide;
 import com.SwipeUp.swipeUp.MainActivity;
 import com.SwipeUp.swipeUp.asyncTasks.DislikeComputing;
 import com.SwipeUp.swipeUp.asyncTasks.LikeComputing;
@@ -61,11 +60,6 @@ public class ButtonsListener {
     }
 
 
-
-
-
-
-
     public static class DislikeListener implements View.OnClickListener{
         private MainActivity mainActivity;
 
@@ -112,7 +106,7 @@ public class ButtonsListener {
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
         public void onClick(View v) {
-            mainActivity.startSwipeUpActivity(null);
+            mainActivity.startSwipeUpActivity();
             new SwipeUpComputing().doInBackground();
         }
     }
