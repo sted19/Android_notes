@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,6 +17,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
+import com.SwipeUp.shuffleListeners.shuffleOnGestureListener;
 import com.SwipeUp.swipeUpMenu.SwipeUpActivity;
 import com.SwipeUp.shuffleListeners.ButtonsListener;
 import com.SwipeUp.shuffleListeners.PageChangeListener;
@@ -26,7 +26,6 @@ import com.SwipeUp.swipeManagement.CustomAdapter;
 import com.SwipeUp.menu.ChoiceActivity;
 import com.SwipeUp.swipeUp.asyncTasks.ButtonHider;
 import com.SwipeUp.progressBar.ProgressBarWrapper;
-import com.SwipeUp.swipeUp.asyncTasks.TapCalculation;
 import com.SwipeUp.wearingFactory.WearingFactory;
 
 import static android.view.MotionEvent.ACTION_UP;
@@ -112,6 +111,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Launches the SwipeUpActivity
+     */
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void startSwipeUpActivity()
     {
@@ -119,11 +121,13 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, SwipeUpActivity.class);
 
-        Log.e("starting","starting");
         startActivity(intent);
-
     }
 
+    /**
+     * Method called each time a left tap has been performed or the timeout of the image has expired:
+     * show next image resetting buttons and progress bar
+     */
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void LeftTap()
     {
@@ -134,6 +138,10 @@ public class MainActivity extends AppCompatActivity {
         adapter.currentImageView.setImageDrawable(wearingFactory.getPreviousImage());
     }
 
+    /**
+     * Method called each time a right tap has been performed: shows the previous image resetting
+     * progress bar and buttons
+     */
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void RightTap()
     {
@@ -144,7 +152,10 @@ public class MainActivity extends AppCompatActivity {
         adapter.currentImageView.setImageDrawable(wearingFactory.getNextImage());
     }
 
-    public void setupButtons(){
+    /**
+     * Private method call by onCreate
+     */
+    private void setupButtons(){
         like = (ImageButton) findViewById(R.id.like);
         dislike = (ImageButton) findViewById(R.id.dislike);
         swipeUp = (ImageButton) findViewById(R.id.swipeUp);
@@ -154,6 +165,9 @@ public class MainActivity extends AppCompatActivity {
         swipeUp.setOnClickListener(new ButtonsListener.SwipeUpListener(this));
     }
 
+    /**
+     * Reset button to their unchecked state, called each time the image is switched
+     */
     public void resetButtons()
     {
         like.setImageResource(R.drawable.like);
@@ -162,6 +176,9 @@ public class MainActivity extends AppCompatActivity {
         dislike_pressed = false;
     }
 
+    /**
+     * Hides buttons, called whenever a long press has been detected
+     */
     public void hideButtons() {
 
         Animation disappearence=AnimationUtils.loadAnimation(this, R.anim.disappearence);
@@ -174,6 +191,9 @@ public class MainActivity extends AppCompatActivity {
         this.swipeUp.startAnimation(disappearence);
     }
 
+    /**
+     * Shows hidden buttons, called after a long press
+     */
     public void showButtons(){
         Animation appearance=AnimationUtils.loadAnimation(this, R.anim.appearance);
         this.dislike.setVisibility(View.VISIBLE);
@@ -185,8 +205,11 @@ public class MainActivity extends AppCompatActivity {
         this.swipeUp.startAnimation(appearance );
     }
 
+    /**
+     * Private method call by onCreate
+     */
     @SuppressLint("ClickableViewAccessibility")
-    public void setupViewPager(){
+    private void setupViewPager(){
         viewPager = (ViewPager) findViewById(R.id.pager);
         adapter = new CustomAdapter(this.getApplicationContext(),wearingFactory,this);
         viewPager.setAdapter(adapter);
@@ -199,7 +222,6 @@ public class MainActivity extends AppCompatActivity {
         viewPager.addOnPageChangeListener(new PageChangeListener(this,adapter, progressBarWrapper));
 
         final GestureDetector gestureDetector = setupGestureDetector(this);
-
 
         viewPager.setOnTouchListener(new View.OnTouchListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -216,60 +238,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public GestureDetector setupGestureDetector(final MainActivity mainActivity){
-        GestureDetector gestureDetector = new GestureDetector(mainActivity, new GestureDetector.OnGestureListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public boolean onDown(MotionEvent e) {
-                mainActivity.progressBarWrapper.stopBarAnimation();
-                buttonHider = new ButtonHider(mainActivity);
-                buttonHider.execute();
-                return false;
-            }
+    /**
+     * Private method call by onCreate
+     */
+    private GestureDetector setupGestureDetector(final MainActivity mainActivity){
+        return new GestureDetector(mainActivity, new shuffleOnGestureListener(this, buttonHider));
+    }
 
-
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onShowPress(MotionEvent e) {
-            }
-
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public boolean onSingleTapUp(MotionEvent e) {
-                (new TapCalculation(mainActivity)).doInBackground(e);
-                return false;
-            }
-
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                return false;
-            }
-
-            @Override
-            public void onLongPress(MotionEvent e) {
-            }
-
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                float dy=e1.getY()-e2.getY();
-                float dx=e1.getX()-e2.getX();
-                if(dx<0)
-                    dx=-dx;
-
-                Log.e("fling","fling");
-                Log.e("dy",""+dy);
-                Log.e("dx",""+dx);
-                Log.e("tempo",""+e2.getDownTime());
-
-                if(mainActivity.isRunning  && dy>0 && (dy>dx)){
-                    startSwipeUpActivity();
-                }
-                return false;
-            }
-        });
-        return gestureDetector;
+    /**
+     * Returns true if the main activity is running, false otherwise
+     * @return a boolean
+     */
+    public boolean getRunning(){
+        return isRunning;
     }
 
 }

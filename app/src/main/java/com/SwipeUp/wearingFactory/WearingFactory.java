@@ -5,63 +5,85 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.util.TypedValue;
-import android.widget.ImageView;
-
 import com.SwipeUp.swipeUp.MainActivity;
-
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ *     Given some specific characteristics, an instance of this class returns the Drawable of a wearing that
+ *     has that characteristics
+ */
 public class WearingFactory {
-    //given some specific characteristics, an instance of this class returns a wearing that has that characteristics
     private MainActivity mainActivity;
     private int position;
     private Drawable[] drawables;
     private int availableImages;
 
-    public WearingFactory(MainActivity mainActivity)
-    {
-        this.mainActivity=mainActivity;
+    public WearingFactory(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
         position = -1;
 
-        //getting images from assets/clothes folder
         AssetManager assetManager = mainActivity.getAssets();
-        try {
-            String [] images = assetManager.list("clothes");
-            availableImages = images.length;
-            Resources resources = mainActivity.getResources();
-            drawables = new Drawable[availableImages];
-            InputStream inputStream;
-            for (int i = 0; i < images.length; i++) {
-                inputStream = mainActivity.getAssets().open("clothes/" + images[i]);
-                Drawable drawable =  Drawable.createFromResourceStream(resources, new TypedValue(),inputStream,null);
-                drawables[i] = drawable;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        drawables = new Drawable[availableImages];
 
+        createDrawables(assetManager);
     }
 
+    /**
+     * Private method called by the constructor
+     */
+    private void createDrawables(AssetManager assetManager) {
+        try {
+            String[] images = assetManager.list("clothes");
+            availableImages = images.length;
+            InputStream inputStream;
+            Resources resources = mainActivity.getResources();
+            for (int i = 0; i < images.length; i++) {
+                inputStream = mainActivity.getAssets().open("clothes/" + images[i]);
+                Drawable drawable = Drawable.createFromResourceStream(resources, new TypedValue(), inputStream, null);
+                drawables[i] = drawable;
+            }
+        }
+        catch (IOException e) {
+            Log.e("Wearing factory", "Error in initialization of the images");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @return the number of available images in the assets folder
+     */
     public int getAvailableImages()
     {
         return availableImages;
     }
 
+    /**
+     * @return current index in iteration process
+     */
     public int getPosition(){
         return position;
     }
 
+    /**
+     * @param position the index to which the iteration is set
+     */
     public void setPosition(int position){
         this.position = position;
     }
 
+    /**
+     * @return the next image to be drawn on the screen
+     */
     public Drawable getNextImage()
     {
         position=(position + 1)%availableImages;
         return drawables[position];
     }
 
+    /**
+     * @return the previous image to be drawn on the screen
+     */
     public Drawable getPreviousImage()
     {
         position=(position -1);
@@ -70,9 +92,11 @@ public class WearingFactory {
         return drawables[position];
     }
 
+    /**
+     * Method not used yet, called by the neural network
+     */
     public void getWearing(int color, int wtype)
     {
-        //neuralNetwork.NeuralNetwork.Color.;
         System.out.println("I'm giving you a "+color+" wear");
         System.out.println("I'm giving you a "+wtype);
         

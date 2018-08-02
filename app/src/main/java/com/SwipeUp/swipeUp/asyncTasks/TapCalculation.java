@@ -8,6 +8,10 @@ import android.view.MotionEvent;
 
 import com.SwipeUp.swipeUp.MainActivity;
 
+
+/**
+ *  AsyncTask started whenever a tap has been recognized
+ */
 public class TapCalculation extends AsyncTask<MotionEvent, Void, Void>
 {
     MainActivity mainActivity;

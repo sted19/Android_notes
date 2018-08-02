@@ -14,8 +14,9 @@ public class FullScreen {
         this.mainDecorView = mainDecorView;
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    /**
+     * Sets the current activity in fullscreen
+     */
     public void setUIFullScreen(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             mainDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN
@@ -27,7 +28,9 @@ public class FullScreen {
         }
     }
 
-
+    /**
+     * Keeps fullscreen in current activity despite of changes on the screen
+     */
     public void fullScreenKeeper() {
         mainDecorView.setOnSystemUiVisibilityChangeListener
                 (new View.OnSystemUiVisibilityChangeListener() {

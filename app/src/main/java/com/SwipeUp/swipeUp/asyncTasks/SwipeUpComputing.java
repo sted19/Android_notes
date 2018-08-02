@@ -2,6 +2,9 @@ package com.SwipeUp.swipeUp.asyncTasks;
 
 import android.os.AsyncTask;
 
+/**
+ *  AsyncTask started whenever the swipeUp button has been pressed
+ */
 public class SwipeUpComputing extends AsyncTask<Void,Void,Void>
 {
 

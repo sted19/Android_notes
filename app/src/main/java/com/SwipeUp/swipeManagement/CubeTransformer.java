@@ -3,7 +3,9 @@ package com.SwipeUp.swipeManagement;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
-
+/**
+ * Instances of this class controls the animation during the swipe
+ */
 public class CubeTransformer implements ViewPager.PageTransformer {
     @Override
     public void transformPage(View view, float position) {
