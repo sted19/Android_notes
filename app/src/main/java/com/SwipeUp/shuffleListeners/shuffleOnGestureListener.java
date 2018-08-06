@@ -14,17 +14,16 @@ public class shuffleOnGestureListener implements GestureDetector.OnGestureListen
     private MainActivity mainActivity;
     private ButtonHider buttonHider;
 
-    public shuffleOnGestureListener(MainActivity mainActivity, ButtonHider buttonHider) {
+    public shuffleOnGestureListener(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
-        this.buttonHider = buttonHider;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public boolean onDown(MotionEvent e) {
         mainActivity.progressBarWrapper.stopBarAnimation();
-        buttonHider = new ButtonHider(mainActivity);
-        buttonHider.execute();
+        mainActivity.setButtonHider(new ButtonHider(mainActivity));
+        mainActivity.executeButtonHider();
         return false;
     }
 
@@ -65,6 +64,7 @@ public class shuffleOnGestureListener implements GestureDetector.OnGestureListen
         Log.e("tempo",""+e2.getDownTime());
 
         if(mainActivity.getRunning()  && dy>0 && (dy>dx)){
+            mainActivity.setSwipeUpImage();
             mainActivity.startSwipeUpActivity();
         }
         return false;

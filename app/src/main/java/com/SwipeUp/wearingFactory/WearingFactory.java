@@ -24,9 +24,9 @@ public class WearingFactory {
         position = -1;
 
         AssetManager assetManager = mainActivity.getAssets();
-        drawables = new Drawable[availableImages];
-
         createDrawables(assetManager);
+
+
     }
 
     /**
@@ -36,6 +36,7 @@ public class WearingFactory {
         try {
             String[] images = assetManager.list("clothes");
             availableImages = images.length;
+            drawables = new Drawable[availableImages];
             InputStream inputStream;
             Resources resources = mainActivity.getResources();
             for (int i = 0; i < images.length; i++) {

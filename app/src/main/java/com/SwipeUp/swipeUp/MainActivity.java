@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.SwipeUp.shuffleListeners.shuffleOnGestureListener;
@@ -39,12 +40,14 @@ public class MainActivity extends AppCompatActivity {
 
     public ImageButton like;
     public ImageButton dislike;
-    private ImageButton swipeUp;
+    private ImageView swipeUp;
+    private ImageView swipeUpSwiped;
 
     public int DisplayWidth = 0;
     public ProgressBarWrapper progressBarWrapper;
     public boolean like_pressed;
     public boolean dislike_pressed;
+    private boolean isSwiped;
     private WearingFactory wearingFactory;
     public static final int SwitchingDuration = 6000;
 
@@ -91,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        resetSwipeUpImage();
         this.isRunning=true;
         progressBarWrapper.resumeBarAnimation();
         fullScreen.setUIFullScreen();
@@ -156,13 +160,14 @@ public class MainActivity extends AppCompatActivity {
      * Private method call by onCreate
      */
     private void setupButtons(){
+
         like = (ImageButton) findViewById(R.id.like);
         dislike = (ImageButton) findViewById(R.id.dislike);
-        swipeUp = (ImageButton) findViewById(R.id.swipeUp);
+        swipeUp = (ImageView) findViewById(R.id.swipeUp);
+        swipeUpSwiped = (ImageView) findViewById(R.id.swipeUpSwiped);
 
         like.setOnClickListener(likeListener = new ButtonsListener.LikeListener(this));
         dislike.setOnClickListener(new ButtonsListener.DislikeListener(this));
-        swipeUp.setOnClickListener(new ButtonsListener.SwipeUpListener(this));
     }
 
     /**
@@ -242,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
      * Private method call by onCreate
      */
     private GestureDetector setupGestureDetector(final MainActivity mainActivity){
-        return new GestureDetector(mainActivity, new shuffleOnGestureListener(this, buttonHider));
+        return new GestureDetector(mainActivity, new shuffleOnGestureListener(this));
     }
 
     /**
@@ -251,6 +256,36 @@ public class MainActivity extends AppCompatActivity {
      */
     public boolean getRunning(){
         return isRunning;
+    }
+
+    public void setButtonHider(ButtonHider buttonHider){
+        this.buttonHider = buttonHider;
+    }
+
+    public void executeButtonHider(){
+        buttonHider.execute();
+    }
+
+    /**
+     * due funzioni che gestiscono la comparsa del logo nel momento dello swipeUp, il controllo ulteriore con il booleano non è
+     * strettamente necessario, l'ho inserito per evitare che il codice venga eseguito anche se non richiesto rendendo un bottone visibile
+     * nuovamente visibileq
+     */
+
+    public void setSwipeUpImage(){
+        if(!isSwiped){
+            swipeUp.setVisibility(View.INVISIBLE);
+            swipeUpSwiped.setVisibility(View.VISIBLE);
+            isSwiped = true;
+        }
+    }
+
+    public void resetSwipeUpImage(){
+        if(isSwiped){
+            swipeUp.setVisibility(View.VISIBLE);
+            swipeUpSwiped.setVisibility(View.INVISIBLE);
+            isSwiped = false;
+        }
     }
 
 }

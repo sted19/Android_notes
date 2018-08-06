@@ -22,12 +22,12 @@
             android:layout_height="wrap_content"
             android:text="Giacomo Miele"
             android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:textStyle="bold"
             android:fontFamily=""
             android:textSize="16dp"
             android:id="@+id/swipe_friend"
             android:layout_marginLeft="4dp"
-            android:layout_alignBottom="@id/swiped"
             android:textColor="@android:color/background_light"/>
 
         <TextView
@@ -37,7 +37,7 @@
             android:fontFamily=""
             android:textSize="14sp"
             android:id="@+id/swipe_number"
-            android:layout_alignBottom="@id/swiped"
+            android:layout_centerVertical="true"
             android:layout_toRightOf="@id/swipe_friend"
             android:layout_toEndOf="@id/swipe_friend"
             android:textColor="@android:color/background_light"/>
@@ -45,14 +45,14 @@
 
         <ImageView
             android:id="@+id/swiped"
-            android:layout_width="36dp"
+            android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/swipe_friend"
             android:layout_toStartOf="@+id/swipe_friend"
             android:background="@null"
             android:scaleType="centerInside"
-            android:src="@drawable/swiped"
+            android:src="@drawable/swiped_image"
             tools:ignore="ContentDescription" />
     </RelativeLayout>
 
