@@ -11,15 +11,16 @@
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <activity
             android:name="com.SwipeUp.swipeUp.MainActivity"
-            android:label="Swipe Up">
+            android:label="Swipe Up"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.SwipeUp.swipeUpMenu.SwipeUpActivity"></activity>
-        <activity android:name="com.SwipeUp.menu.ChoiceActivity"></activity>
+        <activity android:name="com.SwipeUp.swipeUpMenu.SwipeUpActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name="com.SwipeUp.menu.ChoiceActivity" android:screenOrientation="portrait"></activity>
 
     </application>
 
