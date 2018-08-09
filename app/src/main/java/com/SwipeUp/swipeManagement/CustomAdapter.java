@@ -9,12 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.SwipeUp.shuffleListeners.ButtonsListener;
 import com.bumptech.glide.Glide;
 import com.SwipeUp.swipeUp.MainActivity;
 import com.SwipeUp.swipeUp.R;
 import com.SwipeUp.wearingFactory.WearingFactory;
+
+import org.w3c.dom.Text;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -30,6 +33,7 @@ public class CustomAdapter extends PagerAdapter{
     public ImageView nextImageView;
     public ImageView currentImageView;
     public ImageView previousImageView;
+
 
     private MainActivity mainActivity;
 
@@ -65,6 +69,7 @@ public class CustomAdapter extends PagerAdapter{
         ImageView image = (ImageView)v.findViewById(R.id.swipe_image);
         currentImageView = nextImageView;
         nextImageView= image;
+
 
         Glide
                 .with(v)

@@ -14,6 +14,7 @@
     <string name="buy_text"><u>AGGIUNGI AL CARRELLO</u></string>
 
     <!-- scritte da sted -->
+    <string name="downArrow">downArrow</string>
     <string name="brand">Massimo Dutti</string>
     <string name="priceTag">price</string>
     <string name="price">32£</string>

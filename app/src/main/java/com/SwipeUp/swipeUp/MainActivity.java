@@ -17,6 +17,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.SwipeUp.shuffleListeners.shuffleOnGestureListener;
 import com.SwipeUp.swipeUpMenu.SwipeUpActivity;
