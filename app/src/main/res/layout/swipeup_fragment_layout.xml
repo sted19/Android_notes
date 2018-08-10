@@ -316,10 +316,10 @@
         app:layout_constraintTop_toBottomOf="@id/subGuideline6" />
 
     <ImageView
+        android:contentDescription="@string/downArrow"
         android:id="@+id/downArrow"
         android:layout_width="30dp"
         android:layout_height="40dp"
-        android:onClick="backButtonPressed"
         android:src="@drawable/down_arrow"
         app:layout_constraintRight_toLeftOf="@id/subGuideline8"
         app:layout_constraintTop_toBottomOf="@id/subGuideline9"/>
