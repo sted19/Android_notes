@@ -8,6 +8,7 @@ import android.util.TypedValue;
 import com.SwipeUp.swipeUp.MainActivity;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.Socket;
 
 /**
  *     Given some specific characteristics, an instance of this class returns the Drawable of a wearing that
@@ -17,15 +18,19 @@ public class WearingFactory {
     private MainActivity mainActivity;
     private int position;
     private Drawable[] drawables;
+    private ImageDownloader imageDownloader;
     private int availableImages;
+    // sets this variable to false in order to disable connection requests to server and work with
+    // available images in assets folder
+    public static boolean DEBUG_CONNECTION = true;
 
     public WearingFactory(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
         position = -1;
+        if(DEBUG_CONNECTION) imageDownloader = new ImageDownloader(mainActivity.getResources());
 
         AssetManager assetManager = mainActivity.getAssets();
         createDrawables(assetManager);
-
 
     }
 
@@ -49,6 +54,8 @@ public class WearingFactory {
             Log.e("Wearing factory", "Error in initialization of the images");
             e.printStackTrace();
         }
+
+        if(DEBUG_CONNECTION) drawables[0] = imageDownloader.downloadRandomImage();
     }
 
     /**
@@ -102,4 +109,5 @@ public class WearingFactory {
         System.out.println("I'm giving you a "+wtype);
         
     }
+
 }
