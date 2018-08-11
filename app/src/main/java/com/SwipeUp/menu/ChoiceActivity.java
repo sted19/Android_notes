@@ -1,12 +1,14 @@
 package com.SwipeUp.menu;
 
+import android.graphics.Typeface;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.SwipeUp.swipeUp.FullScreen;
@@ -16,9 +18,11 @@ public class ChoiceActivity extends AppCompatActivity {
 
     private FullScreen fullScreen;
 
-    private Button manButton;
-    private Button womanButton;
+    private RelativeLayout manButton;
+    private RelativeLayout womanButton;
     private ScrollView shuffles;
+    private TextView womanTextView;
+    private TextView manTextView;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -43,6 +47,8 @@ public class ChoiceActivity extends AppCompatActivity {
         manButton = findViewById(R.id.man_button);
         womanButton = findViewById(R.id.woman_button);
         shuffles = findViewById(R.id.shuffles);
+        manTextView = findViewById(R.id.man_button_text);
+        womanTextView = findViewById(R.id.woman_button_text);
     }
 
     public void loginPressed(View view){
@@ -75,12 +81,14 @@ public class ChoiceActivity extends AppCompatActivity {
     public void manButtonPressed(View view){
 
         //change man button
-        manButton.setTextColor(getColor(R.color.pressed_button_light_blue));
-        manButton.setBackgroundResource(R.drawable.button_man_selected);
+        manTextView.setTextColor(getColor(R.color.pressed_button_light_blue));
+        manButton.setBackgroundResource(R.drawable.menu_button_selected);
+        manTextView.setTypeface(null, Typeface.BOLD);
 
         //change woman button
-        womanButton.setTextColor(getColor(R.color.light_grey));
-        womanButton.setBackgroundResource(R.drawable.button_woman_unselected);
+        womanTextView.setTextColor(getColor(R.color.light_grey));
+        womanButton.setBackgroundResource(R.drawable.menu_button_unselected);
+        womanTextView.setTypeface(null, Typeface.NORMAL);
 
         shuffles.setVisibility(View.VISIBLE);
     }
@@ -89,12 +97,14 @@ public class ChoiceActivity extends AppCompatActivity {
     public void womanButtonPressed(View view){
 
         //change woman button
-        womanButton.setTextColor(getColor(R.color.pressed_button_light_blue));
-        womanButton.setBackgroundResource(R.drawable.button_woman_selected);
+        womanTextView.setTextColor(getColor(R.color.pressed_button_light_blue));
+        womanButton.setBackgroundResource(R.drawable.menu_button_selected);
+        womanTextView.setTypeface(null, Typeface.BOLD);
 
         //change man button
-        manButton.setTextColor(getColor(R.color.light_grey));
-        manButton.setBackgroundResource(R.drawable.button_man_unselected);
+        manTextView.setTextColor(getColor(R.color.light_grey));
+        manButton.setBackgroundResource(R.drawable.menu_button_unselected);
+        manTextView.setTypeface(null, Typeface.NORMAL);
 
         shuffles.setVisibility(View.INVISIBLE);
     }

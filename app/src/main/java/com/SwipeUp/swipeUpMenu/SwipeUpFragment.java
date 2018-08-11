@@ -34,8 +34,6 @@ public class SwipeUpFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
     }
 
     @Nullable
@@ -52,13 +50,13 @@ public class SwipeUpFragment extends Fragment {
     }
 
 
-    public void setupViewPager(View v){
+    private void setupViewPager(View v){
         viewPager = (ViewPager)v.findViewById(R.id.swipeUp_menu_viewPager);
         adapter = new SwipeUpMenuCustomAdapter(getContext());
         viewPager.setAdapter(adapter);
     }
 
-    public void findElements(View v){
+    private void findElements(View v){
         downArrow = (ImageView)v.findViewById(R.id.downArrow);
         downArrow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,8 +75,6 @@ public class SwipeUpFragment extends Fragment {
         ArrayAdapter<String> adpColor=new ArrayAdapter<String>(v.getContext(), R.layout.simple_spinner_dropdown_item, colorArray);
         colorSpinner.setAdapter(adpColor);
     }
-
-
 
     public void downArrowPressed(){
         getActivity().finish();
