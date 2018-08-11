@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.SwipeUp.swipeUp">
+    package="com.SwipeUp.utilities">
 
     <application
         android:allowBackup="true"
@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <activity
-            android:name="com.SwipeUp.swipeUp.MainActivity"
+            android:name="com.SwipeUp.shuffleManagement.ShuffleActivity"
             android:label="Swipe Up"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -19,8 +19,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.SwipeUp.swipeUpMenu.SwipeUpActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name="com.SwipeUp.menu.ChoiceActivity" android:screenOrientation="portrait"></activity>
+        <activity
+            android:name="com.SwipeUp.swipeUpManagement.SwipeUpActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity
+            android:name="com.SwipeUp.mainMenuManagement.MainMenuActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
 
     </application>
 
