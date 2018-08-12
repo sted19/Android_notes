@@ -5,6 +5,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.widget.ImageView;
 
+import com.SwipeUp.shuffleManagement.ShuffleFragmentAdapter;
 import com.SwipeUp.utilities.progressBar.ProgressBarWrapper;
 import com.SwipeUp.shuffleManagement.CustomAdapter;
 import com.SwipeUp.shuffleManagement.ShuffleActivity;
@@ -12,11 +13,11 @@ import com.SwipeUp.shuffleManagement.ShuffleActivity;
 public class PageChangeListener implements OnPageChangeListener {
     private int lastPosition = 0;
     private boolean lastSwipeWasRigth = true;
-    private CustomAdapter adapter;
+    private ShuffleFragmentAdapter adapter;
     private ProgressBarWrapper progressBarWrapper;
     private ShuffleActivity shuffleActivity;
 
-    public PageChangeListener(ShuffleActivity shuffleActivity, CustomAdapter adapter, ProgressBarWrapper progressBarWrapper) {
+    public PageChangeListener(ShuffleActivity shuffleActivity, ShuffleFragmentAdapter adapter, ProgressBarWrapper progressBarWrapper) {
         this.adapter = adapter;
         this.progressBarWrapper = progressBarWrapper;
         this.shuffleActivity = shuffleActivity;
@@ -36,9 +37,13 @@ public class PageChangeListener implements OnPageChangeListener {
 
         shuffleActivity.resetButtons();
 
+        /*
+
         int positionsDifference = position - lastPosition;
         boolean isRightSwipe = positionsDifference > 0;
         boolean isLastPosition = (position == adapter.getCount()-1);
+
+
 
         if(positionsDifference == 0) return;
         else if(position == 0 || position == adapter.getCount()-1){ //first element
@@ -62,6 +67,8 @@ public class PageChangeListener implements OnPageChangeListener {
 
         lastSwipeWasRigth = isRightSwipe;
         lastPosition = position;
+
+        */
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.GestureDetector;
@@ -34,7 +35,9 @@ import static android.view.MotionEvent.ACTION_UP;
 public class ShuffleActivity extends AppCompatActivity {
 
     private FullScreen fullScreen;
+
     private ViewPager viewPager;
+    private ShuffleFragmentAdapter adapter;
 
     private boolean isRunning=true;
 
@@ -52,8 +55,6 @@ public class ShuffleActivity extends AppCompatActivity {
     public static final int SwitchingDuration = 6000;
 
     private ButtonsListener.LikeListener likeListener;
-
-    private CustomAdapter adapter;
 
     private ButtonHider buttonHider;
 
@@ -139,7 +140,7 @@ public class ShuffleActivity extends AppCompatActivity {
         resetButtons();
         likeListener.clearAnimation();
 
-        adapter.currentImageView.setImageDrawable(wearingFactory.getPreviousImage());
+        //adapter.currentImageView.setImageDrawable(wearingFactory.getPreviousImage());
     }
 
     /**
@@ -153,7 +154,7 @@ public class ShuffleActivity extends AppCompatActivity {
         resetButtons();
         likeListener.clearAnimation();
 
-        adapter.currentImageView.setImageDrawable(wearingFactory.getNextImage());
+        //adapter.currentImageView.setImageDrawable(wearingFactory.getNextImage());
     }
 
     /**
@@ -216,7 +217,10 @@ public class ShuffleActivity extends AppCompatActivity {
     @SuppressLint("ClickableViewAccessibility")
     private void setupViewPager(){
         viewPager = (ViewPager) findViewById(R.id.pager);
-        adapter = new CustomAdapter(this.getApplicationContext(),wearingFactory,this);
+        //adapter = new CustomAdapter(this.getApplicationContext(),wearingFactory,this);
+
+        FragmentManager fm = getSupportFragmentManager();
+        adapter = new ShuffleFragmentAdapter(fm);
         viewPager.setAdapter(adapter);
         viewPager.setPageTransformer(true, new CubeTransformer());
 
