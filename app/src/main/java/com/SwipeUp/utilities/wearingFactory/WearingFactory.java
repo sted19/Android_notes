@@ -5,10 +5,14 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.util.TypedValue;
+import android.widget.Toast;
+
 import com.SwipeUp.shuffleManagement.ShuffleActivity;
+import com.bumptech.glide.Glide;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.ConnectException;
 
 /**
  *     Given some specific characteristics, an instance of this class returns the Drawable of a wearing that
@@ -22,12 +26,21 @@ public class WearingFactory {
     private int availableImages;
     // sets this variable to false in order to disable connection requests to server and work with
     // available images in assets folder
-    public static boolean DEBUG_CONNECTION = false;
+    public static boolean DEBUG_CONNECTION = true;
 
     public WearingFactory(ShuffleActivity shuffleActivity) {
         this.shuffleActivity = shuffleActivity;
         position = -1;
-        if(DEBUG_CONNECTION) imageDownloader = new ImageDownloader(shuffleActivity.getResources());
+        if(DEBUG_CONNECTION){
+            try {
+                imageDownloader = new ImageDownloader(shuffleActivity.getResources(), shuffleActivity.getApplicationContext());
+            } catch (ConnectException e) {
+                Toast.
+                        makeText(shuffleActivity.getBaseContext(), "No connection available, " +
+                                        "working locally", Toast.LENGTH_LONG)
+                        .show();
+            }
+        }
 
         AssetManager assetManager = shuffleActivity.getAssets();
         createDrawables(assetManager);
@@ -55,7 +68,11 @@ public class WearingFactory {
             e.printStackTrace();
         }
 
-        if(DEBUG_CONNECTION) drawables[0] = imageDownloader.downloadRandomImage();
+        if(DEBUG_CONNECTION && imageDownloader != null) {
+            drawables[0] = imageDownloader.downloadRandomImage();
+            Log.i("Connection", "Available images fro brand 1: " +
+                    imageDownloader.getAvailableImagesForBrand(1));
+        }
     }
 
     /**

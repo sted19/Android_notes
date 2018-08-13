@@ -1,5 +1,6 @@
 package com.SwipeUp.utilities.wearingFactory;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,15 +9,23 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.GlideBuilder;
+import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.request.FutureTarget;
+
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.ConnectException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class ImageDownloader {
     private Socket socket;
@@ -25,17 +34,19 @@ public class ImageDownloader {
     private DataInputStream dataInputStream;
     private PrintWriter mBufferOut;
     private Resources resources;
+    private Context context;
 
     /**
      * Initialize socket and connection streams
      */
-    public ImageDownloader(Resources resources){
+    public ImageDownloader(Resources resources, Context context) throws ConnectException{
         this.resources = resources;
+        this.context = context;
 
         //creates socket
         try {
             socket = new ConnectionTask().execute().get();
-            if(socket == null) System.exit(1);
+            if(socket == null) throw new ConnectException("Connection with server failed");
         } catch (InterruptedException e) {
             Log.w("Connection", "Connection was interrupted");
             e.printStackTrace();
@@ -43,6 +54,7 @@ public class ImageDownloader {
             Log.w("Connection", "Error in AsyncTask execution");
             e.printStackTrace();
         }
+
         Log.i("Connection", "Connection completed");
 
         try{
@@ -178,6 +190,46 @@ public class ImageDownloader {
     }
 
     /**
+     * @param brandIndex the index of the brand
+     * @return the number of available images of brand with index brandIndex
+     */
+    public int getAvailableImagesForBrand(int brandIndex){
+        try {
+            return new availableImagesGetter().execute(brandIndex).get();
+        } catch (InterruptedException e) {
+            Log.w("Connection", "Download was interrupted");
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            Log.w("Connection", "Error in AsyncTask execution");
+            e.printStackTrace();
+        }
+
+        return -1;
+    }
+
+    /**
+     * AsyncTask delegated to get number of available images of brand brandIndex
+     */
+    private class availableImagesGetter extends AsyncTask<Integer, Void, Integer>{
+
+        @Override
+        protected Integer doInBackground(Integer... integers) {
+            mBufferOut.println("BRAND" + integers[0] + "_n");
+            mBufferOut.flush();
+            Log.i("Connection", "Requested available brand images");
+
+            try {
+                return dataInputStream.readInt();
+            } catch (IOException e) {
+                Log.e("Connection", "Error in getting available brand images");
+                e.printStackTrace();
+            }
+
+            return -1;
+        }
+    }
+
+    /**
      * Read a certain number of bytes from input stream and convert them to a Drawable
      * @return the read Drawable, null if there was an error
      */
@@ -189,7 +241,7 @@ public class ImageDownloader {
             // allocating the array of the given size
             byte[] bitmapBytes = new byte[length];
 
-            //reading image bytes
+            // reading image bytes
             do{
                 readBytes += dataInputStream.read(bitmapBytes, readBytes, length - readBytes);
             }while(readBytes < length);

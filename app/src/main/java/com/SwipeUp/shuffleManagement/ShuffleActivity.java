@@ -36,7 +36,8 @@ public class ShuffleActivity extends AppCompatActivity {
     private FullScreen fullScreen;
     private ViewPager viewPager;
 
-    private boolean isRunning=true;
+    // TODO: improve activity recognition with appropriated method
+    private boolean isRunning = true;
 
     public ImageButton like;
     public ImageButton dislike;
@@ -269,7 +270,7 @@ public class ShuffleActivity extends AppCompatActivity {
     /**
      * due funzioni che gestiscono la comparsa del logo nel momento dello swipeUp, il controllo ulteriore con il booleano non è
      * strettamente necessario, l'ho inserito per evitare che il codice venga eseguito anche se non richiesto rendendo un bottone visibile
-     * nuovamente visibileq
+     * nuovamente visibile
      */
 
     public void setSwipeUpImage(){
