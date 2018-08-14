@@ -2,25 +2,30 @@ package com.SwipeUp.shuffleManagement.shuffleListeners;
 
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.widget.ImageView;
 
+import com.SwipeUp.shuffleManagement.ShuffleFragment;
 import com.SwipeUp.shuffleManagement.ShuffleFragmentAdapter;
 import com.SwipeUp.utilities.progressBar.ProgressBarWrapper;
 import com.SwipeUp.shuffleManagement.CustomAdapter;
 import com.SwipeUp.shuffleManagement.ShuffleActivity;
 
+import java.util.List;
+
 public class PageChangeListener implements OnPageChangeListener {
-    private int lastPosition = 0;
-    private boolean lastSwipeWasRigth = true;
     private ShuffleFragmentAdapter adapter;
     private ProgressBarWrapper progressBarWrapper;
     private ShuffleActivity shuffleActivity;
+    private FragmentManager fragmentManager;
 
     public PageChangeListener(ShuffleActivity shuffleActivity, ShuffleFragmentAdapter adapter, ProgressBarWrapper progressBarWrapper) {
         this.adapter = adapter;
         this.progressBarWrapper = progressBarWrapper;
         this.shuffleActivity = shuffleActivity;
+        fragmentManager = shuffleActivity.getSupportFragmentManager();
     }
 
 
@@ -37,38 +42,12 @@ public class PageChangeListener implements OnPageChangeListener {
 
         shuffleActivity.resetButtons();
 
-        /*
-
-        int positionsDifference = position - lastPosition;
-        boolean isRightSwipe = positionsDifference > 0;
-        boolean isLastPosition = (position == adapter.getCount()-1);
-
-
-
-        if(positionsDifference == 0) return;
-        else if(position == 0 || position == adapter.getCount()-1){ //first element
-            if ((!lastSwipeWasRigth && position == 0) || (lastSwipeWasRigth && isLastPosition)){
-                adapter.previousImageView = adapter.currentImageView;
-                adapter.currentImageView = adapter.nextImageView;
-            }
-            else{
-                ImageView tmp = adapter.previousImageView;
-                adapter.previousImageView = adapter.currentImageView;
-                adapter.currentImageView = tmp;
-            }
+        List<Fragment> fragments = fragmentManager.getFragments();
+        for(Fragment fragment: fragments){
+            if(fragment.getClass() == ShuffleFragment.class && ((ShuffleFragment)fragment).
+                    getPosition() == position)
+                shuffleActivity.setCurrentFragment((ShuffleFragment) fragment);
         }
-        else if(isRightSwipe == lastSwipeWasRigth){
-            adapter.previousImageView = adapter.currentImageView;
-        }
-        else{
-            adapter.nextImageView = adapter.previousImageView;
-            adapter.previousImageView = adapter.currentImageView;
-        }
-
-        lastSwipeWasRigth = isRightSwipe;
-        lastPosition = position;
-
-        */
     }
 
     @Override
