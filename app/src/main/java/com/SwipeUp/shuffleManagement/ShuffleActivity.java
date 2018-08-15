@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +31,8 @@ import com.SwipeUp.mainMenuManagement.MainMenuActivity;
 import com.SwipeUp.utilities.asyncTasks.ButtonHider;
 import com.SwipeUp.utilities.progressBar.ProgressBarWrapper;
 import com.SwipeUp.utilities.wearingFactory.WearingFactory;
+
+import java.util.List;
 
 import static android.view.MotionEvent.ACTION_UP;
 
@@ -58,32 +62,34 @@ public class ShuffleActivity extends AppCompatActivity {
 
     private ButtonHider buttonHider;
 
+    private ShuffleFragment currentFragment;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @SuppressLint({"WrongViewCast", "ClickableViewAccessibility"})
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.shuffle_activity_layout);
 
-        progressBarWrapper = new ProgressBarWrapper((ProgressBar) findViewById(R.id.progressbar),this);
+        progressBarWrapper = new ProgressBarWrapper((ProgressBar) findViewById(R.id.progressbar),
+                this);
 
-        /**
-         * Handling Full Screen in a different class
+        /*
+          Handling Full Screen in a different class
          */
 
         fullScreen = new FullScreen(getWindow().getDecorView());
         fullScreen.setUIFullScreen();
         fullScreen.fullScreenKeeper();
 
-        /**
+        /*
          * Setting up viewPager in a separate function
          */
         wearingFactory = new WearingFactory(this);
         setupViewPager();
 
-
-        /**
+        /*
          * Setting up buttons in a separate function (I think we should modify the ButtonsListener)
          */
 
@@ -140,7 +146,7 @@ public class ShuffleActivity extends AppCompatActivity {
         resetButtons();
         likeListener.clearAnimation();
 
-        //adapter.currentImageView.setImageDrawable(wearingFactory.getPreviousImage());
+        currentFragment.previousImage();
     }
 
     /**
@@ -154,7 +160,7 @@ public class ShuffleActivity extends AppCompatActivity {
         resetButtons();
         likeListener.clearAnimation();
 
-        //adapter.currentImageView.setImageDrawable(wearingFactory.getNextImage());
+        currentFragment.nextImage();
     }
 
     /**
@@ -212,15 +218,13 @@ public class ShuffleActivity extends AppCompatActivity {
     }
 
     /**
-     * Private method call by onCreate
+     * Private method called by onCreate
      */
     @SuppressLint("ClickableViewAccessibility")
     private void setupViewPager(){
         viewPager = (ViewPager) findViewById(R.id.pager);
-        //adapter = new CustomAdapter(this.getApplicationContext(),wearingFactory,this);
 
-        FragmentManager fm = getSupportFragmentManager();
-        adapter = new ShuffleFragmentAdapter(fm);
+        adapter = new ShuffleFragmentAdapter(this);
         viewPager.setAdapter(adapter);
         viewPager.setPageTransformer(true, new CubeTransformer());
 
@@ -271,9 +275,10 @@ public class ShuffleActivity extends AppCompatActivity {
     }
 
     /**
-     * due funzioni che gestiscono la comparsa del logo nel momento dello swipeUp, il controllo ulteriore con il booleano non è
-     * strettamente necessario, l'ho inserito per evitare che il codice venga eseguito anche se non richiesto rendendo un bottone visibile
-     * nuovamente visibileq
+     * due funzioni che gestiscono la comparsa del logo nel momento dello swipeUp, il controllo
+     * ulteriore con il booleano non è strettamente necessario, l'ho inserito per evitare che
+     * il codice venga eseguito anche se non richiesto rendendo un bottone visibile
+     * nuovamente visibile
      */
 
     public void setSwipeUpImage(){
@@ -290,6 +295,14 @@ public class ShuffleActivity extends AppCompatActivity {
             swipeUpSwiped.setVisibility(View.INVISIBLE);
             isSwiped = false;
         }
+    }
+
+    /**
+     * Function used by onPageSelected to set this.currentFragment as the shown fragment
+     * @param currentFragment the current fragment
+     */
+    public void setCurrentFragment(ShuffleFragment currentFragment) {
+        this.currentFragment = currentFragment;
     }
 
 }
