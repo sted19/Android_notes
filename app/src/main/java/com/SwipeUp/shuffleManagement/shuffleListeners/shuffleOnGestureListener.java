@@ -64,7 +64,6 @@ public class shuffleOnGestureListener implements GestureDetector.OnGestureListen
         Log.e("tempo",""+e2.getDownTime());
 
         if(shuffleActivity.getRunning()  && dy>0 && (dy>dx)){
-            shuffleActivity.setSwipeUpImage();
             shuffleActivity.startSwipeUpActivity();
         }
         return false;

@@ -3,6 +3,7 @@ package com.SwipeUp.shuffleManagement;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.SwipeUp.shuffleManagement.shuffleListeners.shuffleOnGestureListener;
+import com.SwipeUp.utilities.asyncTasks.ShowLogo;
 import com.SwipeUp.utilities.fullScreen.FullScreen;
 import com.SwipeUp.utilities.R;
 import com.SwipeUp.swipeUpManagement.SwipeUpActivity;
@@ -44,6 +46,14 @@ public class ShuffleActivity extends AppCompatActivity {
     private ShuffleFragmentAdapter adapter;
 
     private boolean isRunning=true;
+    private boolean isSwiped;
+    private boolean buttonsHidden;
+    public boolean like_pressed;
+    public boolean dislike_pressed;
+
+
+    private ButtonHider buttonHider;
+    public ShowLogo logoShower;
 
     public ImageButton like;
     public ImageButton dislike;
@@ -52,15 +62,13 @@ public class ShuffleActivity extends AppCompatActivity {
 
     public int DisplayWidth = 0;
     public ProgressBarWrapper progressBarWrapper;
-    public boolean like_pressed;
-    public boolean dislike_pressed;
-    private boolean isSwiped;
+
     private WearingFactory wearingFactory;
     public static final int SwitchingDuration = 6000;
 
     private ButtonsListener.LikeListener likeListener;
 
-    private ButtonHider buttonHider;
+
 
     private ShuffleFragment currentFragment;
 
@@ -74,6 +82,7 @@ public class ShuffleActivity extends AppCompatActivity {
 
         progressBarWrapper = new ProgressBarWrapper((ProgressBar) findViewById(R.id.progressbar),
                 this);
+        showLogo();
 
         /*
           Handling Full Screen in a different class
@@ -102,6 +111,7 @@ public class ShuffleActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         resetSwipeUpImage();
+        showLogo();
         this.isRunning=true;
         progressBarWrapper.resumeBarAnimation();
         fullScreen.setUIFullScreen();
@@ -146,7 +156,6 @@ public class ShuffleActivity extends AppCompatActivity {
         resetButtons();
         likeListener.clearAnimation();
 
-        currentFragment.previousImage();
     }
 
     /**
@@ -160,7 +169,6 @@ public class ShuffleActivity extends AppCompatActivity {
         resetButtons();
         likeListener.clearAnimation();
 
-        currentFragment.nextImage();
     }
 
     /**
@@ -186,6 +194,8 @@ public class ShuffleActivity extends AppCompatActivity {
         dislike.setImageResource(R.drawable.dislike);
         like_pressed = false;
         dislike_pressed = false;
+        resetSwipeUpImage();
+        showLogo();
     }
 
     /**
@@ -193,14 +203,25 @@ public class ShuffleActivity extends AppCompatActivity {
      */
     public void hideButtons() {
 
+
         Animation disappearence=AnimationUtils.loadAnimation(this, R.anim.disappearence);
         this.dislike.setVisibility(View.INVISIBLE);
         this.like.setVisibility(View.INVISIBLE);
-        this.swipeUp.setVisibility(View.INVISIBLE);
+        if(isSwiped){
+            this.swipeUpSwiped.setVisibility(View.INVISIBLE);
+            this.swipeUpSwiped.startAnimation(disappearence);
+        }
+        else{
+            this.swipeUp.setVisibility(View.INVISIBLE);
+            this.swipeUp.startAnimation(disappearence);
+        }
+
 
         this.dislike.startAnimation(disappearence);
         this.like.startAnimation(disappearence);
-        this.swipeUp.startAnimation(disappearence);
+        buttonsHidden = true;
+        logoShower.cancel(true);
+
     }
 
     /**
@@ -210,11 +231,19 @@ public class ShuffleActivity extends AppCompatActivity {
         Animation appearance=AnimationUtils.loadAnimation(this, R.anim.appearance);
         this.dislike.setVisibility(View.VISIBLE);
         this.like.setVisibility(View.VISIBLE);
-        this.swipeUp.setVisibility(View.VISIBLE);
+        if(isSwiped){
+            this.swipeUpSwiped.setVisibility(View.VISIBLE);
+            this.swipeUpSwiped.startAnimation(appearance);
+        }
+        else{
+            this.swipeUp.setVisibility(View.VISIBLE);
+            this.swipeUp.startAnimation(appearance);
+        }
 
         this.dislike.startAnimation(appearance);
         this.like.startAnimation(appearance);
-        this.swipeUp.startAnimation(appearance );
+        buttonsHidden = false;
+        showLogo();
     }
 
     /**
@@ -282,7 +311,7 @@ public class ShuffleActivity extends AppCompatActivity {
      */
 
     public void setSwipeUpImage(){
-        if(!isSwiped){
+        if(!isSwiped && !buttonsHidden){
             swipeUp.setVisibility(View.INVISIBLE);
             swipeUpSwiped.setVisibility(View.VISIBLE);
             isSwiped = true;
@@ -303,6 +332,11 @@ public class ShuffleActivity extends AppCompatActivity {
      */
     public void setCurrentFragment(ShuffleFragment currentFragment) {
         this.currentFragment = currentFragment;
+    }
+
+    public void showLogo(){
+        logoShower = new ShowLogo(this);
+        logoShower.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
 }

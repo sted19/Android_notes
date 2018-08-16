@@ -39,7 +39,7 @@ public class ShuffleFragment extends Fragment{
 
         findViews(v);
 
-        WearingFactory wearingFactory = new WearingFactory((ShuffleActivity) this.getActivity());
+        //WearingFactory wearingFactory = new WearingFactory((ShuffleActivity) this.getActivity());
 
         switch(position%2){
             case 0:
