@@ -31,7 +31,10 @@ public class ProgressBarWrapper {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void resumeBarAnimation()
     {
-        valueAnimator.resume();
+        if(valueAnimator.isStarted())
+            valueAnimator.resume();
+        else
+            valueAnimator.start();
     }
 
     //this function should be used only by ProgressAnimatorListener and SwitchingAnimatorListener if needed
@@ -47,6 +50,9 @@ public class ProgressBarWrapper {
         valueAnimator.start();
     }
 
+    /**
+     * Sets up the bar, without starting it
+     */
     private void setUpBar()
     {
         valueAnimator= ValueAnimator.ofInt(0, progressBar.getMax());
@@ -64,6 +70,5 @@ public class ProgressBarWrapper {
         //the progressAnimatorListener updates the view when the time of the bar is over
         valueAnimator.addListener(new ProgressAnimatorListener(this));
 
-        valueAnimator.start();
     }
 }

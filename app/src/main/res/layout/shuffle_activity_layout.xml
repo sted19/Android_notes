@@ -73,20 +73,6 @@
         android:alpha="1"
         app:srcCompat="@drawable/white_heart" />
 
-    <ProgressBar
-        android:id="@+id/progressbar"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="16dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:progress="0"
-        android:max="1000"
-        android:progressTint="@android:color/background_light"
-        android:progressTintMode="multiply"/>
-
 
     <ImageButton
         android:layout_width="24dp"

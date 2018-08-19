@@ -1,6 +1,7 @@
 package com.SwipeUp.utilities.asyncTasks;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.SwipeUp.shuffleManagement.ShuffleActivity;
 

@@ -7,6 +7,7 @@ import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 
 import com.SwipeUp.shuffleManagement.ShuffleActivity;
+import com.SwipeUp.shuffleManagement.ShuffleFragment;
 
 
 /**
@@ -14,7 +15,8 @@ import com.SwipeUp.shuffleManagement.ShuffleActivity;
  */
 public class TapCalculation extends AsyncTask<MotionEvent, Void, Void>
 {
-    ShuffleActivity shuffleActivity;
+    private ShuffleActivity shuffleActivity;
+    private ShuffleFragment mShuffleFragment;
 
     public TapCalculation(ShuffleActivity shuffleActivity) {
         this.shuffleActivity = shuffleActivity;
@@ -37,9 +39,9 @@ public class TapCalculation extends AsyncTask<MotionEvent, Void, Void>
         boolean isLeftTap= x < shuffleActivity.DisplayWidth /2;
 
         if(isLeftTap)
-            shuffleActivity.LeftTap();
+            mShuffleFragment.leftTap();
         else
-            shuffleActivity.RightTap();
+            mShuffleFragment.rightTap();
         return null;
     }
 }

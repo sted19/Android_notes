@@ -8,42 +8,28 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 
-import com.SwipeUp.shuffleManagement.shuffleListeners.shuffleOnGestureListener;
 import com.SwipeUp.utilities.asyncTasks.ShowLogo;
 import com.SwipeUp.utilities.fullScreen.FullScreen;
 import com.SwipeUp.utilities.R;
-import com.SwipeUp.swipeUpManagement.SwipeUpActivity;
 import com.SwipeUp.shuffleManagement.shuffleListeners.ButtonsListener;
 import com.SwipeUp.shuffleManagement.shuffleListeners.PageChangeListener;
 import com.SwipeUp.mainMenuManagement.MainMenuActivity;
-import com.SwipeUp.utilities.asyncTasks.ButtonHider;
-import com.SwipeUp.utilities.progressBar.ProgressBarWrapper;
 import com.SwipeUp.utilities.wearingFactory.WearingFactory;
-
-import java.util.List;
-
-import static android.view.MotionEvent.ACTION_UP;
 
 public class ShuffleActivity extends AppCompatActivity {
 
     private FullScreen fullScreen;
 
     private ViewPager viewPager;
-    private ShuffleFragmentAdapter adapter;
+    public ShuffleFragmentAdapter adapter;
 
     private boolean isRunning=true;
     private boolean isSwiped;
@@ -51,8 +37,6 @@ public class ShuffleActivity extends AppCompatActivity {
     public boolean like_pressed;
     public boolean dislike_pressed;
 
-
-    private ButtonHider buttonHider;
     public ShowLogo logoShower;
 
     public ImageButton like;
@@ -61,16 +45,12 @@ public class ShuffleActivity extends AppCompatActivity {
     private ImageView swipeUpSwiped;
 
     public int DisplayWidth = 0;
-    public ProgressBarWrapper progressBarWrapper;
 
     private WearingFactory wearingFactory;
     public static final int SwitchingDuration = 6000;
 
     private ButtonsListener.LikeListener likeListener;
-
-
-
-    private ShuffleFragment currentFragment;
+    private PageChangeListener mPageChangeListener;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -80,8 +60,6 @@ public class ShuffleActivity extends AppCompatActivity {
 
         setContentView(R.layout.shuffle_activity_layout);
 
-        progressBarWrapper = new ProgressBarWrapper((ProgressBar) findViewById(R.id.progressbar),
-                this);
         showLogo();
 
         /*
@@ -106,69 +84,46 @@ public class ShuffleActivity extends AppCompatActivity {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onResume() {
         super.onResume();
         resetSwipeUpImage();
         showLogo();
         this.isRunning=true;
-        progressBarWrapper.resumeBarAnimation();
         fullScreen.setUIFullScreen();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void onPause(){
         this.isRunning=false;
         super.onPause();
-        progressBarWrapper.stopBarAnimation();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void go_back(View view)
     {
-        progressBarWrapper.stopBarAnimation();//per ricominciare?
+//        progressBarWrapper.stopBarAnimation();//per ricominciare? (probabilmente non necessario)
         Intent intent = new Intent(this,MainMenuActivity.class);
         startActivity(intent);
     }
 
     /**
-     * Launches the SwipeUpActivity
-     */
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public void startSwipeUpActivity()
-    {
-        progressBarWrapper.stopBarAnimation();
-
-        Intent intent = new Intent(this, SwipeUpActivity.class);
-
-        startActivity(intent);
-    }
-
-    /**
      * Method called each time a left tap has been performed or the timeout of the image has expired:
-     * show next image resetting buttons and progress bar
+     * show next image resetting buttons and progress bar (should be called only by a ShuffleFragment)
      */
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void LeftTap()
     {
-        progressBarWrapper.restartAnimation();
         resetButtons();
         likeListener.clearAnimation();
-
     }
 
     /**
      * Method called each time a right tap has been performed: shows the previous image resetting
-     * progress bar and buttons
+     * progress bar and buttons (should be called only by a ShuffleFragment)
      */
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void RightTap()
     {
-        progressBarWrapper.restartAnimation();
         resetButtons();
         likeListener.clearAnimation();
-
     }
 
     /**
@@ -203,7 +158,6 @@ public class ShuffleActivity extends AppCompatActivity {
      */
     public void hideButtons() {
 
-
         Animation disappearence=AnimationUtils.loadAnimation(this, R.anim.disappearence);
         this.dislike.setVisibility(View.INVISIBLE);
         this.like.setVisibility(View.INVISIBLE);
@@ -215,7 +169,6 @@ public class ShuffleActivity extends AppCompatActivity {
             this.swipeUp.setVisibility(View.INVISIBLE);
             this.swipeUp.startAnimation(disappearence);
         }
-
 
         this.dislike.startAnimation(disappearence);
         this.like.startAnimation(disappearence);
@@ -251,40 +204,17 @@ public class ShuffleActivity extends AppCompatActivity {
      */
     @SuppressLint("ClickableViewAccessibility")
     private void setupViewPager(){
-        viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager = findViewById(R.id.pager);
 
         adapter = new ShuffleFragmentAdapter(this);
         viewPager.setAdapter(adapter);
         viewPager.setPageTransformer(true, new CubeTransformer());
 
         /**
-         * Setting Up ViewPager Listeners
+         * Setting Up ViewPager Listener
          */
-
-        viewPager.addOnPageChangeListener(new PageChangeListener(this,adapter, progressBarWrapper));
-
-        final GestureDetector gestureDetector = setupGestureDetector(this);
-
-        viewPager.setOnTouchListener(new View.OnTouchListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == ACTION_UP){
-                    buttonHider.cancel(true);
-                    if(buttonHider.getSlept()) showButtons();
-                    progressBarWrapper.resumeBarAnimation();
-                }
-                return  gestureDetector.onTouchEvent(event);
-            }
-        });
-
-    }
-
-    /**
-     * Private method call by onCreate
-     */
-    private GestureDetector setupGestureDetector(final ShuffleActivity shuffleActivity){
-        return new GestureDetector(shuffleActivity, new shuffleOnGestureListener(this));
+        mPageChangeListener = new PageChangeListener(this);
+        viewPager.addOnPageChangeListener(mPageChangeListener);
     }
 
     /**
@@ -293,14 +223,6 @@ public class ShuffleActivity extends AppCompatActivity {
      */
     public boolean getRunning(){
         return isRunning;
-    }
-
-    public void setButtonHider(ButtonHider buttonHider){
-        this.buttonHider = buttonHider;
-    }
-
-    public void executeButtonHider(){
-        buttonHider.execute();
     }
 
     /**
@@ -326,17 +248,13 @@ public class ShuffleActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Function used by onPageSelected to set this.currentFragment as the shown fragment
-     * @param currentFragment the current fragment
-     */
-    public void setCurrentFragment(ShuffleFragment currentFragment) {
-        this.currentFragment = currentFragment;
-    }
-
     public void showLogo(){
         logoShower = new ShowLogo(this);
         logoShower.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    public void setFirstFragment(ShuffleFragment shuffleFragment){
+        mPageChangeListener.setCurrentFragment(shuffleFragment);
     }
 
 }

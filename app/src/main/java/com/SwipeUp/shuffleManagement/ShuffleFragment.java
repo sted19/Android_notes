@@ -1,28 +1,53 @@
 package com.SwipeUp.shuffleManagement;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
+import com.SwipeUp.shuffleManagement.shuffleListeners.shuffleOnGestureListener;
+import com.SwipeUp.swipeUpManagement.SwipeUpActivity;
 import com.SwipeUp.utilities.R;
-import com.SwipeUp.utilities.wearingFactory.WearingFactory;
+import com.SwipeUp.utilities.asyncTasks.ButtonHider;
+import com.SwipeUp.utilities.progressBar.ProgressBarWrapper;
 import com.bumptech.glide.Glide;
 
-public class ShuffleFragment extends Fragment{
+import static android.view.MotionEvent.ACTION_UP;
 
+public class ShuffleFragment extends Fragment{
+    private static boolean first = true;
     private static final String POSITION_KEY = "position";
     private ImageView imageView;
-    private ProgressBar progressBar;
-    private TextView textView;
     private int position;
+    private ShuffleActivity mShuffleActivity;
+    public ProgressBarWrapper progressBarWrapper;
+    private GestureDetector gestureDetector;
+
+    private ButtonHider buttonHider;
+
+    /**
+     * get a new ShuffleFragment
+     * @param position the position of the shuffleFragment in the viewPager
+     * @return an instance of ShuffleFragment
+     */
+    public static ShuffleFragment newInstance(int position){
+        Bundle args = new Bundle();
+        args.putInt(POSITION_KEY, position);
+
+        ShuffleFragment shuffleFragment = new ShuffleFragment();
+        shuffleFragment.setArguments(args);
+        return shuffleFragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,10 +59,10 @@ public class ShuffleFragment extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.shuffle_viewpager_fragment_item, container,false);
+        findViews(v);
+        setUpListeners(v);
 
         position = this.getArguments().getInt(POSITION_KEY);
-
-        findViews(v);
 
         //WearingFactory wearingFactory = new WearingFactory((ShuffleActivity) this.getActivity());
 
@@ -63,21 +88,84 @@ public class ShuffleFragment extends Fragment{
      * Private method used to find views and to save them in instance variables
      */
     private void findViews(View v){
+        mShuffleActivity = (ShuffleActivity) getActivity();
         imageView = v.findViewById(R.id.swipe_image);
-        textView = v.findViewById(R.id.swipe_friend);
+        progressBarWrapper = new ProgressBarWrapper((ProgressBar) v.findViewById(R.id.progressbar),
+                mShuffleActivity);
+
+        if(first){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                progressBarWrapper.resumeBarAnimation();
+            }
+            mShuffleActivity.setFirstFragment(this);
+            first = false;
+        }
     }
 
-    public static ShuffleFragment newInstance(int position){
-        Bundle args = new Bundle();
-        args.putInt(POSITION_KEY, position);
+    /**
+     * private method called by onCreate: sets listeners of the passed view
+     */
+    private void setUpListeners(View view){
+        gestureDetector = setupGestureDetector(mShuffleActivity);
 
-        ShuffleFragment shuffleFragment = new ShuffleFragment();
-        shuffleFragment.setArguments(args);
-        return shuffleFragment;
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == ACTION_UP){
+                    buttonHider.cancel(true);
+                    if(buttonHider.getSlept())
+                        mShuffleActivity.showButtons();
+                    progressBarWrapper.resumeBarAnimation();
+                }
+                gestureDetector.onTouchEvent(event);
+                return true;
+            }
+        });
+    }
+
+    /**
+     * Private method called on initialization, sets the gestureDetector
+     */
+    private GestureDetector setupGestureDetector(final ShuffleActivity shuffleActivity){
+        return new GestureDetector(shuffleActivity, new shuffleOnGestureListener(this,
+                mShuffleActivity));
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void resumeAnimations(){
+        progressBarWrapper.restartAnimation();
+    }
+
+    /**
+     * Launches the SwipeUpActivity
+     */
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void startSwipeUpActivity()
+    {
+        progressBarWrapper.stopBarAnimation();
+
+        Intent intent = new Intent(mShuffleActivity, SwipeUpActivity.class);
+
+        startActivity(intent);
     }
 
     public int getPosition() {
         return position;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void leftTap(){
+        progressBarWrapper.restartAnimation();
+        mShuffleActivity.LeftTap();
+        nextImage();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void rightTap(){
+        progressBarWrapper.restartAnimation();
+        mShuffleActivity.RightTap();
+        previousImage();
     }
 
     /**
@@ -94,5 +182,18 @@ public class ShuffleFragment extends Fragment{
     public void previousImage(){
         //TODO: set correctly previous image to be shown
         imageView.setImageResource(R.drawable.jackets_shuffle);
+    }
+
+    public void setButtonHider(ButtonHider buttonHider){
+        this.buttonHider = buttonHider;
+    }
+
+    public void executeButtonHider(){
+        buttonHider.execute(mShuffleActivity, this);
+    }
+
+    public void interruptButtonHider() {
+        if(buttonHider != null)
+            buttonHider.cancel(true);
     }
 }
