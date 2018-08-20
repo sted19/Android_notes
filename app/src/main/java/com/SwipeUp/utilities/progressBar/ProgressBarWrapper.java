@@ -7,18 +7,19 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ProgressBar;
 
 import com.SwipeUp.shuffleManagement.ShuffleActivity;
+import com.SwipeUp.shuffleManagement.ShuffleFragment;
 
 public class ProgressBarWrapper {
     private ProgressBar[] progressBars;
-    private int SwitchingDuration= ShuffleActivity.SwitchingDuration;
+    private int SwitchingDuration = ShuffleActivity.SwitchingDuration;
     private ValueAnimator valueAnimator;
     private SwitchingAnimatorListener animatorListener;
-    private ShuffleActivity shuffleActivity;
+    private ShuffleFragment mShuffleFragment;
     private int actual=0;
 
-    public ProgressBarWrapper(ProgressBar[] progressBars, ShuffleActivity shuffleActivity) {
+    public ProgressBarWrapper(ProgressBar[] progressBars, ShuffleFragment shuffleFragment) {
         this.progressBars = progressBars;
-        this.shuffleActivity = shuffleActivity;
+        this.mShuffleFragment = shuffleFragment;
         setUpBar();
     }
 
@@ -45,6 +46,7 @@ public class ProgressBarWrapper {
             valueAnimator.pause();
             actual--;
             setUpBar();
+            valueAnimator.start();
         }
     }
 
@@ -56,6 +58,7 @@ public class ProgressBarWrapper {
             valueAnimator.pause();
             actual++;
             setUpBar();
+            valueAnimator.start();
         }
 
     }
@@ -64,7 +67,7 @@ public class ProgressBarWrapper {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     void reinitialize()
     {
-        shuffleActivity.RightTap();
+        mShuffleFragment.rightTap();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -92,8 +95,6 @@ public class ProgressBarWrapper {
 
         //the progressAnimatorListener updates the view when the time of the bar is over
         valueAnimator.addListener(new ProgressAnimatorListener(this));
-
-        valueAnimator.start();
 
     }
 }

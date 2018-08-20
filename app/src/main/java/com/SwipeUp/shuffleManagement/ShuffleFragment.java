@@ -1,9 +1,8 @@
 package com.SwipeUp.shuffleManagement;
 
-import android.content.Context;
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,13 +10,11 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.Display;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -35,13 +32,18 @@ import static android.view.MotionEvent.ACTION_UP;
 public class ShuffleFragment extends Fragment{
     private static boolean first = true;
     private static final String POSITION_KEY = "position";
+
     private ImageView imageView;
     private int position;
     private ShuffleActivity mShuffleActivity;
     public ProgressBarWrapper progressBarWrapper;
     private GestureDetector gestureDetector;
+    private WearingFactory mWearingFactory;
 
     private ButtonHider buttonHider;
+
+    private int availableImages;
+    private int imageIndex = 0;
 
     /**
      * get a new ShuffleFragment
@@ -57,17 +59,6 @@ public class ShuffleFragment extends Fragment{
         return shuffleFragment;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -78,56 +69,14 @@ public class ShuffleFragment extends Fragment{
 
         position = this.getArguments().getInt(POSITION_KEY);
 
-        WearingFactory wearingFactory = new WearingFactory((ShuffleActivity) this.getActivity());
+        mWearingFactory = WearingFactory.getInstanceOf(mShuffleActivity);
 
+        instantiateProgressBars(v);
 
-        //per sapere la width del dispositivo
-        WindowManager wm = (WindowManager) mShuffleActivity.getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();   //da controllare se va bene|
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x;
-
-
-        ProgressBar[] vectProgressBar=new ProgressBar[wearingFactory.getAvailableImages()];
-
-        for(int i=0;i<wearingFactory.getAvailableImages();i++){
-
-            LinearLayout linearLayout=v.findViewById(R.id.space_for_progress_bars);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width/wearingFactory.getAvailableImages(), 5);
-
-            layoutParams.setMargins(3, 5 ,3, 5);
-
-            ProgressBar progressBar=new ProgressBar(mShuffleActivity.getApplicationContext(),null,android.R.attr.progressBarStyleHorizontal);
-            progressBar.setLayoutParams(layoutParams);
-
-            progressBar.setBackgroundColor(Color.WHITE);//TODO change background color
-
-            vectProgressBar[i]=progressBar;
-            linearLayout.addView(progressBar);
-        }
-
-
-
-        this.progressBarWrapper=new ProgressBarWrapper(vectProgressBar,mShuffleActivity);
-        this.progressBarWrapper.resumeBarAnimation();
-
-
-
-        switch(position%2){
-            case 0:
-                Glide
-                        .with(v)
-                        .load(R.drawable.gigiproietti)
-                        .into(imageView);
-                break;
-            case 1:
-                Glide
-                        .with(v)
-                        .load(R.drawable.pants)
-                        .into(imageView);
-                break;
-        }
+        Glide
+                .with(v)
+                .load(mWearingFactory.getNextImage())
+                .into(imageView);
 
         return v;
     }
@@ -138,16 +87,6 @@ public class ShuffleFragment extends Fragment{
     private void findViews(View v){
         mShuffleActivity = (ShuffleActivity) getActivity();
         imageView = v.findViewById(R.id.swipe_image);
-        //progressBarWrapper = new ProgressBarWrapper((ProgressBar) v.findViewById(R.id.progressbar),
-          //      mShuffleActivity);
-
-        if(first){
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && progressBarWrapper!=null) {
-                progressBarWrapper.resumeBarAnimation();
-            }
-            mShuffleActivity.setFirstFragment(this);
-            first = false;
-        }
     }
 
     /**
@@ -180,6 +119,45 @@ public class ShuffleFragment extends Fragment{
                 mShuffleActivity));
     }
 
+    /**
+     * Private method called by onCreate to instantiate the progress bars
+     */
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private void instantiateProgressBars(View v){
+
+        this.availableImages = mWearingFactory.getAvailableImages();
+
+        ProgressBar[] vectProgressBar = new ProgressBar[availableImages];
+
+        for(int i=0; i<availableImages; i++){
+
+            LinearLayout linearLayout = v.findViewById(R.id.space_for_progress_bars);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    mShuffleActivity.DisplayWidth / availableImages, 5);
+
+            layoutParams.setMargins(3, 5 ,3, 5);
+
+            ProgressBar progressBar=new ProgressBar(mShuffleActivity.getApplicationContext(),
+                    null, android.R.attr.progressBarStyleHorizontal);
+            progressBar.setLayoutParams(layoutParams);
+
+            progressBar.setBackgroundColor(Color.WHITE); // TODO change background color
+
+            vectProgressBar[i]=progressBar;
+            linearLayout.addView(progressBar);
+        }
+
+        this.progressBarWrapper=new ProgressBarWrapper(vectProgressBar, this);
+
+        if(first){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && progressBarWrapper!=null) {
+                progressBarWrapper.resumeBarAnimation();
+            }
+            mShuffleActivity.setFirstFragment(this);
+            first = false;
+        }
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void resumeAnimations(){
         progressBarWrapper.restartAnimation();
@@ -202,48 +180,91 @@ public class ShuffleFragment extends Fragment{
         return position;
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void leftTap(){
-        progressBarWrapper.startPrevAnimation();
-        mShuffleActivity.LeftTap();
-        nextImage();
+//        Log.i("imageIndex", "is "+imageIndex);
+//        if(imageIndex == 0)
+//            triggerLeftSwipe();
+//        else {
+            progressBarWrapper.startPrevAnimation();
+            mShuffleActivity.LeftTap();
+            previousImage();
+            imageIndex--;
+//        }
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void rightTap(){
-
-        Log.e("right tap","right tap");
-        progressBarWrapper.startNextAnimation();
-        mShuffleActivity.RightTap();
-        previousImage();
+//        Log.i("imageIndex", "is "+imageIndex);
+//        if(imageIndex == availableImages - 1)
+//            triggerRightSwipe();
+//        else {
+            progressBarWrapper.startNextAnimation();
+            mShuffleActivity.RightTap();
+            nextImage();
+            imageIndex++;
+//        }
     }
 
     /**
      * updates imageView with next image to be shown
      */
     public void nextImage(){
-        //TODO: set correctly next image to be shown
-        imageView.setImageResource(R.drawable.heart);
+        View v = getView();
+        if(v == null) return;
+        Glide
+                .with(v)
+                .load(mWearingFactory.getNextImage())
+                .into(imageView);
     }
 
     /**
      * updates imageView with previous image to be shown
      */
     public void previousImage(){
-        //TODO: set correctly previous image to be shown
-        imageView.setImageResource(R.drawable.jackets_shuffle);
+        View v = getView();
+        if(v == null) return;
+        Glide
+                .with(v)
+                .load(mWearingFactory.getPreviousImage())
+                .into(imageView);
     }
 
+    /**
+     * Setter fot the buttonHider field
+     */
     public void setButtonHider(ButtonHider buttonHider){
         this.buttonHider = buttonHider;
     }
 
+    /**
+     * Starts the buttonHider (does not check if it is null)
+     */
     public void executeButtonHider(){
         buttonHider.execute(mShuffleActivity, this);
     }
 
+    /**
+     * Interrupts the buttonHider (checking if it is null)
+     */
     public void interruptButtonHider() {
         if(buttonHider != null)
             buttonHider.cancel(true);
+    }
+
+    /**
+     * Method called when all the available images for the current fragment have been shown
+     */
+    public void triggerRightSwipe(){
+        mShuffleActivity.setPagerPosition(position + 1);
+    }
+
+    /**
+     * Method called on left tap at the first image
+     */
+    public void triggerLeftSwipe(){
+        mShuffleActivity.setPagerPosition(position - 1);
     }
 }

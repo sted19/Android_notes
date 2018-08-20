@@ -10,6 +10,8 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -22,9 +24,9 @@ import com.SwipeUp.utilities.R;
 import com.SwipeUp.shuffleManagement.shuffleListeners.ButtonsListener;
 import com.SwipeUp.shuffleManagement.shuffleListeners.PageChangeListener;
 import com.SwipeUp.mainMenuManagement.MainMenuActivity;
-import com.SwipeUp.utilities.wearingFactory.WearingFactory;
 
 public class ShuffleActivity extends AppCompatActivity {
+    public int DisplayWidth;
 
     private FullScreen fullScreen;
 
@@ -44,9 +46,7 @@ public class ShuffleActivity extends AppCompatActivity {
     private ImageView swipeUp;
     private ImageView swipeUpSwiped;
 
-    public int DisplayWidth = 0;
 
-    private WearingFactory wearingFactory;
     public static final int SwitchingDuration = 6000;
 
     private ButtonsListener.LikeListener likeListener;
@@ -57,6 +57,7 @@ public class ShuffleActivity extends AppCompatActivity {
     @SuppressLint({"WrongViewCast", "ClickableViewAccessibility"})
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        calculateWidth();
 
         setContentView(R.layout.shuffle_activity_layout);
 
@@ -73,13 +74,11 @@ public class ShuffleActivity extends AppCompatActivity {
         /*
          * Setting up viewPager in a separate function
          */
-        wearingFactory = new WearingFactory(this);
         setupViewPager();
 
         /*
          * Setting up buttons in a separate function (I think we should modify the ButtonsListener)
          */
-
         setupButtons();
 
     }
@@ -257,4 +256,23 @@ public class ShuffleActivity extends AppCompatActivity {
         mPageChangeListener.setCurrentFragment(shuffleFragment);
     }
 
+    /**
+     * Changes the position of the pager with relative animation
+     * @param position the new position of the pager
+     */
+    public void setPagerPosition(int position){
+        Log.i("pager", "asked page "+position);
+        if(position > 0  && position < viewPager.getChildCount())
+            viewPager.setCurrentItem(position);
+    }
+
+    /**
+     * method called at the instantiation of the activity, calculates the display width
+     * @return
+     */
+    private void calculateWidth(){
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        DisplayWidth = metrics.widthPixels;
+    }
 }

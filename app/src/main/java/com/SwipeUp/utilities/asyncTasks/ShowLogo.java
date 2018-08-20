@@ -13,8 +13,6 @@ public class ShowLogo extends AsyncTask {
         this.shuffleActivity = shuffleActivity;
     }
 
-
-
     @Override
     protected Object doInBackground(Object[] objects) {
 

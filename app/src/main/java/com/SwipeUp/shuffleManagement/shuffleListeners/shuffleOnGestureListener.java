@@ -12,6 +12,8 @@ import com.SwipeUp.shuffleManagement.ShuffleFragment;
 import com.SwipeUp.utilities.asyncTasks.ButtonHider;
 
 public class shuffleOnGestureListener implements GestureDetector.OnGestureListener {
+    private static int DisplayWidth;
+
     private ShuffleFragment mShuffleFragment;
     private ShuffleActivity shuffleActivity;
 
@@ -46,15 +48,6 @@ public class shuffleOnGestureListener implements GestureDetector.OnGestureListen
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void tapCalculation(MotionEvent event){
         int x = (int)event.getX();
-
-        //TODO: consider putting metrics in a static private variable
-        if(shuffleActivity.DisplayWidth == 0)
-        {
-            //calculate displayWidth
-            DisplayMetrics metrics = new DisplayMetrics();
-            shuffleActivity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-            shuffleActivity.DisplayWidth = metrics.widthPixels;
-        }
 
         boolean isLeftTap= x < shuffleActivity.DisplayWidth /2;
 

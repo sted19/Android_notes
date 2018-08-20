@@ -6,12 +6,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.widget.ImageView;
 
 import com.SwipeUp.shuffleManagement.ShuffleFragment;
-import com.SwipeUp.shuffleManagement.ShuffleFragmentAdapter;
-import com.SwipeUp.utilities.progressBar.ProgressBarWrapper;
-import com.SwipeUp.shuffleManagement.CustomAdapter;
 import com.SwipeUp.shuffleManagement.ShuffleActivity;
 
 import java.util.List;
