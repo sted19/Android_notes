@@ -1,18 +1,25 @@
 package com.SwipeUp.shuffleManagement;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.Display;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.SwipeUp.shuffleManagement.shuffleListeners.shuffleOnGestureListener;
@@ -20,6 +27,7 @@ import com.SwipeUp.swipeUpManagement.SwipeUpActivity;
 import com.SwipeUp.utilities.R;
 import com.SwipeUp.utilities.asyncTasks.ButtonHider;
 import com.SwipeUp.utilities.progressBar.ProgressBarWrapper;
+import com.SwipeUp.utilities.wearingFactory.WearingFactory;
 import com.bumptech.glide.Glide;
 
 import static android.view.MotionEvent.ACTION_UP;
@@ -54,6 +62,12 @@ public class ShuffleFragment extends Fragment{
         super.onCreate(savedInstanceState);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -64,7 +78,41 @@ public class ShuffleFragment extends Fragment{
 
         position = this.getArguments().getInt(POSITION_KEY);
 
-        //WearingFactory wearingFactory = new WearingFactory((ShuffleActivity) this.getActivity());
+        WearingFactory wearingFactory = new WearingFactory((ShuffleActivity) this.getActivity());
+
+
+        //per sapere la width del dispositivo
+        WindowManager wm = (WindowManager) mShuffleActivity.getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();   //da controllare se va bene|
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+
+
+        ProgressBar[] vectProgressBar=new ProgressBar[wearingFactory.getAvailableImages()];
+
+        for(int i=0;i<wearingFactory.getAvailableImages();i++){
+
+            LinearLayout linearLayout=v.findViewById(R.id.space_for_progress_bars);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width/wearingFactory.getAvailableImages(), 5);
+
+            layoutParams.setMargins(3, 5 ,3, 5);
+
+            ProgressBar progressBar=new ProgressBar(mShuffleActivity.getApplicationContext(),null,android.R.attr.progressBarStyleHorizontal);
+            progressBar.setLayoutParams(layoutParams);
+
+            progressBar.setBackgroundColor(Color.WHITE);//TODO change background color
+
+            vectProgressBar[i]=progressBar;
+            linearLayout.addView(progressBar);
+        }
+
+
+
+        this.progressBarWrapper=new ProgressBarWrapper(vectProgressBar,mShuffleActivity);
+        this.progressBarWrapper.resumeBarAnimation();
+
+
 
         switch(position%2){
             case 0:
@@ -90,11 +138,11 @@ public class ShuffleFragment extends Fragment{
     private void findViews(View v){
         mShuffleActivity = (ShuffleActivity) getActivity();
         imageView = v.findViewById(R.id.swipe_image);
-        progressBarWrapper = new ProgressBarWrapper((ProgressBar) v.findViewById(R.id.progressbar),
-                mShuffleActivity);
+        //progressBarWrapper = new ProgressBarWrapper((ProgressBar) v.findViewById(R.id.progressbar),
+          //      mShuffleActivity);
 
         if(first){
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && progressBarWrapper!=null) {
                 progressBarWrapper.resumeBarAnimation();
             }
             mShuffleActivity.setFirstFragment(this);
@@ -156,14 +204,16 @@ public class ShuffleFragment extends Fragment{
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void leftTap(){
-        progressBarWrapper.restartAnimation();
+        progressBarWrapper.startPrevAnimation();
         mShuffleActivity.LeftTap();
         nextImage();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void rightTap(){
-        progressBarWrapper.restartAnimation();
+
+        Log.e("right tap","right tap");
+        progressBarWrapper.startNextAnimation();
         mShuffleActivity.RightTap();
         previousImage();
     }

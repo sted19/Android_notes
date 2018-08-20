@@ -9,14 +9,15 @@ import android.widget.ProgressBar;
 import com.SwipeUp.shuffleManagement.ShuffleActivity;
 
 public class ProgressBarWrapper {
-    private ProgressBar progressBar;
+    private ProgressBar[] progressBars;
     private int SwitchingDuration= ShuffleActivity.SwitchingDuration;
     private ValueAnimator valueAnimator;
     private SwitchingAnimatorListener animatorListener;
     private ShuffleActivity shuffleActivity;
+    private int actual=0;
 
-    public ProgressBarWrapper(ProgressBar progressBar, ShuffleActivity shuffleActivity) {
-        this.progressBar = progressBar;
+    public ProgressBarWrapper(ProgressBar[] progressBars, ShuffleActivity shuffleActivity) {
+        this.progressBars = progressBars;
         this.shuffleActivity = shuffleActivity;
         setUpBar();
     }
@@ -37,6 +38,28 @@ public class ProgressBarWrapper {
             valueAnimator.start();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
+    public void startPrevAnimation() {
+        if(actual!=0) {
+            valueAnimator.setCurrentFraction(0);
+            valueAnimator.pause();
+            actual--;
+            setUpBar();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
+    public void startNextAnimation() {
+        //progressBars[now].setProgress(progressBars[now].getMax());
+        if(actual+1<progressBars.length) {
+            valueAnimator.setCurrentFraction(1);
+            valueAnimator.pause();
+            actual++;
+            setUpBar();
+        }
+
+    }
+
     //this function should be used only by ProgressAnimatorListener and SwitchingAnimatorListener if needed
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     void reinitialize()
@@ -55,10 +78,10 @@ public class ProgressBarWrapper {
      */
     private void setUpBar()
     {
-        valueAnimator= ValueAnimator.ofInt(0, progressBar.getMax());
+        valueAnimator= ValueAnimator.ofInt(0, progressBars[actual].getMax());
 
         //the animator listener updates the bar animation
-        animatorListener = new SwitchingAnimatorListener(progressBar, SwitchingDuration);
+        animatorListener = new SwitchingAnimatorListener(progressBars[actual], SwitchingDuration);
         valueAnimator.addUpdateListener(animatorListener);
         valueAnimator.setRepeatCount(ValueAnimator.INFINITE);
         valueAnimator.setRepeatMode(ValueAnimator.RESTART);
@@ -69,6 +92,8 @@ public class ProgressBarWrapper {
 
         //the progressAnimatorListener updates the view when the time of the bar is over
         valueAnimator.addListener(new ProgressAnimatorListener(this));
+
+        valueAnimator.start();
 
     }
 }
