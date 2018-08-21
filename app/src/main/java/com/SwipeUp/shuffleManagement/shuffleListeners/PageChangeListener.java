@@ -14,12 +14,10 @@ import java.util.List;
 
 public class PageChangeListener implements OnPageChangeListener {
     private ShuffleActivity shuffleActivity;
-    private FragmentManager fragmentManager;
     private ShuffleFragment currentFragment;
 
     public PageChangeListener(ShuffleActivity shuffleActivity) {
         this.shuffleActivity = shuffleActivity;
-        fragmentManager = shuffleActivity.getSupportFragmentManager();
     }
 
     @Override
@@ -32,14 +30,7 @@ public class PageChangeListener implements OnPageChangeListener {
     public void onPageSelected(int position) {
         shuffleActivity.resetButtons();
 
-        List<Fragment> fragments = fragmentManager.getFragments();
-        for(Fragment fragment: fragments){
-            if(fragment.getClass() == ShuffleFragment.class && ((ShuffleFragment)fragment).
-                    getPosition() == position){
-                currentFragment = (ShuffleFragment) fragment;
-                currentFragment.resumeAnimations();
-            }
-        }
+        currentFragment = (ShuffleFragment) shuffleActivity.adapter.getItem(position);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)

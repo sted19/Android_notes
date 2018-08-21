@@ -46,7 +46,6 @@ public class ShuffleActivity extends AppCompatActivity {
     private ImageView swipeUp;
     private ImageView swipeUpSwiped;
 
-
     public static final int SwitchingDuration = 6000;
 
     private ButtonsListener.LikeListener likeListener;
@@ -87,7 +86,7 @@ public class ShuffleActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         resetSwipeUpImage();
-        showLogo();
+        if(!isSwiped) showLogo();
         this.isRunning=true;
         fullScreen.setUIFullScreen();
     }
@@ -149,6 +148,8 @@ public class ShuffleActivity extends AppCompatActivity {
         like_pressed = false;
         dislike_pressed = false;
         resetSwipeUpImage();
+
+        logoShower.cancel(true);
         showLogo();
     }
 
@@ -190,12 +191,12 @@ public class ShuffleActivity extends AppCompatActivity {
         else{
             this.swipeUp.setVisibility(View.VISIBLE);
             this.swipeUp.startAnimation(appearance);
+            showLogo();
         }
 
         this.dislike.startAnimation(appearance);
         this.like.startAnimation(appearance);
         buttonsHidden = false;
-        showLogo();
     }
 
     /**
@@ -209,7 +210,7 @@ public class ShuffleActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         viewPager.setPageTransformer(true, new CubeTransformer());
 
-        /**
+        /*
          * Setting Up ViewPager Listener
          */
         mPageChangeListener = new PageChangeListener(this);
@@ -241,15 +242,15 @@ public class ShuffleActivity extends AppCompatActivity {
 
     public void resetSwipeUpImage(){
         if(isSwiped){
-            swipeUp.setVisibility(View.VISIBLE);
             swipeUpSwiped.setVisibility(View.INVISIBLE);
+            swipeUp.setVisibility(View.VISIBLE);
             isSwiped = false;
         }
     }
 
     public void showLogo(){
-        logoShower = new ShowLogo(this);
-        logoShower.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        logoShower = new ShowLogo();
+        logoShower.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, this);
     }
 
     public void setFirstFragment(ShuffleFragment shuffleFragment){
@@ -259,11 +260,14 @@ public class ShuffleActivity extends AppCompatActivity {
     /**
      * Changes the position of the pager with relative animation
      * @param position the new position of the pager
+     * @return true if the position is valid, false otherwise
      */
-    public void setPagerPosition(int position){
-        Log.i("pager", "asked page "+position);
-        if(position > 0  && position < viewPager.getChildCount())
+    public boolean setPagerPosition(int position){
+        if(position >= 0  && position < adapter.getCount()){
             viewPager.setCurrentItem(position);
+            return true;
+        }
+        return false;
     }
 
     /**

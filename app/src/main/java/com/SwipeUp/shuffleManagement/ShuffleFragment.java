@@ -3,6 +3,7 @@ package com.SwipeUp.shuffleManagement;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,6 +24,7 @@ import com.SwipeUp.shuffleManagement.shuffleListeners.shuffleOnGestureListener;
 import com.SwipeUp.swipeUpManagement.SwipeUpActivity;
 import com.SwipeUp.utilities.R;
 import com.SwipeUp.utilities.asyncTasks.ButtonHider;
+import com.SwipeUp.utilities.asyncTasks.ShowLogo;
 import com.SwipeUp.utilities.progressBar.ProgressBarWrapper;
 import com.SwipeUp.utilities.wearingFactory.WearingFactory;
 import com.bumptech.glide.Glide;
@@ -158,11 +160,6 @@ public class ShuffleFragment extends Fragment{
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public void resumeAnimations(){
-        progressBarWrapper.restartAnimation();
-    }
-
     /**
      * Launches the SwipeUpActivity
      */
@@ -183,29 +180,29 @@ public class ShuffleFragment extends Fragment{
     @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void leftTap(){
-//        Log.i("imageIndex", "is "+imageIndex);
-//        if(imageIndex == 0)
-//            triggerLeftSwipe();
-//        else {
+        Log.i("imageIndex", "is "+imageIndex);
+        if(imageIndex == 0)
+            triggerLeftSwipe();
+        else {
             progressBarWrapper.startPrevAnimation();
             mShuffleActivity.LeftTap();
             previousImage();
             imageIndex--;
-//        }
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void rightTap(){
-//        Log.i("imageIndex", "is "+imageIndex);
-//        if(imageIndex == availableImages - 1)
-//            triggerRightSwipe();
-//        else {
+        Log.i("imageIndex", "is "+imageIndex);
+        if(imageIndex == availableImages - 1)
+            triggerRightSwipe();
+        else {
             progressBarWrapper.startNextAnimation();
             mShuffleActivity.RightTap();
             nextImage();
             imageIndex++;
-//        }
+        }
     }
 
     /**
@@ -257,14 +254,26 @@ public class ShuffleFragment extends Fragment{
     /**
      * Method called when all the available images for the current fragment have been shown
      */
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     public void triggerRightSwipe(){
-        mShuffleActivity.setPagerPosition(position + 1);
+        if(mShuffleActivity.setPagerPosition(position + 1))
+            progressBarWrapper.stopBarAnimation();
     }
 
     /**
      * Method called on left tap at the first image
      */
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void triggerLeftSwipe(){
-        mShuffleActivity.setPagerPosition(position - 1);
+        if(mShuffleActivity.setPagerPosition(position - 1))
+            progressBarWrapper.stopBarAnimation();
     }
+//
+//    /**
+//     * Starts a timer to show central swipe up logo
+//     */
+//    public void showLogo(){
+//        logoShower = new ShowLogo(this);
+//        logoShower.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+//    }
 }
