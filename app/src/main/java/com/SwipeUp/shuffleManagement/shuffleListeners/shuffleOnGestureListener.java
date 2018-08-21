@@ -2,28 +2,32 @@ package com.SwipeUp.shuffleManagement.shuffleListeners;
 
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
 import com.SwipeUp.shuffleManagement.ShuffleActivity;
+import com.SwipeUp.shuffleManagement.ShuffleFragment;
 import com.SwipeUp.utilities.asyncTasks.ButtonHider;
-import com.SwipeUp.utilities.asyncTasks.TapCalculation;
 
 public class shuffleOnGestureListener implements GestureDetector.OnGestureListener {
-    private ShuffleActivity shuffleActivity;
-    private ButtonHider buttonHider;
+    private static int DisplayWidth;
 
-    public shuffleOnGestureListener(ShuffleActivity shuffleActivity) {
+    private ShuffleFragment mShuffleFragment;
+    private ShuffleActivity shuffleActivity;
+
+    public shuffleOnGestureListener(ShuffleFragment mShuffleFragment, ShuffleActivity shuffleActivity) {
+        this.mShuffleFragment = mShuffleFragment;
         this.shuffleActivity = shuffleActivity;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public boolean onDown(MotionEvent e) {
-        shuffleActivity.progressBarWrapper.stopBarAnimation();
-        shuffleActivity.setButtonHider(new ButtonHider(shuffleActivity));
-        shuffleActivity.executeButtonHider();
+        mShuffleFragment.progressBarWrapper.stopBarAnimation();
+        mShuffleFragment.setButtonHider(new ButtonHider());
+        mShuffleFragment.executeButtonHider();
         return false;
     }
 
@@ -36,8 +40,21 @@ public class shuffleOnGestureListener implements GestureDetector.OnGestureListen
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        (new TapCalculation(shuffleActivity)).doInBackground(e);
+        tapCalculation(e);
+//        (new TapCalculation(shuffleActivity)).doInBackground(e);
         return false;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void tapCalculation(MotionEvent event){
+        int x = (int)event.getX();
+
+        boolean isLeftTap= x < shuffleActivity.DisplayWidth /2;
+
+        if(isLeftTap)
+            mShuffleFragment.leftTap();
+        else
+            mShuffleFragment.rightTap();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -63,9 +80,8 @@ public class shuffleOnGestureListener implements GestureDetector.OnGestureListen
         Log.e("dx",""+dx);
         Log.e("tempo",""+e2.getDownTime());
 
-        if(shuffleActivity.getRunning()  && dy>0 && (dy>dx)){
-            shuffleActivity.setSwipeUpImage();
-            shuffleActivity.startSwipeUpActivity();
+        if(shuffleActivity.getRunning() && dy>0 && (dy>dx)){
+            mShuffleFragment.startSwipeUpActivity();
         }
         return false;
     }

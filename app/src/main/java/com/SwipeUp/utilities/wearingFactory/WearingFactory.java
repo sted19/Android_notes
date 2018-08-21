@@ -28,7 +28,16 @@ public class WearingFactory {
     // available images in assets folder
     public static boolean DEBUG_CONNECTION = true;
 
-    public WearingFactory(ShuffleActivity shuffleActivity) {
+    private static WearingFactory mWearingFactory;
+    // I'll use a singleton pattern just for the moment, so it is very easy to make the app with
+    // more images
+    public static WearingFactory getInstanceOf(ShuffleActivity shuffleActivity){
+        if(mWearingFactory == null)
+            mWearingFactory = new WearingFactory(shuffleActivity);
+        return mWearingFactory;
+    }
+
+    private WearingFactory(ShuffleActivity shuffleActivity) {
         this.shuffleActivity = shuffleActivity;
         position = -1;
         if(DEBUG_CONNECTION){
