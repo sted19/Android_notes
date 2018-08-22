@@ -67,6 +67,7 @@ public class ShuffleFragment extends Fragment{
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.shuffle_viewpager_fragment_item, container,false);
         findViews(v);
+        mShuffleActivity.setActualFragment(this);
         setUpListeners(v);
 
         position = this.getArguments().getInt(POSITION_KEY);
@@ -113,6 +114,21 @@ public class ShuffleFragment extends Fragment{
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public void onStop(){
+        super.onStop();
+        progressBarWrapper.restartAnimation();
+        progressBarWrapper.stopBarAnimation();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public void onResume() {
+        super.onResume();
+        progressBarWrapper.restartAnimation();
+    }
+
     /**
      * Private method called on initialization, sets the gestureDetector
      */
@@ -135,15 +151,16 @@ public class ShuffleFragment extends Fragment{
 
             LinearLayout linearLayout = v.findViewById(R.id.space_for_progress_bars);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    mShuffleActivity.DisplayWidth / availableImages, 5);
+                    mShuffleActivity.DisplayWidth / availableImages, 6);
 
-            layoutParams.setMargins(3, 5 ,3, 5);
+            layoutParams.setMargins(3, 15 ,3, 5);
 
             ProgressBar progressBar=new ProgressBar(mShuffleActivity.getApplicationContext(),
                     null, android.R.attr.progressBarStyleHorizontal);
             progressBar.setLayoutParams(layoutParams);
 
-            progressBar.setBackgroundColor(Color.WHITE); // TODO change background color
+            progressBar.setBackgroundColor(Color.GRAY); // TODO change background color
+            progressBar.getProgressDrawable().setColorFilter(Color.WHITE,android.graphics.PorterDuff.Mode.SRC_IN);
 
             vectProgressBar[i]=progressBar;
             linearLayout.addView(progressBar);

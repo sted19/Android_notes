@@ -41,6 +41,8 @@ public class ShuffleActivity extends AppCompatActivity {
     public boolean like_pressed;
     public boolean dislike_pressed;
 
+    private ShuffleFragment actualFragment;
+
     public ShowLogo logoShower;
 
     public ImageButton like;
@@ -84,6 +86,11 @@ public class ShuffleActivity extends AppCompatActivity {
 
     }
 
+    public void setActualFragment(ShuffleFragment actualFragment) {
+        this.actualFragment = actualFragment;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onResume() {
         super.onResume();
@@ -91,10 +98,18 @@ public class ShuffleActivity extends AppCompatActivity {
         if(!isSwiped) showLogo();
         this.isRunning = true;
         fullScreen.setUIFullScreen();
+        //TODO restart progress bar
+
+        if(actualFragment!=null)
+            actualFragment.onResume();
+
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void onPause(){
         this.isRunning = false;
+        //TODO stop progress bar
+        actualFragment.onStop();
         super.onPause();
     }
 
