@@ -1,5 +1,6 @@
 package com.SwipeUp.shuffleManagement.shuffleListeners;
 
+import android.annotation.TargetApi;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
@@ -25,11 +26,13 @@ public class PageChangeListener implements OnPageChangeListener {
 
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onPageSelected(int position) {
         shuffleActivity.resetButtons();
 
+        currentFragment.resetLastBar();//setto il progresso dell ultima barra iniziata del precedente fragment a zero
         currentFragment = (ShuffleFragment) shuffleActivity.adapter.getItem(position);
     }
 

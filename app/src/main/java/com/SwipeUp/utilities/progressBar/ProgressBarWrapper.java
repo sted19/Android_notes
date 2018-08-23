@@ -63,6 +63,14 @@ public class ProgressBarWrapper {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
+    /*
+        set the progress of the last bar started at 0
+     */
+    public void resetLastBarAnimation(){
+        valueAnimator.setCurrentFraction(0);
+    }
+
     //this function should be used only by ProgressAnimatorListener and SwitchingAnimatorListener if needed
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     void reinitialize()

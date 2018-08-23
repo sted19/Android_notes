@@ -2,7 +2,11 @@ package com.SwipeUp.shuffleManagement;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -61,21 +65,24 @@ public class ShuffleFragment extends Fragment{
         return shuffleFragment;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
+
         View v = inflater.inflate(R.layout.shuffle_viewpager_fragment_item, container,false);
         findViews(v);
         mShuffleActivity.setActualFragment(this);
         setUpListeners(v);
 
         position = this.getArguments().getInt(POSITION_KEY);
+        //Log.e("creata la view: "," "+position);
 
         mWearingFactory = WearingFactory.getInstanceOf(mShuffleActivity);
 
         instantiateProgressBars(v);
-
         Glide
                 .with(v)
                 .load(mWearingFactory.getNextImage())
@@ -124,10 +131,13 @@ public class ShuffleFragment extends Fragment{
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
-    public void onResume() {
+    public void onResume() {    //is called when the fragment is recreated
         super.onResume();
-        progressBarWrapper.restartAnimation();
+        Log.e("on resume frag: ",position+"-------");
+        //progressBarWrapper.resetBarAnimation();
     }
+
+
 
     /**
      * Private method called on initialization, sets the gestureDetector
@@ -147,9 +157,11 @@ public class ShuffleFragment extends Fragment{
 
         ProgressBar[] vectProgressBar = new ProgressBar[availableImages];
 
+        LinearLayout linearLayout = v.findViewById(R.id.space_for_progress_bars);
+
+
         for(int i=0; i<availableImages; i++){
 
-            LinearLayout linearLayout = v.findViewById(R.id.space_for_progress_bars);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     mShuffleActivity.DisplayWidth / availableImages, 6);
 
@@ -159,14 +171,18 @@ public class ShuffleFragment extends Fragment{
                     null, android.R.attr.progressBarStyleHorizontal);
             progressBar.setLayoutParams(layoutParams);
 
-            progressBar.setBackgroundColor(Color.GRAY); // TODO change background color
+            progressBar.setBackgroundColor(Color.GRAY);
             progressBar.getProgressDrawable().setColorFilter(Color.WHITE,android.graphics.PorterDuff.Mode.SRC_IN);
 
             vectProgressBar[i]=progressBar;
             linearLayout.addView(progressBar);
+
         }
 
         this.progressBarWrapper=new ProgressBarWrapper(vectProgressBar, this);
+
+        progressBarWrapper.restartAnimation();
+        progressBarWrapper.stopBarAnimation();
 
         if(first){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && progressBarWrapper!=null) {
@@ -284,6 +300,15 @@ public class ShuffleFragment extends Fragment{
     public void triggerLeftSwipe(){
         if(mShuffleActivity.setPagerPosition(position - 1))
             progressBarWrapper.stopBarAnimation();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
+    /*
+        set the progress of the last bar started at 0
+     */
+    public void resetLastBar(){
+        progressBarWrapper.resetLastBarAnimation();
+
     }
 //
 //    /**
