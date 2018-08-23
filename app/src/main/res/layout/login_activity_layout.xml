@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guidelineImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".40" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guidelineButtons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".55" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guidelineMiddle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".5" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/create_account"
+        app:layout_constraintBottom_toTopOf="@id/guidelineImage"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:onClick="accediClicked"
+        app:layout_constraintTop_toBottomOf="@id/guidelineImage"
+        app:layout_constraintBottom_toTopOf="@id/guidelineButtons"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/guidelineMiddle">
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:onClick="registratiClicked"
+        app:layout_constraintTop_toBottomOf="@id/guidelineImage"
+        app:layout_constraintBottom_toTopOf="@id/guidelineButtons"
+        app:layout_constraintStart_toEndOf="@id/guidelineMiddle"
+        app:layout_constraintEnd_toEndOf="parent">
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/accedi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="normal"
+        android:text="@string/accedi"
+        android:textColor="@color/light_grey"
+        app:layout_constraintTop_toBottomOf="@id/guidelineImage"
+        app:layout_constraintBottom_toTopOf="@id/guidelineButtons"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/guidelineMiddle"
+        android:textSize="30sp"
+        />
+
+    <TextView
+        android:id="@+id/registrati"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="normal"
+        android:text="@string/registrati"
+        android:textColor="@color/light_grey"
+        app:layout_constraintTop_toBottomOf="@id/guidelineImage"
+        app:layout_constraintBottom_toTopOf="@id/guidelineButtons"
+        app:layout_constraintStart_toEndOf="@id/guidelineMiddle"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="30sp"
+        />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="@id/guidelineMiddle"
+        app:layout_constraintEnd_toEndOf="@id/guidelineMiddle"
+        app:layout_constraintTop_toBottomOf="@id/guidelineImage"
+        app:layout_constraintBottom_toTopOf="@id/guidelineButtons"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/light_grey"
+        />
+
+    <View
+        android:id="@+id/accedi_view"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/guidelineMiddle"
+        app:layout_constraintTop_toTopOf="@id/guidelineButtons"
+        app:layout_constraintBottom_toBottomOf="@id/guidelineButtons"
+        android:background="@color/light_grey"
+        />
+
+    <View
+        android:id="@+id/registrati_view"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        app:layout_constraintStart_toEndOf="@id/guidelineMiddle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guidelineButtons"
+        app:layout_constraintBottom_toBottomOf="@id/guidelineButtons"
+        android:background="@color/light_grey"
+        />
+
+    <FrameLayout
+        android:id="@+id/login_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/guidelineButtons"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+    </FrameLayout>
+
+
+
+</android.support.constraint.ConstraintLayout>
