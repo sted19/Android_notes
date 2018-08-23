@@ -59,6 +59,10 @@
     <LinearLayout
         android:id="@+id/space_for_progress_bars"
         android:layout_width="match_parent"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:layout_height="15dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"

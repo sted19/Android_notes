@@ -12,7 +12,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.SwipeUp.loginManagement.LoginActivity;
+import com.SwipeUp.accessManagement.AccessActivity;
 import com.SwipeUp.utilities.fullScreen.FullScreen;
 import com.SwipeUp.utilities.R;
 
@@ -54,8 +54,7 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     public void loginPressed(View view){
-        Toast.makeText(this.getBaseContext(), "Login to start swiping", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, AccessActivity.class);
         startActivity(intent);
     }
 

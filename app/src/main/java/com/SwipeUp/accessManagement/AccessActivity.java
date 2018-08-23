@@ -1,4 +1,4 @@
-package com.SwipeUp.loginManagement;
+package com.SwipeUp.accessManagement;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -11,8 +11,11 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.SwipeUp.utilities.R;
+import com.SwipeUp.utilities.fullScreen.FullScreen;
 
-public class LoginActivity extends AppCompatActivity{
+public class AccessActivity extends AppCompatActivity{
+
+    private FullScreen fullScreen;
 
     private View accediView;
     private View registratiView;
@@ -25,16 +28,20 @@ public class LoginActivity extends AppCompatActivity{
     private Fragment login;
     private Fragment register;
 
-    private boolean in_login;
+    private boolean in_login = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_activity_layout);
+        setContentView(R.layout.access_activity_layout);
 
         fm = getSupportFragmentManager();
         login = fm.findFragmentById(R.id.login_fragment_container);
         register = fm.findFragmentById(R.id.login_fragment_container);
+
+        fullScreen = new FullScreen(getWindow().getDecorView());
+        fullScreen.setUIFullScreen();
+        fullScreen.fullScreenKeeper();
 
         login = new LoginFragment();
         register = new RegisterFragment();
@@ -42,7 +49,7 @@ public class LoginActivity extends AppCompatActivity{
         color = getResources().getColor(R.color.pressed_button_light_blue);
 
         getUIElements();
-        accediClicked(null);
+        registratiClicked(null);
 
     }
 

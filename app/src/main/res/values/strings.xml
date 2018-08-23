@@ -21,6 +21,8 @@
     <string name="accedi">ACCEDI</string>
     <string name="registrati">REGISTRATI</string>
     <string name="utilizza">UTILIZZA IL TUO ACCOUNT SOCIAL</string>
+    <string name="inserisci">OPPURE INSERISCI LA TUA MAIL</string>
+    <string name="email">Email</string>
     <!-- fine scritte da sted-->
 
     <string-array name="color_spinner_array">

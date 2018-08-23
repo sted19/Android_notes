@@ -30,7 +30,7 @@
 
         </activity>
 
-        <activity android:name="com.SwipeUp.loginManagement.LoginActivity"
+        <activity android:name="com.SwipeUp.accessManagement.AccessActivity"
             android:screenOrientation="portrait">
 
         </activity>

@@ -1,4 +1,4 @@
-package com.SwipeUp.loginManagement;
+package com.SwipeUp.accessManagement;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
