@@ -23,6 +23,11 @@
     <string name="utilizza">UTILIZZA IL TUO ACCOUNT SOCIAL</string>
     <string name="inserisci">OPPURE INSERISCI LA TUA MAIL</string>
     <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="name">Nome</string>
+    <string name="surname">Cognome</string>
+    <string name="birthday">Data di nascita</string>
+    <string name="completa">INSERISCI I TUOI DATI PER COMPLETARE LA REGISTRAZIONE</string>
     <!-- fine scritte da sted-->
 
     <string-array name="color_spinner_array">
