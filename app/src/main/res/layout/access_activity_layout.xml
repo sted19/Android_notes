@@ -65,7 +65,7 @@
         app:layout_constraintBottom_toTopOf="@id/guidelineButtons"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/guidelineMiddle"
-        android:textSize="20sp"
+        android:textSize="16sp"
         />
 
     <TextView
@@ -79,7 +79,7 @@
         app:layout_constraintBottom_toTopOf="@id/guidelineButtons"
         app:layout_constraintStart_toEndOf="@id/guidelineMiddle"
         app:layout_constraintEnd_toEndOf="parent"
-        android:textSize="20sp"
+        android:textSize="16sp"
         />
 
     <View

@@ -119,6 +119,7 @@ public class ShuffleActivity extends AppCompatActivity {
 //        progressBarWrapper.stopBarAnimation();//per ricominciare? (probabilmente non necessario)
         Intent intent = new Intent(this,MainMenuActivity.class);
         startActivity(intent);
+        finish();
     }
 
     /**

@@ -1,9 +1,12 @@
 package com.SwipeUp.mainMenuManagement;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,11 +23,17 @@ public class MainMenuActivity extends AppCompatActivity {
 
     private FullScreen fullScreen;
 
-    private RelativeLayout manButton;
-    private RelativeLayout womanButton;
-    private ScrollView shuffles;
-    private TextView womanTextView;
-    private TextView manTextView;
+    private boolean manPressed;
+    private int color;
+
+    private FragmentManager fm;
+    private Fragment manMenuFragment;
+    private Fragment womanMenuFragment;
+
+    private TextView man;
+    private TextView woman;
+    private View manView;
+    private View womanView;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -35,22 +44,28 @@ public class MainMenuActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         setContentView(R.layout.mainmenu_activity_layout);
 
+        fm = getSupportFragmentManager();
+        manMenuFragment = fm.findFragmentById(R.id.mainmenu_fragment_container);
+        womanMenuFragment = fm.findFragmentById(R.id.mainmenu_fragment_container);
+        manMenuFragment = new ManMenuFragment();
+        womanMenuFragment = new WomanMenuFragment();
+
         //keeps the activity in fullscreen
         fullScreen = new FullScreen(getWindow().getDecorView());
         fullScreen.setUIFullScreen();
         fullScreen.fullScreenKeeper();
 
-        findElements();
+        color = getResources().getColor(R.color.pressed_button_light_blue);
+        findUIElements();
 
         manButtonPressed(null);
     }
 
-    private void findElements(){
-        manButton = findViewById(R.id.man_button);
-        womanButton = findViewById(R.id.woman_button);
-        shuffles = findViewById(R.id.shuffles);
-        manTextView = findViewById(R.id.man_button_text);
-        womanTextView = findViewById(R.id.woman_button_text);
+    private void findUIElements(){
+        man = findViewById(R.id.man_button_text);
+        woman = findViewById(R.id.woman_button_text);
+        manView = findViewById(R.id.man_view);
+        womanView = findViewById(R.id.woman_view);
     }
 
     public void loginPressed(View view){
@@ -58,62 +73,54 @@ public class MainMenuActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void topHitsPressed(View view){
-        Toast.makeText(this.getBaseContext(), "Top hits swiping", Toast.LENGTH_SHORT).show();
+    public void manButtonPressed(View v){
+        if(!manPressed){
+            setmanUI();
 
+            fm
+                    .beginTransaction()
+                    .replace(R.id.mainmenu_fragment_container,manMenuFragment)
+                    .commit();
+
+            manPressed = true;
+        }
     }
 
-    public void pantsShufflePressed(View view){
-        Toast.makeText(this.getBaseContext(), "Pants swiping", Toast.LENGTH_SHORT).show();
+    public void womanButtonPressed(View v){
+        if(manPressed){
+            setWomanUI();
+
+            fm
+                    .beginTransaction()
+                    .replace(R.id.mainmenu_fragment_container,womanMenuFragment)
+                    .commit();
+
+            manPressed = false;
+        }
     }
 
-    public void jacketShufflePressed(View view){
-        Toast.makeText(this.getBaseContext(), "Jackets swiping", Toast.LENGTH_SHORT).show();
+    public void setmanUI(){
+        manView.setBackgroundColor(color);
+        man.setTypeface(null,Typeface.BOLD);
+        man.setTextColor(color);
+        womanView.setBackgroundColor(Color.LTGRAY);
+        woman.setTypeface(null,Typeface.NORMAL);
+        woman.setTextColor(Color.LTGRAY);
     }
 
-    public void tshirtShufflePressed(View view){
-        Toast.makeText(this.getBaseContext(), "T-Shirt swiping", Toast.LENGTH_SHORT).show();
+    public void setWomanUI(){
+        womanView.setBackgroundColor(color);
+        woman.setTypeface(null,Typeface.BOLD);
+        woman.setTextColor(color);
+        manView.setBackgroundColor(Color.LTGRAY);
+        man.setTypeface(null,Typeface.NORMAL);
+        man.setTextColor(Color.LTGRAY);
     }
 
-    public void newShufflePressed(View view){
-        //Toast.makeText(this.getBaseContext(), "New swiping", Toast.LENGTH_SHORT).show();
-        this.finish();
-    }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public void manButtonPressed(View view){
 
-        //change man button
-        manTextView.setTextColor(getColor(R.color.pressed_button_light_blue));
-        manButton.setBackgroundResource(R.drawable.menu_button_selected);
-        manTextView.setTypeface(null, Typeface.BOLD);
-
-        //change woman button
-        womanTextView.setTextColor(getColor(R.color.light_grey));
-        womanButton.setBackgroundResource(R.drawable.menu_button_unselected);
-        womanTextView.setTypeface(null, Typeface.NORMAL);
-
-        shuffles.setVisibility(View.VISIBLE);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public void womanButtonPressed(View view){
-
-        //change woman button
-        womanTextView.setTextColor(getColor(R.color.pressed_button_light_blue));
-        womanButton.setBackgroundResource(R.drawable.menu_button_selected);
-        womanTextView.setTypeface(null, Typeface.BOLD);
-
-        //change man button
-        manTextView.setTextColor(getColor(R.color.light_grey));
-        manButton.setBackgroundResource(R.drawable.menu_button_unselected);
-        manTextView.setTypeface(null, Typeface.NORMAL);
-
-        shuffles.setVisibility(View.INVISIBLE);
-    }
     @Override
     public void finish(){
         super.finish();
-        overridePendingTransition(R.anim.slide_in_top,R.anim.slide_out_top);
     }
 }
