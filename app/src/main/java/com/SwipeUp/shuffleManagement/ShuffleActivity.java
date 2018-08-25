@@ -50,6 +50,8 @@ public class ShuffleActivity extends AppCompatActivity {
     private ImageView swipeUp;
     private ImageView swipeUpSwiped;
 
+    private boolean first=true;
+
     public static final int SwitchingDuration = 6000;
 
     private ButtonsListener.LikeListener likeListener;
@@ -65,6 +67,8 @@ public class ShuffleActivity extends AppCompatActivity {
         setContentView(R.layout.shuffle_activity_layout);
 
         showLogo();
+
+        first=true;
 
         /*
           Handling Full Screen in a different class
@@ -88,6 +92,14 @@ public class ShuffleActivity extends AppCompatActivity {
 
     public void setActualFragment(ShuffleFragment actualFragment) {
         this.actualFragment = actualFragment;
+    }
+
+    public boolean isFirst(){
+        return first;
+    }
+
+    public void setFirstFalse(){
+        this.first=false;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)

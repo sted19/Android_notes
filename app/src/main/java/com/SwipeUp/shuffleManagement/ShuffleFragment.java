@@ -36,7 +36,6 @@ import com.bumptech.glide.Glide;
 import static android.view.MotionEvent.ACTION_UP;
 
 public class ShuffleFragment extends Fragment{
-    private static boolean first = true;
     private static final String POSITION_KEY = "position";
 
     private ImageView imageView;
@@ -78,7 +77,6 @@ public class ShuffleFragment extends Fragment{
         setUpListeners(v);
 
         position = this.getArguments().getInt(POSITION_KEY);
-        //Log.e("creata la view: "," "+position);
 
         mWearingFactory = WearingFactory.getInstanceOf(mShuffleActivity);
 
@@ -184,12 +182,12 @@ public class ShuffleFragment extends Fragment{
         progressBarWrapper.restartAnimation();
         progressBarWrapper.stopBarAnimation();
 
-        if(first){
+        if(mShuffleActivity.isFirst()){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && progressBarWrapper!=null) {
                 progressBarWrapper.resumeBarAnimation();
             }
             mShuffleActivity.setFirstFragment(this);
-            first = false;
+            mShuffleActivity.setFirstFalse();
         }
     }
 
