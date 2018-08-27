@@ -53,6 +53,6 @@ public class ButtonHider extends AsyncTask<ViewModelStoreOwner, Void, ViewModelS
     @Override
     protected void onPostExecute(ViewModelStoreOwner aViewModelStoreOwner) {
         if(aViewModelStoreOwner != null)
-            ((ShuffleActivity)aViewModelStoreOwner).hideButtons();
+            ((ShuffleFragment)aViewModelStoreOwner).hideButtons();
     }
 }

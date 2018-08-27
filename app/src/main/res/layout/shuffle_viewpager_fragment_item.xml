@@ -1,14 +1,91 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
         android:id="@+id/swipe_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"/>
+
+    <ImageView
+        android:id="@+id/swipe_arrow"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="36dp"
+        android:layout_centerHorizontal="true"
+        android:background="@null"
+        android:scaleType="centerInside"
+        android:src="@drawable/swiped"
+        />
+
+    <ImageView
+        android:id="@+id/swipe_up_logo"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="54dp"
+        android:layout_centerHorizontal="true"
+        android:background="@null"
+        android:scaleType="centerInside"
+        android:src="@drawable/swiped_image"
+        android:visibility="invisible"
+        />
+
+    <ImageButton
+        android:id="@+id/dislike"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:scaleType="centerInside"
+        android:layout_marginLeft="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/dislike"
+        android:background="@null"/>
+
+    <ImageButton
+        android:id="@+id/like"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="56dp"
+        android:scaleType="centerInside"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/like"
+        android:background="@null"/>
+
+
+    <ImageView
+        android:id="@+id/heart"
+        android:layout_width="88dp"
+        android:layout_height="88dp"
+        android:layout_centerInParent="true"
+        android:alpha="1"
+        app:srcCompat="@drawable/white_heart" />
+
+
+    <ImageButton
+        android:id="@+id/x_button"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginEnd="6dp"
+        android:scaleType="centerInside"
+        android:background="@null"
+        android:onClick="go_back"
+        android:src="@drawable/back_x"/>
 
     <RelativeLayout
         android:id="@+id/swipe_bar"
@@ -18,25 +95,24 @@
         android:background="@drawable/top_bar_grad">
 
         <TextView
+            android:id="@+id/swipe_friend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Giacomo Miele"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:textStyle="bold"
-            android:fontFamily=""
-            android:textSize="16dp"
-            android:id="@+id/swipe_friend"
+            android:textSize="16sp"
             android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
             android:textColor="@android:color/background_light"/>
 
         <TextView
+            android:id="@+id/swipe_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=" + 200k"
-            android:fontFamily=""
             android:textSize="14sp"
-            android:id="@+id/swipe_number"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/swipe_friend"
             android:layout_toEndOf="@id/swipe_friend"
@@ -44,7 +120,6 @@
 
 
         <ImageView
-            android:id="@+id/swiped"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_centerVertical="true"
@@ -57,7 +132,7 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/space_for_progress_bars"
+        android:id="@+id/progress_bar_layout"
         android:layout_width="match_parent"
         android:layout_marginRight="10dp"
         android:layout_marginEnd="10dp"

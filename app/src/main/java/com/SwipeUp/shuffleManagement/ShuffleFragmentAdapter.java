@@ -6,40 +6,59 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
-
-import java.util.List;
+import android.view.ViewGroup;
 
 public class ShuffleFragmentAdapter extends FragmentStatePagerAdapter{
-    private FragmentManager mFragmentManager;
 
-    public ShuffleFragmentAdapter(ShuffleActivity shuffleActivity) {
-        super(shuffleActivity.getSupportFragmentManager());
-        mFragmentManager = shuffleActivity.getSupportFragmentManager();
+    private ShuffleFragment mCurrentFragment;
+    private Integer[] indexes = new Integer[5];
+    private int lastPosition = -1;
+
+    public ShuffleFragmentAdapter(FragmentManager fm) {
+        super(fm);
+        for(int i = 0; i<5; i++){
+            indexes[i] = 0;
+        }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     @Override
     public Fragment getItem(int position) {
-
-        Log.w("getItem frag:"," "+position);
-        /*
-         *  If the fragment in a certain position already exists, if it returned, without creating a
-         *  new one
-         */
-        List<Fragment> fragments = mFragmentManager.getFragments();
-
-        for(Fragment fragment : fragments){
-            if(fragment.getClass() == ShuffleFragment.class && ((ShuffleFragment)fragment)
-                    .getPosition() == position)
-                return fragment;
-        }
-
-        // the fragment does not exist, a new one will be created
-        return ShuffleFragment.newInstance(position);
+        Log.e("log2","getItem");
+        if(lastPosition == -1) return ShuffleFragment.newInstance(lastPosition,indexes[position]);
+        return ShuffleFragment.newInstance(position,indexes[position]);
     }
 
     @Override
     public int getCount() {
         return 5;
     }
+
+
+    /*
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public void setPrimaryItem(ViewGroup container, int position, Object object) {
+
+        Log.e("log1","setPrimaryItem");
+
+        ShuffleFragment shuffleFragment = (ShuffleFragment) object;
+        if(lastPosition != position) {
+            if (shuffleFragment != mCurrentFragment) {
+                if (mCurrentFragment != null) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                        mCurrentFragment.resetLastBar();
+                    }
+                    mCurrentFragment.stopBarAnimation();
+                }
+                if (shuffleFragment != null) {
+                    shuffleFragment.startProgressBar();
+                }
+
+                mCurrentFragment = shuffleFragment;
+            }
+            lastPosition = position;
+        }
+    }
+    */
 }

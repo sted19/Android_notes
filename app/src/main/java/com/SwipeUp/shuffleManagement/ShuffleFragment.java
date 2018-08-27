@@ -2,12 +2,8 @@ package com.SwipeUp.shuffleManagement;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.os.AsyncTask;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,15 +16,18 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
-import com.SwipeUp.shuffleManagement.shuffleListeners.shuffleOnGestureListener;
+import com.SwipeUp.mainMenuManagement.MainMenuActivity;
+import com.SwipeUp.shuffleManagement.shuffleListeners.ShuffleOnGestureListener;
 import com.SwipeUp.swipeUpManagement.SwipeUpActivity;
+import com.SwipeUp.utilities.Constants;
 import com.SwipeUp.utilities.R;
-import com.SwipeUp.utilities.asyncTasks.ButtonHider;
-import com.SwipeUp.utilities.asyncTasks.ShowLogo;
 import com.SwipeUp.utilities.progressBar.ProgressBarWrapper;
 import com.SwipeUp.utilities.wearingFactory.WearingFactory;
 import com.bumptech.glide.Glide;
@@ -36,81 +35,190 @@ import com.bumptech.glide.Glide;
 import static android.view.MotionEvent.ACTION_UP;
 
 public class ShuffleFragment extends Fragment{
-    private static final String POSITION_KEY = "position";
 
-    private ImageView imageView;
-    private int position;
+    private final static int NUM_ELEMENTS = 3;      // provvisorio, verrà preso dalla wearing
+
     private ShuffleActivity mShuffleActivity;
-    public ProgressBarWrapper progressBarWrapper;
-    private GestureDetector gestureDetector;
-    private WearingFactory mWearingFactory;
+    private WearingFactory wearingFactory;
 
-    private ButtonHider buttonHider;
+    private boolean likesPressed;
+    private boolean dislikesPressed;
 
+    private int displayWidth;
+
+    private  int position;
+    private int index;
     private int availableImages;
-    private int imageIndex = 0;
 
-    /**
-     * get a new ShuffleFragment
-     * @param position the position of the shuffleFragment in the viewPager
-     * @return an instance of ShuffleFragment
-     */
-    public static ShuffleFragment newInstance(int position){
+    private ProgressBarWrapper progressBarWrapper;
+
+    private ImageView swipeImage;
+    private ImageView swipeArrow;
+    private ImageView swipeUpLogo;
+    private ImageButton dislike;
+    private ImageButton like;
+    private ImageView heart;
+    private ImageButton xButton;
+    private LinearLayout progressBarLayout;
+
+    private View view;
+
+
+
+    public static ShuffleFragment newInstance(int position,int index){
         Bundle args = new Bundle();
-        args.putInt(POSITION_KEY, position);
+        args.putInt(Constants.POSITION, position);
+        args.putInt(Constants.INDEX,index);
 
         ShuffleFragment shuffleFragment = new ShuffleFragment();
         shuffleFragment.setArguments(args);
         return shuffleFragment;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mShuffleActivity = (ShuffleActivity) getActivity();
+        displayWidth = mShuffleActivity.getDisplayWidth();
+
+        position = getArguments().getInt(Constants.POSITION);
+        index = getArguments().getInt(Constants.INDEX);
+
+        wearingFactory = new WearingFactory(this, 1);
+        availableImages = NUM_ELEMENTS;
+
+
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.e("log3","instantiateView");
+        view = inflater.inflate(R.layout.shuffle_viewpager_fragment_item,container,false);
+
+        findUIElements(view);
+        setupListener(view);
+        instantiateProgressBars(view);
 
 
-        View v = inflater.inflate(R.layout.shuffle_viewpager_fragment_item, container,false);
-        findViews(v);
-        mShuffleActivity.setActualFragment(this);
-        setUpListeners(v);
-
-        position = this.getArguments().getInt(POSITION_KEY);
-
-        mWearingFactory = WearingFactory.getInstanceOf(mShuffleActivity);
-
-        instantiateProgressBars(v);
         Glide
-                .with(v)
-                .load(mWearingFactory.getNextImage())
-                .into(imageView);
+                .with(view)
+                .load(wearingFactory.getImage(index))
+                .into(swipeImage);
 
-        return v;
+        return view;
     }
 
-    /**
-     * Private method used to find views and to save them in instance variables
-     */
-    private void findViews(View v){
-        mShuffleActivity = (ShuffleActivity) getActivity();
-        imageView = v.findViewById(R.id.swipe_image);
+    public void findUIElements(View v){
+        swipeImage = v.findViewById(R.id.swipe_image);
+        swipeArrow = v.findViewById(R.id.swipe_arrow);
+        swipeUpLogo = v.findViewById(R.id.swipe_up_logo);
+        dislike = v.findViewById(R.id.dislike);
+        like = v.findViewById(R.id.like);
+        heart = v.findViewById(R.id.heart);
+        xButton = v.findViewById(R.id.x_button);
+        progressBarLayout = v.findViewById(R.id.progress_bar_layout);
+
+        like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                likePressed();
+            }
+        });
+
+        dislike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dislikePressed();
+            }
+        });
+
+        xButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                xButtonPressed();
+            }
+        });
+
+
     }
 
-    /**
-     * private method called by onCreate: sets listeners of the passed view
-     */
-    private void setUpListeners(View view){
-        gestureDetector = setupGestureDetector(mShuffleActivity);
+    public void likePressed(){
+        if(!likesPressed){
+            likesPressed = true;
+            dislikesPressed = false;
+            like.setImageResource(R.drawable.like_pressed);
+            dislike.setImageResource(R.drawable.dislike);
+            Animation appearance = AnimationUtils.loadAnimation(getContext(),R.anim.appearance);
+            like.startAnimation(appearance);
+            Animation pulse = AnimationUtils.loadAnimation(getContext(),R.anim.zoom_and_disappearance);
+            heart.startAnimation(pulse);
+        }
+        else{
+            Animation appearence=AnimationUtils.loadAnimation(getContext(), R.anim.appearance_like_x);
+            likesPressed = false;
+            like.setImageResource(R.drawable.like);
+            like.startAnimation(appearence);
+        }
 
-        view.setOnTouchListener(new View.OnTouchListener() {
+    }
+
+    public void dislikePressed(){
+        if(!dislikesPressed){
+            likesPressed = false;
+            dislikesPressed=true;
+            like.setImageResource(R.drawable.like);
+            dislike.setImageResource(R.drawable.dislike_pressed);
+            Animation appearance=AnimationUtils.loadAnimation(getContext(), R.anim.appearance_like_x);
+            dislike.startAnimation(appearance);
+        }
+        else{
+            dislikesPressed = false;
+            dislike.setImageResource(R.drawable.dislike);
+            Animation appearance=AnimationUtils.loadAnimation(getContext(), R.anim.appearance_like_x);
+            dislike.startAnimation(appearance);
+        }
+
+    }
+
+    public void xButtonPressed(){
+        Intent intent = new Intent(getActivity(),MainMenuActivity.class);
+        getActivity().overridePendingTransition(R.anim.slide_out, R.anim.slide_in);
+        startActivity(intent);
+        getActivity().finish();
+    }
+
+    public void hideButtons(){
+        Animation disappearance=AnimationUtils.loadAnimation(getContext(), R.anim.disappearance);
+        dislike.setVisibility(View.INVISIBLE);
+        like.setVisibility(View.INVISIBLE);
+        swipeArrow.setVisibility(View.INVISIBLE);
+        dislike.startAnimation(disappearance);
+        like.startAnimation(disappearance);
+        swipeArrow.startAnimation(disappearance);
+    }
+
+    public void showButtons(){
+        Animation appearance=AnimationUtils.loadAnimation(getContext(), R.anim.appearance);
+        dislike.setVisibility(View.VISIBLE);
+        like.setVisibility(View.VISIBLE);
+        swipeArrow.setVisibility(View.VISIBLE);
+        dislike.startAnimation(appearance);
+        like.startAnimation(appearance);
+        swipeArrow.startAnimation(appearance);
+    }
+
+    public void setupListener(View v){
+
+        final GestureDetector gestureDetector = new GestureDetector(getContext(),new ShuffleOnGestureListener(this,displayWidth));
+
+        v.setOnTouchListener(new View.OnTouchListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == ACTION_UP){
-                    buttonHider.cancel(true);
-                    if(buttonHider.getSlept())
-                        mShuffleActivity.showButtons();
+                    showButtons();
                     progressBarWrapper.resumeBarAnimation();
                 }
                 gestureDetector.onTouchEvent(event);
@@ -119,53 +227,29 @@ public class ShuffleFragment extends Fragment{
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    @Override
-    public void onStop(){
-        super.onStop();
-        progressBarWrapper.restartAnimation();
-        progressBarWrapper.stopBarAnimation();
+    public void resetButtons(){
+        like.setImageResource(R.drawable.like);
+        dislike.setImageResource(R.drawable.dislike);
+        likesPressed = false;
+        dislikesPressed = false;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    @Override
-    public void onResume() {    //is called when the fragment is recreated
-        super.onResume();
-        Log.e("on resume frag: ",position+"-------");
-        //progressBarWrapper.resetBarAnimation();
-    }
-
-
-
-    /**
-     * Private method called on initialization, sets the gestureDetector
-     */
-    private GestureDetector setupGestureDetector(final ShuffleActivity shuffleActivity){
-        return new GestureDetector(shuffleActivity, new shuffleOnGestureListener(this,
-                mShuffleActivity));
-    }
-
-    /**
-     * Private method called by onCreate to instantiate the progress bars
-     */
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    private void instantiateProgressBars(View v){
-
-        this.availableImages = mWearingFactory.getAvailableImages();
+    public void instantiateProgressBars(View v){
 
         ProgressBar[] vectProgressBar = new ProgressBar[availableImages];
 
-        LinearLayout linearLayout = v.findViewById(R.id.space_for_progress_bars);
+        LinearLayout linearLayout = v.findViewById(R.id.progress_bar_layout);
 
 
         for(int i=0; i<availableImages; i++){
 
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    mShuffleActivity.DisplayWidth / availableImages, 6);
+                    displayWidth / availableImages, 6);
 
-            layoutParams.setMargins(3, 15 ,3, 5);
+            layoutParams.setMargins(5, 15 ,5, 5);
 
-            ProgressBar progressBar=new ProgressBar(mShuffleActivity.getApplicationContext(),
+            ProgressBar progressBar=new ProgressBar(getContext(),
                     null, android.R.attr.progressBarStyleHorizontal);
             progressBar.setLayoutParams(layoutParams);
 
@@ -177,143 +261,86 @@ public class ShuffleFragment extends Fragment{
 
         }
 
-        this.progressBarWrapper=new ProgressBarWrapper(vectProgressBar, this);
+        progressBarWrapper= new ProgressBarWrapper(vectProgressBar, this);
 
-        progressBarWrapper.restartAnimation();
         progressBarWrapper.stopBarAnimation();
 
-        if(mShuffleActivity.isFirst()){
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && progressBarWrapper!=null) {
-                progressBarWrapper.resumeBarAnimation();
-            }
-            mShuffleActivity.setFirstFragment(this);
-            mShuffleActivity.setFirstFalse();
+        if(position == -1){
+            progressBarWrapper.restartAnimation();
+            position = 0;
         }
+
+
     }
 
-    /**
-     * Launches the SwipeUpActivity
-     */
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public void startSwipeUpActivity()
-    {
+    public void startSwipeUpActivity(){
         progressBarWrapper.stopBarAnimation();
-
-        Intent intent = new Intent(mShuffleActivity, SwipeUpActivity.class);
-
+        Intent intent = new Intent(getContext(), SwipeUpActivity.class);
         startActivity(intent);
+        // TODO inform through bundle which picture to show
     }
 
-    public int getPosition() {
-        return position;
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void stopBarAnimation(){
+        progressBarWrapper.stopBarAnimation();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void startProgressBar(){
+        if(progressBarWrapper != null)
+            progressBarWrapper.restartAnimation();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
+    public void resetLastBar(){
+        progressBarWrapper.resetLastBarAnimation();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void leftTap(){
-        Log.i("imageIndex", "is "+imageIndex);
-        if(imageIndex == 0)
-            triggerLeftSwipe();
+        Log.i("imageIndex", "is "+index);
+        if(index == 0)
+            mShuffleActivity.triggerLeftSwipe(position);
         else {
             progressBarWrapper.startPrevAnimation();
-            mShuffleActivity.LeftTap();
-            previousImage();
-            imageIndex--;
+            resetButtons();
+            like.clearAnimation();
+            index--;
+            if(index < 0)
+                index += NUM_ELEMENTS;
+            Drawable image = wearingFactory.getImage(index);
+            setNextImage(image);
         }
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void rightTap(){
-        Log.i("imageIndex", "is "+imageIndex);
-        if(imageIndex == availableImages - 1)
-            triggerRightSwipe();
+        Log.i("imageIndex", "is "+index);
+        if(index == availableImages - 1){
+            mShuffleActivity.triggerRightSwipe(position);
+        }
         else {
             progressBarWrapper.startNextAnimation();
-            mShuffleActivity.RightTap();
-            nextImage();
-            imageIndex++;
+            resetButtons();
+            like.clearAnimation();
+            index++;
+            if(index >= NUM_ELEMENTS){
+                index = 0;
+            }
+            Drawable image = wearingFactory.getImage(index);
+            setNextImage(image);
         }
     }
 
-    /**
-     * updates imageView with next image to be shown
-     */
-    public void nextImage(){
-        View v = getView();
-        if(v == null) return;
+    public void setNextImage(Drawable image){
         Glide
-                .with(v)
-                .load(mWearingFactory.getNextImage())
-                .into(imageView);
+                .with(view)
+                .load(image)
+                .into(swipeImage);
     }
 
-    /**
-     * updates imageView with previous image to be shown
-     */
-    public void previousImage(){
-        View v = getView();
-        if(v == null) return;
-        Glide
-                .with(v)
-                .load(mWearingFactory.getPreviousImage())
-                .into(imageView);
-    }
 
-    /**
-     * Setter fot the buttonHider field
-     */
-    public void setButtonHider(ButtonHider buttonHider){
-        this.buttonHider = buttonHider;
-    }
-
-    /**
-     * Starts the buttonHider (does not check if it is null)
-     */
-    public void executeButtonHider(){
-        buttonHider.execute(mShuffleActivity, this);
-    }
-
-    /**
-     * Interrupts the buttonHider (checking if it is null)
-     */
-    public void interruptButtonHider() {
-        if(buttonHider != null)
-            buttonHider.cancel(true);
-    }
-
-    /**
-     * Method called when all the available images for the current fragment have been shown
-     */
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    public void triggerRightSwipe(){
-        if(mShuffleActivity.setPagerPosition(position + 1))
-            progressBarWrapper.stopBarAnimation();
-    }
-
-    /**
-     * Method called on left tap at the first image
-     */
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public void triggerLeftSwipe(){
-        if(mShuffleActivity.setPagerPosition(position - 1))
-            progressBarWrapper.stopBarAnimation();
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
-    /*
-        set the progress of the last bar started at 0
-     */
-    public void resetLastBar(){
-        progressBarWrapper.resetLastBarAnimation();
-
-    }
-//
-//    /**
-//     * Starts a timer to show central swipe up logo
-//     */
-//    public void showLogo(){
-//        logoShower = new ShowLogo(this);
-//        logoShower.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-//    }
 }

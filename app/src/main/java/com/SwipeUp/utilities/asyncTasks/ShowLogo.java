@@ -4,7 +4,7 @@ import android.arch.lifecycle.ViewModelStoreOwner;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.SwipeUp.shuffleManagement.ShuffleActivity;
+import com.SwipeUp.shuffleManagement.ShuffleFragment;
 
 public class ShowLogo extends AsyncTask<ViewModelStoreOwner, Void, ViewModelStoreOwner> {
     /**
@@ -25,9 +25,13 @@ public class ShowLogo extends AsyncTask<ViewModelStoreOwner, Void, ViewModelStor
         return viewModelStoreOwners[0];
     }
 
+    /*
+
     @Override
     protected void onPostExecute(ViewModelStoreOwner aViewModelStoreOwner) {
         if(aViewModelStoreOwner != null)
-            ((ShuffleActivity)aViewModelStoreOwner).setSwipeUpImage();
+            ((ShuffleFragment)aViewModelStoreOwner).setSwipeUpImage();
     }
+
+    */
 }

@@ -8,10 +8,12 @@ import android.widget.ProgressBar;
 
 import com.SwipeUp.shuffleManagement.ShuffleActivity;
 import com.SwipeUp.shuffleManagement.ShuffleFragment;
+import com.SwipeUp.utilities.Constants;
 
 public class ProgressBarWrapper {
+
     private ProgressBar[] progressBars;
-    private int SwitchingDuration = ShuffleActivity.SwitchingDuration;
+    private int SwitchingDuration = Constants.SWIPE_DURATION;
     private ValueAnimator valueAnimator;
     private SwitchingAnimatorListener animatorListener;
     private ShuffleFragment mShuffleFragment;

@@ -7,9 +7,6 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.widget.Toast;
 
-import com.SwipeUp.shuffleManagement.ShuffleActivity;
-import com.bumptech.glide.Glide;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ConnectException;
@@ -19,39 +16,37 @@ import java.net.ConnectException;
  *     has that characteristics
  */
 public class WearingFactory {
-    private ShuffleActivity shuffleActivity;
-    private int position;
+
+
     private Drawable[] drawables;
     private ImageDownloader imageDownloader;
     private int availableImages;
     // sets this variable to false in order to disable connection requests to server and work with
     // available images in assets folder
-    public static boolean DEBUG_CONNECTION = true;
+    private static boolean DEBUG_CONNECTION = false;
 
-    private static WearingFactory mWearingFactory;
-    // I'll use a singleton pattern just for the moment, so it is very easy to make the app with
-    // more images
-    public static WearingFactory getInstanceOf(ShuffleActivity shuffleActivity){
-        if(mWearingFactory == null)
-            mWearingFactory = new WearingFactory(shuffleActivity);
-        return mWearingFactory;
-    }
+    private android.support.v4.app.Fragment fragmentCaller;
+    private int producer;
 
-    private WearingFactory(ShuffleActivity shuffleActivity) {
-        this.shuffleActivity = shuffleActivity;
-        position = -1;
+
+
+    public WearingFactory(android.support.v4.app.Fragment fragment, int producer) {
+
+        this.fragmentCaller = fragment;
+        this.producer = producer;
+
         if(DEBUG_CONNECTION){
             try {
-                imageDownloader = new ImageDownloader(shuffleActivity.getResources(), shuffleActivity.getApplicationContext());
+                imageDownloader = new ImageDownloader(fragmentCaller.getActivity().getResources(), fragmentCaller.getContext());
             } catch (ConnectException e) {
                 Toast.
-                        makeText(shuffleActivity.getBaseContext(), "No connection available, " +
-                                        "working locally", Toast.LENGTH_LONG)
+                        makeText(fragmentCaller.getContext(), "No connection available, " +
+                                "working locally", Toast.LENGTH_LONG)
                         .show();
             }
         }
 
-        AssetManager assetManager = shuffleActivity.getAssets();
+        AssetManager assetManager = fragmentCaller.getActivity().getAssets();
         createDrawables(assetManager);
 
     }
@@ -65,9 +60,9 @@ public class WearingFactory {
             availableImages = images.length;
             drawables = new Drawable[availableImages];
             InputStream inputStream;
-            Resources resources = shuffleActivity.getResources();
+            Resources resources = fragmentCaller.getResources();
             for (int i = 0; i < images.length; i++) {
-                inputStream = shuffleActivity.getAssets().open("clothes/" + images[i]);
+                inputStream = fragmentCaller.getActivity().getAssets().open("clothes/" + images[i]);
                 Drawable drawable = Drawable.createFromResourceStream(resources, new TypedValue(), inputStream, null);
                 drawables[i] = drawable;
             }
@@ -93,37 +88,11 @@ public class WearingFactory {
     }
 
     /**
-     * @return current index in iteration process
-     */
-    public int getPosition(){
-        return position;
-    }
-
-    /**
-     * @param position the index to which the iteration is set
-     */
-    public void setPosition(int position){
-        this.position = position;
-    }
-
-    /**
      * @return the next image to be drawn on the screen
      */
-    public Drawable getNextImage()
+    public Drawable getImage(int index)
     {
-        position=(position + 1)%availableImages;
-        return drawables[position];
-    }
-
-    /**
-     * @return the previous image to be drawn on the screen
-     */
-    public Drawable getPreviousImage()
-    {
-        position=(position -1);
-        if(position<0)
-            position+=availableImages;
-        return drawables[position];
+        return drawables[index];
     }
 
     /**
@@ -133,7 +102,7 @@ public class WearingFactory {
     {
         System.out.println("I'm giving you a "+color+" wear");
         System.out.println("I'm giving you a "+wtype);
-        
+
     }
 
 }
