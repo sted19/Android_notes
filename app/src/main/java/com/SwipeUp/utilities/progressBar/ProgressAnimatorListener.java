@@ -3,6 +3,7 @@ package com.SwipeUp.utilities.progressBar;
 import android.animation.Animator;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 
 public class ProgressAnimatorListener implements Animator.AnimatorListener {
     private ProgressBarWrapper progressBar;
@@ -29,6 +30,7 @@ public class ProgressAnimatorListener implements Animator.AnimatorListener {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onAnimationRepeat(Animator animation) {
+        Log.e(ProgressAnimatorListener.class.toString(),"REINITIALIZING");
         progressBar.reinitialize();
     }
 }

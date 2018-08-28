@@ -1,5 +1,6 @@
 package com.SwipeUp.shuffleManagement;
 
+import android.animation.StateListAnimator;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Color;
@@ -43,6 +44,7 @@ public class ShuffleFragment extends Fragment{
 
     private boolean likesPressed;
     private boolean dislikesPressed;
+    private boolean hidden;
 
     private int displayWidth;
 
@@ -84,7 +86,7 @@ public class ShuffleFragment extends Fragment{
         position = getArguments().getInt(Constants.POSITION);
         index = getArguments().getInt(Constants.INDEX);
 
-        wearingFactory = new WearingFactory(this, 1);
+        wearingFactory = WearingFactory.getInstance(this, 1);
         availableImages = NUM_ELEMENTS;
 
 
@@ -119,6 +121,7 @@ public class ShuffleFragment extends Fragment{
         heart = v.findViewById(R.id.heart);
         xButton = v.findViewById(R.id.x_button);
         progressBarLayout = v.findViewById(R.id.progress_bar_layout);
+
 
         like.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -190,6 +193,7 @@ public class ShuffleFragment extends Fragment{
     }
 
     public void hideButtons(){
+        hidden = true;
         Animation disappearance=AnimationUtils.loadAnimation(getContext(), R.anim.disappearance);
         dislike.setVisibility(View.INVISIBLE);
         like.setVisibility(View.INVISIBLE);
@@ -200,6 +204,7 @@ public class ShuffleFragment extends Fragment{
     }
 
     public void showButtons(){
+        hidden = false;
         Animation appearance=AnimationUtils.loadAnimation(getContext(), R.anim.appearance);
         dislike.setVisibility(View.VISIBLE);
         like.setVisibility(View.VISIBLE);
@@ -218,18 +223,22 @@ public class ShuffleFragment extends Fragment{
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == ACTION_UP){
-                    showButtons();
+                    if(hidden)showButtons();
                     progressBarWrapper.resumeBarAnimation();
                 }
                 gestureDetector.onTouchEvent(event);
                 return true;
             }
         });
+
     }
 
     public void resetButtons(){
-        like.setImageResource(R.drawable.like);
-        dislike.setImageResource(R.drawable.dislike);
+        if(likesPressed)
+            like.setImageResource(R.drawable.like);
+        if(dislikesPressed)
+            dislike.setImageResource(R.drawable.dislike);
+        //like.clearAnimation();
         likesPressed = false;
         dislikesPressed = false;
     }
@@ -301,12 +310,14 @@ public class ShuffleFragment extends Fragment{
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void leftTap(){
         Log.i("imageIndex", "is "+index);
-        if(index == 0)
+        if(index == 0) {
             mShuffleActivity.triggerLeftSwipe(position);
+            progressBarWrapper.restartAnimation();
+            progressBarWrapper.stopBarAnimation();
+        }
         else {
             progressBarWrapper.startPrevAnimation();
             resetButtons();
-            like.clearAnimation();
             index--;
             if(index < 0)
                 index += NUM_ELEMENTS;
@@ -321,11 +332,12 @@ public class ShuffleFragment extends Fragment{
         Log.i("imageIndex", "is "+index);
         if(index == availableImages - 1){
             mShuffleActivity.triggerRightSwipe(position);
+            progressBarWrapper.restartAnimation();
+            progressBarWrapper.stopBarAnimation();
         }
         else {
             progressBarWrapper.startNextAnimation();
             resetButtons();
-            like.clearAnimation();
             index++;
             if(index >= NUM_ELEMENTS){
                 index = 0;

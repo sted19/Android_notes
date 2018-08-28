@@ -38,7 +38,6 @@ public class ShuffleOnGestureListener implements GestureDetector.OnGestureListen
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        Log.v("fragment ", mShuffleFragment.toString());
         tapCalculation(e);
         return false;
     }
@@ -62,11 +61,6 @@ public class ShuffleOnGestureListener implements GestureDetector.OnGestureListen
         float dx=e1.getX()-e2.getX();
         if(dx<0)
             dx=-dx;
-
-        Log.e("fling","fling");
-        Log.e("dy",""+dy);
-        Log.e("dx",""+dx);
-        Log.e("tempo",""+e2.getDownTime());
 
         if(dy>0 && (dy>dx)){
             mShuffleFragment.startSwipeUpActivity();

@@ -77,7 +77,8 @@ public class ProgressBarWrapper {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     void reinitialize()
     {
-        mShuffleFragment.rightTap();
+        if(mShuffleFragment.getActivity()!=null && !mShuffleFragment.getActivity().isDestroyed())
+            mShuffleFragment.rightTap();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)

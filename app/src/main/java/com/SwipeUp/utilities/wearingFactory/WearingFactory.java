@@ -28,6 +28,14 @@ public class WearingFactory {
     private android.support.v4.app.Fragment fragmentCaller;
     private int producer;
 
+    private static WearingFactory instance;
+
+    public static WearingFactory getInstance(android.support.v4.app.Fragment fragment, int producer){
+        if(instance == null){
+            instance = new WearingFactory(fragment,producer);
+        }
+        return instance;
+    }
 
 
     public WearingFactory(android.support.v4.app.Fragment fragment, int producer) {

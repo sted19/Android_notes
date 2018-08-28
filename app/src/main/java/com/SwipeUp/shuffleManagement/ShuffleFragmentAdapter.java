@@ -24,8 +24,10 @@ public class ShuffleFragmentAdapter extends FragmentStatePagerAdapter{
 
     @Override
     public Fragment getItem(int position) {
-        Log.e("log2","getItem");
-        if(lastPosition == -1) return ShuffleFragment.newInstance(lastPosition,indexes[position]);
+        if(lastPosition == -1) {
+            lastPosition = 0;
+            return ShuffleFragment.newInstance(-1,indexes[position]);
+        }
         return ShuffleFragment.newInstance(position,indexes[position]);
     }
 
@@ -34,22 +36,28 @@ public class ShuffleFragmentAdapter extends FragmentStatePagerAdapter{
         return 5;
     }
 
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        super.destroyItem(container, position, object);
+    }
 
-    /*
+
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void setPrimaryItem(ViewGroup container, int position, Object object) {
 
-        Log.e("log1","setPrimaryItem");
+        Log.e("SET_PRIMARY_ITEM","OUTSIDE");
 
         ShuffleFragment shuffleFragment = (ShuffleFragment) object;
         if(lastPosition != position) {
             if (shuffleFragment != mCurrentFragment) {
+                Log.e("SET_PRIMARY_ITEM","INSIDE");
                 if (mCurrentFragment != null) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                         mCurrentFragment.resetLastBar();
+                        mCurrentFragment.stopBarAnimation();
                     }
-                    mCurrentFragment.stopBarAnimation();
                 }
                 if (shuffleFragment != null) {
                     shuffleFragment.startProgressBar();
@@ -60,5 +68,5 @@ public class ShuffleFragmentAdapter extends FragmentStatePagerAdapter{
             lastPosition = position;
         }
     }
-    */
+
 }
