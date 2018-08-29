@@ -95,6 +95,12 @@
         android:layout_height="36dp"
         android:background="@drawable/top_bar_grad">
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/blue_striscetta"
+            android:layout_alignParentTop="true"/>
+
         <TextView
             android:id="@+id/swipe_friend"
             android:layout_width="wrap_content"
@@ -135,10 +141,6 @@
     <LinearLayout
         android:id="@+id/progress_bar_layout"
         android:layout_width="match_parent"
-        android:layout_marginRight="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
         android:layout_height="15dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
