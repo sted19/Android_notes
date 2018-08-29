@@ -108,4 +108,10 @@ public class ProgressBarWrapper {
         valueAnimator.addListener(new ProgressAnimatorListener(this));
 
     }
+
+    public void destroyBars(){
+        progressBars = null;
+        valueAnimator.removeAllListeners();
+        animatorListener = null;
+    }
 }

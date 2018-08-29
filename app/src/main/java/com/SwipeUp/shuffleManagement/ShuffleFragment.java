@@ -112,6 +112,12 @@ public class ShuffleFragment extends Fragment{
         return view;
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        progressBarWrapper.destroyBars();
+    }
+
     public void findUIElements(View v){
         swipeImage = v.findViewById(R.id.swipe_image);
         swipeArrow = v.findViewById(R.id.swipe_arrow);
@@ -188,6 +194,7 @@ public class ShuffleFragment extends Fragment{
     public void xButtonPressed(){
         Intent intent = new Intent(getActivity(),MainMenuActivity.class);
         getActivity().overridePendingTransition(R.anim.slide_out, R.anim.slide_in);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         getActivity().finish();
     }

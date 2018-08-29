@@ -51,6 +51,5 @@ public class ManMenuFragment extends Fragment {
         Intent intent = new Intent(getActivity(), ShuffleActivity.class);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.slide_in_top,R.anim.slide_out_top);
-        getActivity().finish();
     }
 }

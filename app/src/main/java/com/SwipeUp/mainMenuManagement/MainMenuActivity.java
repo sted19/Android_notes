@@ -61,6 +61,7 @@ public class MainMenuActivity extends AppCompatActivity {
         manButtonPressed(null);
     }
 
+
     private void findUIElements(){
         man = findViewById(R.id.man_button_text);
         woman = findViewById(R.id.woman_button_text);
@@ -117,10 +118,4 @@ public class MainMenuActivity extends AppCompatActivity {
         man.setTextColor(Color.LTGRAY);
     }
 
-
-
-    @Override
-    public void finish(){
-        super.finish();
-    }
 }
