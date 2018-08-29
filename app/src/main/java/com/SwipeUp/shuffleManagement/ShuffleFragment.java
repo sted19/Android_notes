@@ -113,8 +113,8 @@ public class ShuffleFragment extends Fragment{
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onDestroy() {
+        super.onDestroy();
         progressBarWrapper.destroyBars();
     }
 
@@ -257,13 +257,21 @@ public class ShuffleFragment extends Fragment{
 
         LinearLayout linearLayout = v.findViewById(R.id.progress_bar_layout);
 
+        int padding=5;
 
         for(int i=0; i<availableImages; i++){
-
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    displayWidth / availableImages, 6);
+                    (displayWidth - (2 * padding * (availableImages+1))) / availableImages, 6);
+            if(i==0) {
+                layoutParams.setMargins(padding*2, 15 ,padding, 5);
+            }
+            else if(i==availableImages-1){
+                layoutParams.setMargins(padding, 15 ,padding*2, 5);
+            }
+            else{
+                layoutParams.setMargins(padding, 15 ,padding, 5);
+            }
 
-            layoutParams.setMargins(5, 15 ,5, 5);
 
             ProgressBar progressBar=new ProgressBar(getContext(),
                     null, android.R.attr.progressBarStyleHorizontal);
@@ -352,6 +360,12 @@ public class ShuffleFragment extends Fragment{
             Drawable image = wearingFactory.getImage(index);
             setNextImage(image);
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void resumeProgressBar(){
+        if(progressBarWrapper!= null)
+            progressBarWrapper.resumeBarAnimation();
     }
 
     public void setNextImage(Drawable image){

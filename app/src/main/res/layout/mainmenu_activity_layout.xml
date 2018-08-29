@@ -28,6 +28,13 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent=".5" />
 
+    <android.support.constraint.Guideline
+        android:id="@+id/guidelineShuffles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".40" />
+
     <ImageView
         android:id="@+id/login_button"
         android:layout_width="match_parent"
@@ -41,22 +48,22 @@
     <FrameLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:onClick="manButtonPressed"
         app:layout_constraintBottom_toTopOf="@id/guidelineButtons"
         app:layout_constraintEnd_toStartOf="@id/guidelineMiddle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guidelineLogin"
-        android:onClick="manButtonPressed">
+        app:layout_constraintTop_toBottomOf="@id/guidelineLogin">
 
     </FrameLayout>
 
     <FrameLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:onClick="womanButtonPressed"
         app:layout_constraintBottom_toTopOf="@id/guidelineButtons"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/guidelineMiddle"
-        app:layout_constraintTop_toBottomOf="@id/guidelineLogin"
-        android:onClick="womanButtonPressed">
+        app:layout_constraintTop_toBottomOf="@id/guidelineLogin">
 
     </FrameLayout>
 
@@ -117,12 +124,168 @@
         app:layout_constraintStart_toEndOf="@id/guidelineMiddle"
         app:layout_constraintTop_toTopOf="@id/guidelineButtons" />
 
+    <!-- tondini, da inserire in modo programmatico -->
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/guidelineButtons"
+        app:layout_constraintBottom_toTopOf="@id/guidelineShuffles"
+        android:layout_marginBottom="5dp"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:id="@+id/first_round"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/asos_logo"/>
+
+            <ImageView
+                android:id="@+id/blue_round"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
+                android:src="@drawable/blue_round"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="asos"
+                android:textSize="12sp"
+                android:layout_alignParentBottom="true"
+                android:textColor="@color/black"
+                android:layout_centerHorizontal="true" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/second_round"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/first_round"
+            android:layout_toEndOf="@+id/first_round"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/m_dutti_logo"/>
+
+            <ImageView
+                android:id="@+id/second_blue_round"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
+                android:src="@drawable/blue_round"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Massimo Dutti"
+                android:textSize="12sp"
+                android:layout_alignParentBottom="true"
+                android:textColor="@color/black"
+                android:layout_centerHorizontal="true" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/third_round"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/second_round"
+            android:layout_toEndOf="@+id/second_round"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/fila_logo"/>
+
+            <ImageView
+                android:id="@+id/third_blue_round"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
+                android:src="@drawable/blue_round"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fila"
+                android:textSize="12sp"
+                android:layout_alignParentBottom="true"
+                android:textColor="@color/black"
+                android:layout_centerHorizontal="true" />
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+
+
+
+
+    <!-- fine tondini, da inserire in modo programmatico -->
+
+
+
     <FrameLayout
         android:id="@+id/mainmenu_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/guidelineButtons"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guidelineShuffles">
+        
     </FrameLayout>
 
 
