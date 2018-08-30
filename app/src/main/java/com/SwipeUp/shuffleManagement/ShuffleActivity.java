@@ -3,20 +3,19 @@ package com.SwipeUp.shuffleManagement;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-
 import com.SwipeUp.mainMenuManagement.MainMenuActivity;
 import com.SwipeUp.utilities.R;
 import com.SwipeUp.utilities.fullScreen.FullScreen;
+import com.SwipeUp.utilities.wearingFactory.WearingFactory;
+import com.SwipeUp.utilities.wearingFactory.WearingFactoryNew;
 
 public class ShuffleActivity extends AppCompatActivity {
 
@@ -39,7 +38,11 @@ public class ShuffleActivity extends AppCompatActivity {
 
         findDisplayWidth();
 
+        WearingFactoryNew wearingFactory = WearingFactoryNew.getInstance();
+        wearingFactory.resetWearingFactory();
+
         setupViewPager();
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -87,6 +90,7 @@ public class ShuffleActivity extends AppCompatActivity {
         if(position < mShuffleAdapter.getCount() - 1) viewPager.setCurrentItem(position+1);
         else{  // all'ultimo swipe si va al menu
             Intent intent = new Intent(getBaseContext(),MainMenuActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();
         }

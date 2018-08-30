@@ -30,17 +30,20 @@ import com.SwipeUp.swipeUpManagement.SwipeUpActivity;
 import com.SwipeUp.utilities.Constants;
 import com.SwipeUp.utilities.R;
 import com.SwipeUp.utilities.progressBar.ProgressBarWrapper;
+import com.SwipeUp.utilities.wearingFactory.MiniWearingfactory;
 import com.SwipeUp.utilities.wearingFactory.WearingFactory;
+import com.SwipeUp.utilities.wearingFactory.WearingFactoryNew;
 import com.bumptech.glide.Glide;
 
 import static android.view.MotionEvent.ACTION_UP;
 
 public class ShuffleFragment extends Fragment{
 
-    private final static int NUM_ELEMENTS = 3;      // provvisorio, verrà preso dalla wearing
+    //private final static int NUM_ELEMENTS = 3;      // provvisorio, verrà preso dalla wearing
 
     private ShuffleActivity mShuffleActivity;
-    private WearingFactory wearingFactory;
+    //private WearingFactory wearingFactory;
+    private MiniWearingfactory miniWearingfactory;
 
     private boolean likesPressed;
     private boolean dislikesPressed;
@@ -50,7 +53,7 @@ public class ShuffleFragment extends Fragment{
 
     private  int position;
     private int index;
-    private int availableImages;
+    private int availableImages = 0;
 
     private ProgressBarWrapper progressBarWrapper;
 
@@ -86,8 +89,14 @@ public class ShuffleFragment extends Fragment{
         position = getArguments().getInt(Constants.POSITION);
         index = getArguments().getInt(Constants.INDEX);
 
-        wearingFactory = WearingFactory.getInstance(this, 1);
-        availableImages = NUM_ELEMENTS;
+        //wearingFactory = WearingFactory.getInstance(this, 1);
+        //availableImages = NUM_ELEMENTS;
+
+
+        miniWearingfactory = new MiniWearingfactory(this,position == -1 ? 0 : position);
+        availableImages = miniWearingfactory.getAvailableImages();
+        WearingFactoryNew wearingFactory = WearingFactoryNew.getInstance();
+        wearingFactory.addMiniWearingFactory(miniWearingfactory,position);
 
 
     }
@@ -96,7 +105,6 @@ public class ShuffleFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.e("log3","instantiateView");
         view = inflater.inflate(R.layout.shuffle_viewpager_fragment_item,container,false);
 
         findUIElements(view);
@@ -106,7 +114,7 @@ public class ShuffleFragment extends Fragment{
 
         Glide
                 .with(view)
-                .load(wearingFactory.getImage(index))
+                .load(miniWearingfactory.getImage(index))
                 .into(swipeImage);
 
         return view;
@@ -260,6 +268,7 @@ public class ShuffleFragment extends Fragment{
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void instantiateProgressBars(View v){
 
+        if(availableImages == 0) Log.e("HEEEEEELP","HEEEEEEEEELP");
         ProgressBar[] vectProgressBar = new ProgressBar[availableImages];
 
         LinearLayout linearLayout = v.findViewById(R.id.progress_bar_layout);
@@ -335,22 +344,25 @@ public class ShuffleFragment extends Fragment{
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void leftTap(){
         Log.i("imageIndex", "is "+index);
-        if(index == 0 && position!=0) {
-            mShuffleActivity.triggerLeftSwipe(position);
-            progressBarWrapper.restartAnimation();
-            progressBarWrapper.stopBarAnimation();
+        if(index == 0) {
+            if(position == 0)
+                resetLastBar();
+            else{
+                mShuffleActivity.triggerLeftSwipe(position);
+                progressBarWrapper.restartAnimation();
+                progressBarWrapper.stopBarAnimation();
+            }
         }
-        else if(index!=0 && position==0){               //sistemato il fatto che un tap a sx portasse al blocco del primo fragment
+        else {               //sistemato il fatto che un tap a sx portasse al blocco del primo fragment
             progressBarWrapper.startPrevAnimation();
             resetButtons();
             index--;
             if(index < 0)
-                index += NUM_ELEMENTS;
-            Drawable image = wearingFactory.getImage(index);
+                index += availableImages;
+            Drawable image = miniWearingfactory.getImage(index);
             setNextImage(image);
         }
-        else
-            resetLastBar();
+
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
@@ -366,10 +378,10 @@ public class ShuffleFragment extends Fragment{
             progressBarWrapper.startNextAnimation();
             resetButtons();
             index++;
-            if(index >= NUM_ELEMENTS){
+            if(index >= availableImages){
                 index = 0;
             }
-            Drawable image = wearingFactory.getImage(index);
+            Drawable image = miniWearingfactory.getImage(index);
             setNextImage(image);
         }
     }

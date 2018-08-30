@@ -11,12 +11,12 @@ import android.view.ViewGroup;
 public class ShuffleFragmentAdapter extends FragmentStatePagerAdapter{
 
     private ShuffleFragment mCurrentFragment;
-    private Integer[] indexes = new Integer[5];
+    private Integer[] indexes = new Integer[3];
     private int lastPosition = -1;
 
     public ShuffleFragmentAdapter(FragmentManager fm) {
         super(fm);
-        for(int i = 0; i<5; i++){
+        for(int i = 0; i<3; i++){
             indexes[i] = 0;
         }
     }
@@ -34,7 +34,7 @@ public class ShuffleFragmentAdapter extends FragmentStatePagerAdapter{
 
     @Override
     public int getCount() {
-        return 5;
+        return 3;
     }
 
     @Override
@@ -48,13 +48,11 @@ public class ShuffleFragmentAdapter extends FragmentStatePagerAdapter{
     @Override
     public void setPrimaryItem(ViewGroup container, int position, Object object) {
 
-        Log.e("SET_PRIMARY_ITEM","OUTSIDE");
 
         ShuffleFragment shuffleFragment = (ShuffleFragment) object;
 
 
             if (shuffleFragment != mCurrentFragment) {
-                Log.e("SET_PRIMARY_ITEM", "INSIDE");
                 if (mCurrentFragment != null) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                         mCurrentFragment.startProgressBar();
