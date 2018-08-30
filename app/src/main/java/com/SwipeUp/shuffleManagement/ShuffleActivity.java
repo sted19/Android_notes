@@ -59,11 +59,14 @@ public class ShuffleActivity extends AppCompatActivity {
         viewPager.setPageTransformer(true, new CubeTransformer());
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onResume() {
         super.onResume();
         fullScreen.setUIFullScreen();
+        mShuffleAdapter.resumeFragment();//aggiunto
     }
+
 
     public void findDisplayWidth(){
         DisplayMetrics metrics = new DisplayMetrics();

@@ -2,11 +2,13 @@ package com.SwipeUp.swipeUpManagement;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
+import com.SwipeUp.utilities.Constants;
 import com.SwipeUp.utilities.fullScreen.FullScreen;
 import com.SwipeUp.utilities.R;
 
@@ -18,6 +20,9 @@ public class SwipeUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_top);
         setContentView(R.layout.swipeup_activity_layout);
+
+        int position = getIntent().getIntExtra(Constants.POSITION,-1); //per chiedere alla wearing factory il capo corretto
+        int index=getIntent().getIntExtra(Constants.INDEX,-1);
 
         /**
          * to keep the activity fullScreen

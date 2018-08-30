@@ -24,6 +24,7 @@ public class ShuffleFragmentAdapter extends FragmentStatePagerAdapter{
 
     @Override
     public Fragment getItem(int position) {
+        Log.e("getItem","getItem");
         if(lastPosition == -1) {
             lastPosition = 0;
             return ShuffleFragment.newInstance(-1,indexes[position]);
@@ -50,9 +51,10 @@ public class ShuffleFragmentAdapter extends FragmentStatePagerAdapter{
         Log.e("SET_PRIMARY_ITEM","OUTSIDE");
 
         ShuffleFragment shuffleFragment = (ShuffleFragment) object;
-        if(lastPosition != position) {
+
+
             if (shuffleFragment != mCurrentFragment) {
-                Log.e("SET_PRIMARY_ITEM","INSIDE");
+                Log.e("SET_PRIMARY_ITEM", "INSIDE");
                 if (mCurrentFragment != null) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                         mCurrentFragment.startProgressBar();
@@ -62,12 +64,23 @@ public class ShuffleFragmentAdapter extends FragmentStatePagerAdapter{
                 if (shuffleFragment != null) {
                     shuffleFragment.startProgressBar();
                 }
-
                 mCurrentFragment = shuffleFragment;
             }
             lastPosition = position;
-        }
-        if(shuffleFragment != null) shuffleFragment.resumeProgressBar();
+
+        if(shuffleFragment != null)
+            shuffleFragment.resumeProgressBar();
+
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void resumeFragment(){//da chiamare per far ripartire il fragment, quando l activity fa onResume()
+
+
+        if(mCurrentFragment!=null)
+            mCurrentFragment.resumeProgressBar();
+
     }
 
 }

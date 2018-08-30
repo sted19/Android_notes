@@ -112,6 +112,13 @@ public class ShuffleFragment extends Fragment{
         return view;
     }
 
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void onStop(){
+        super.onStop();
+        progressBarWrapper.stopBarAnimation();
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -300,7 +307,10 @@ public class ShuffleFragment extends Fragment{
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void startSwipeUpActivity(){
         progressBarWrapper.stopBarAnimation();
+
         Intent intent = new Intent(getContext(), SwipeUpActivity.class);
+        intent.putExtra(Constants.POSITION, position);
+        intent.putExtra(Constants.INDEX,index);
         startActivity(intent);
         // TODO inform through bundle which picture to show
     }
@@ -325,12 +335,12 @@ public class ShuffleFragment extends Fragment{
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void leftTap(){
         Log.i("imageIndex", "is "+index);
-        if(index == 0) {
+        if(index == 0 && position!=0) {
             mShuffleActivity.triggerLeftSwipe(position);
             progressBarWrapper.restartAnimation();
             progressBarWrapper.stopBarAnimation();
         }
-        else {
+        else if(index!=0 && position==0){               //sistemato il fatto che un tap a sx portasse al blocco del primo fragment
             progressBarWrapper.startPrevAnimation();
             resetButtons();
             index--;
@@ -339,6 +349,8 @@ public class ShuffleFragment extends Fragment{
             Drawable image = wearingFactory.getImage(index);
             setNextImage(image);
         }
+        else
+            resetLastBar();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
