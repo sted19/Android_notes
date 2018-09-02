@@ -39,7 +39,7 @@ public class ShuffleOnGestureListener implements GestureDetector.OnGestureListen
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
         tapCalculation(e);
-        return false;
+        return true;
     }
 
 

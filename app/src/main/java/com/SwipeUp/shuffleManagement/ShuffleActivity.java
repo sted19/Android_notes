@@ -3,11 +3,16 @@ package com.SwipeUp.shuffleManagement;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.DragEvent;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -60,6 +65,7 @@ public class ShuffleActivity extends AppCompatActivity {
         mShuffleAdapter = new ShuffleFragmentAdapter(fm);
         viewPager.setAdapter(mShuffleAdapter);
         viewPager.setPageTransformer(true, new CubeTransformer());
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -83,17 +89,45 @@ public class ShuffleActivity extends AppCompatActivity {
 
 
     public void triggerLeftSwipe(int position){
-        if(position > 0) viewPager.setCurrentItem(position-1);
+        if(position > 0){
+            viewPager.setCurrentItem(position-1);
+            //viewPager.setDoubleTapBug(true);
+            /*
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    //viewPager.setDoubleTapBug(false);
+                }
+            }, 5);*/
+        }
     }
 
     public void triggerRightSwipe(int position){
-        if(position < mShuffleAdapter.getCount() - 1) viewPager.setCurrentItem(position+1);
+        if(position < mShuffleAdapter.getCount() - 1){
+            viewPager.setCurrentItem(position+1);
+            /*
+            viewPager.setDoubleTapBug(true);
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    viewPager.setDoubleTapBug(false);
+                }
+            }, 5);*/ //TODO può funzionare per gestire il doppio tap che non fa fare lo swipe
+        }
         else{  // all'ultimo swipe si va al menu
             Intent intent = new Intent(getBaseContext(),MainMenuActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();
         }
+
+
+
+        Log.e("settato","settato");
     }
+
+
+
 
 }

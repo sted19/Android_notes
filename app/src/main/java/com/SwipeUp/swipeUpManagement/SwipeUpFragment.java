@@ -12,12 +12,22 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import com.SwipeUp.shuffleManagement.ShuffleFragment;
+import com.SwipeUp.utilities.Constants;
 import com.SwipeUp.utilities.R;
+import com.SwipeUp.utilities.wearingFactory.MiniWearingfactory;
+import com.SwipeUp.utilities.wearingFactory.WearingFactory;
+import com.SwipeUp.utilities.wearingFactory.WearingFactoryNew;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class SwipeUpFragment extends Fragment {
+
+    private MiniWearingfactory miniWearingfactory;
+
+    private int position;
+    private int index;
 
     private Spinner sizeSpinner;
     private Spinner colorSpinner;
@@ -30,9 +40,22 @@ public class SwipeUpFragment extends Fragment {
     private ArrayList<String> colorArray = new ArrayList<>(
             Arrays.asList("Rosa", "Blu", "Fosforescente"));
 
+    public static SwipeUpFragment newInstance(int position, int index){
+        Bundle args = new Bundle();
+        args.putInt(Constants.POSITION, position);
+        args.putInt(Constants.INDEX,index);
+
+        SwipeUpFragment shuffleFragment = new SwipeUpFragment();
+        shuffleFragment.setArguments(args);
+        return shuffleFragment;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        position = getArguments().getInt(Constants.POSITION);
+        index = getArguments().getInt(Constants.INDEX);
 
     }
 
@@ -52,7 +75,7 @@ public class SwipeUpFragment extends Fragment {
 
     private void setupViewPager(View v){
         viewPager = (ViewPager)v.findViewById(R.id.swipeUp_menu_viewPager);
-        adapter = new SwipeUpMenuCustomAdapter(getContext());
+        adapter = new SwipeUpMenuCustomAdapter(getContext(),position,index);
         viewPager.setAdapter(adapter);
     }
 

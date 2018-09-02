@@ -19,10 +19,14 @@ public class ProgressBarWrapper {
     private ShuffleFragment mShuffleFragment;
     private int actual=0;
 
-    public ProgressBarWrapper(ProgressBar[] progressBars, ShuffleFragment shuffleFragment) {
+    public ProgressBarWrapper(ProgressBar[] progressBars, ShuffleFragment shuffleFragment,int index) {
         this.progressBars = progressBars;
         this.mShuffleFragment = shuffleFragment;
         setUpBar();
+
+        for(int i=0;i<index;i++){
+            startNextAnimation();
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)

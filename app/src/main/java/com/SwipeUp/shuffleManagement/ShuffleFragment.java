@@ -111,7 +111,6 @@ public class ShuffleFragment extends Fragment{
         setupListener(view);
         instantiateProgressBars(view);
 
-
         Glide
                 .with(view)
                 .load(miniWearingfactory.getImage(index))
@@ -268,7 +267,6 @@ public class ShuffleFragment extends Fragment{
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void instantiateProgressBars(View v){
 
-        if(availableImages == 0) Log.e("HEEEEEELP","HEEEEEEEEELP");
         ProgressBar[] vectProgressBar = new ProgressBar[availableImages];
 
         LinearLayout linearLayout = v.findViewById(R.id.progress_bar_layout);
@@ -296,12 +294,13 @@ public class ShuffleFragment extends Fragment{
             progressBar.setBackgroundColor(Color.GRAY);
             progressBar.getProgressDrawable().setColorFilter(Color.WHITE,android.graphics.PorterDuff.Mode.SRC_IN);
 
+
             vectProgressBar[i]=progressBar;
             linearLayout.addView(progressBar);
 
         }
 
-        progressBarWrapper= new ProgressBarWrapper(vectProgressBar, this);
+        progressBarWrapper= new ProgressBarWrapper(vectProgressBar, this,index);
 
         progressBarWrapper.stopBarAnimation();
 
@@ -337,7 +336,7 @@ public class ShuffleFragment extends Fragment{
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
     public void resetLastBar(){
-        progressBarWrapper.resetLastBarAnimation();
+        Log.e("resetlastbar","resetlastbar");progressBarWrapper.resetLastBarAnimation();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
@@ -388,6 +387,7 @@ public class ShuffleFragment extends Fragment{
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void resumeProgressBar(){
+        Log.e("resume","resume");
         if(progressBarWrapper!= null)
             progressBarWrapper.resumeBarAnimation();
     }
@@ -399,5 +399,12 @@ public class ShuffleFragment extends Fragment{
                 .into(swipeImage);
     }
 
+    public int getIndex(){
+        return index;
+    }
+
+    public void upgradeView(){
+        setNextImage(miniWearingfactory.getImage(index));
+    }
 
 }

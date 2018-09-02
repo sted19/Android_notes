@@ -20,7 +20,6 @@ public class SwipeUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_top);
         setContentView(R.layout.swipeup_activity_layout);
-
         int position = getIntent().getIntExtra(Constants.POSITION,-1); //per chiedere alla wearing factory il capo corretto
         int index=getIntent().getIntExtra(Constants.INDEX,-1);
 
@@ -35,7 +34,7 @@ public class SwipeUpActivity extends AppCompatActivity {
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
 
         if(fragment == null){
-            fragment = new SwipeUpFragment();
+            fragment = SwipeUpFragment.newInstance(position,index);
             fm
                     .beginTransaction()
                     .add(R.id.fragment_container, fragment)

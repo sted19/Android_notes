@@ -25,7 +25,8 @@ public class CreateDrawables implements Runnable{
     }
 
     @Override
-    public void run() {
+    public  void run() {
+        Log.e("iniziio run","inizio run");
         if(executed) return;
 
 
@@ -49,15 +50,16 @@ public class CreateDrawables implements Runnable{
         executed = true;
     }
 
-    public boolean getFailed(){
+    public  boolean getFailed(){
         return  failed;
     }
 
-    public Drawable[] getDrawables(){
+    public  Drawable[] getDrawables(){
+        Log.e("iniziio get","inizio get");
         return drawables;
     }
 
-    public boolean getExecuted(){
+    public  boolean getExecuted(){
         return executed;
     }
 }

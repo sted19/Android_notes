@@ -19,6 +19,11 @@ public class MiniWearingfactory {
         Resources resources = fragmentCaller.getResources();
         createDrawables = new CreateDrawables(position,assetManager,resources);
         createDrawables.run();
+
+        //TODO mettere il thread con t.start fa fare male l animazione di swipe
+
+        //Thread t=new Thread(createDrawables);
+        //t.start();
         String[] images = null;
         try {
             images = assetManager.list(position.toString());
@@ -26,7 +31,7 @@ public class MiniWearingfactory {
             e.printStackTrace();
         }
         availableImages = images.length;
-        Log.e("AVAILABLE_IMAGES",availableImages+"");
+        //Log.e("AVAILABLE_IMAGES",availableImages+"");
     }
 
     public int getAvailableImages(){
@@ -34,17 +39,8 @@ public class MiniWearingfactory {
     }
 
     public Drawable getImage(int index){
-        if(drawables == null){
-            while(!createDrawables.getExecuted()){
-                if(createDrawables.getFailed()) break;
-                try {
-                    wait(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            drawables = createDrawables.getDrawables();
-        }
+        if(drawables == null)
+            drawables=createDrawables.getDrawables();
         return drawables[index];
     }
 

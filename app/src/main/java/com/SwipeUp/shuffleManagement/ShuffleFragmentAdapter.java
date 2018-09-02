@@ -10,9 +10,11 @@ import android.view.ViewGroup;
 
 public class ShuffleFragmentAdapter extends FragmentStatePagerAdapter{
 
+    private ShuffleFragment lastCreated;
     private ShuffleFragment mCurrentFragment;
     private Integer[] indexes = new Integer[3];
     private int lastPosition = -1;
+    private boolean canGo=true;
 
     public ShuffleFragmentAdapter(FragmentManager fm) {
         super(fm);
@@ -24,14 +26,16 @@ public class ShuffleFragmentAdapter extends FragmentStatePagerAdapter{
 
     @Override
     public Fragment getItem(int position) {
-        Log.e("getItem","getItem");
-        if(lastPosition == -1) {
-            lastPosition = 0;
-            return ShuffleFragment.newInstance(-1,indexes[position]);
-        }
-        return ShuffleFragment.newInstance(position,indexes[position]);
-    }
+        Log.e("getItem", "getItem");
 
+        if (lastPosition == -1) {
+            lastPosition = 0;
+            lastCreated = ShuffleFragment.newInstance(-1, indexes[position]);
+        } else {
+            lastCreated = ShuffleFragment.newInstance(position, indexes[position]);
+        }
+        return lastCreated;
+    }
     @Override
     public int getCount() {
         return 3;
@@ -40,6 +44,10 @@ public class ShuffleFragmentAdapter extends FragmentStatePagerAdapter{
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         super.destroyItem(container, position, object);
+
+        ShuffleFragment shuffleFragment = (ShuffleFragment) object;
+        indexes[position] = shuffleFragment.getIndex();
+
     }
 
 
@@ -52,19 +60,19 @@ public class ShuffleFragmentAdapter extends FragmentStatePagerAdapter{
         ShuffleFragment shuffleFragment = (ShuffleFragment) object;
 
 
-            if (shuffleFragment != mCurrentFragment) {
-                if (mCurrentFragment != null) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                        mCurrentFragment.startProgressBar();
-                        mCurrentFragment.stopBarAnimation();
-                    }
+        if (shuffleFragment != mCurrentFragment) {
+            if (mCurrentFragment != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                    mCurrentFragment.startProgressBar();
+                    mCurrentFragment.stopBarAnimation();
                 }
-                if (shuffleFragment != null) {
-                    shuffleFragment.startProgressBar();
-                }
-                mCurrentFragment = shuffleFragment;
             }
-            lastPosition = position;
+            if (shuffleFragment != null) {
+                shuffleFragment.startProgressBar();
+            }
+            mCurrentFragment = shuffleFragment;
+        }
+        lastPosition = position;
 
         if(shuffleFragment != null)
             shuffleFragment.resumeProgressBar();
@@ -79,6 +87,10 @@ public class ShuffleFragmentAdapter extends FragmentStatePagerAdapter{
         if(mCurrentFragment!=null)
             mCurrentFragment.resumeProgressBar();
 
+    }
+
+    public void upgradeView(){
+        lastCreated.upgradeView();
     }
 
 }

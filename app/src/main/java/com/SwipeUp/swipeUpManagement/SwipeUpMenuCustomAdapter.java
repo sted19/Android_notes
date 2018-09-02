@@ -7,15 +7,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.SwipeUp.utilities.R;
-
+import com.SwipeUp.utilities.wearingFactory.MiniWearingfactory;
+import com.SwipeUp.utilities.wearingFactory.WearingFactoryNew;
 
 
 public class SwipeUpMenuCustomAdapter extends PagerAdapter{
 
     private Context ctx;
+    private int index;
+    private MiniWearingfactory miniWearingfactory;
 
-    public SwipeUpMenuCustomAdapter(Context context){
+    public SwipeUpMenuCustomAdapter(Context context,int position,int index){
         this.ctx = context;
+        miniWearingfactory= WearingFactoryNew.getInstance().getMiniWearingFactory(position);
+        this.index=index;
+
     }
 
     @Override
@@ -38,11 +44,24 @@ public class SwipeUpMenuCustomAdapter extends PagerAdapter{
         final TouchImageView image = (TouchImageView) v.findViewById(R.id.swipeUp_menu_swipe_image);
 
         switch(position){
+
+            case 0:
+                image.setImageDrawable(miniWearingfactory.getImage(index));
+                break;
+
+            case 1:
+                image.setImageDrawable(miniWearingfactory.getImage(index));
+                break;
+
+            case 2:
+                image.setImageDrawable(miniWearingfactory.getImage(index));
+                break;
+            /*
             case 0:
                 /**
                  * Quando faccio zoom-out dalla size minima, si vede la foto che si riduce, ma dietro resta la foto intera
                  * questo accade solo con gigi e con il cuore, con la foto dei pantaloni va bene invece.
-                 */
+
                 image.setImageResource(R.drawable.gigiproietti);
                 break;
             case 1:
@@ -51,6 +70,7 @@ public class SwipeUpMenuCustomAdapter extends PagerAdapter{
             case 2:
                 image.setImageResource(R.drawable.green_heart);
                 break;
+                */
         }
 
 
