@@ -3,12 +3,16 @@ package com.SwipeUp.utilities.progressBar;
 import android.animation.ValueAnimator;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.ProgressBar;
 
 import com.SwipeUp.shuffleManagement.ShuffleActivity;
 import com.SwipeUp.shuffleManagement.ShuffleFragment;
 import com.SwipeUp.utilities.Constants;
+import com.SwipeUp.utilities.R;
 
 public class ProgressBarWrapper {
 
@@ -118,4 +122,21 @@ public class ProgressBarWrapper {
         valueAnimator.removeAllListeners();
         animatorListener = null;
     }
+
+     public void hideBars(){
+         Animation disappearance= AnimationUtils.loadAnimation(mShuffleFragment.getContext(), R.anim.disappearance);
+        for(int i=0;i<progressBars.length;i++){
+            progressBars[i].setVisibility(View.INVISIBLE);
+            progressBars[i].startAnimation(disappearance);
+        }
+     }
+
+     public void showBars(){
+         Animation appearance=AnimationUtils.loadAnimation(mShuffleFragment.getContext(), R.anim.appearance);
+         for(int i=0;i<progressBars.length;i++){
+             progressBars[i].setVisibility(View.VISIBLE);
+             progressBars[i].startAnimation(appearance);
+         }
+
+     }
 }

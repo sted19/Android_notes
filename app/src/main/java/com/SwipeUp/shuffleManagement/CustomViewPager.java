@@ -34,7 +34,7 @@ public class CustomViewPager extends ViewPager{
      * @param disable false --> no swiping in viewPager
      */
     public void disableScroll(boolean disable){
-        this.disable = disable;
+        Log.e("disabled","disabled");this.disable = disable;
     }
 
     /**

@@ -6,16 +6,19 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
+import com.SwipeUp.shuffleManagement.ShuffleActivity;
 import com.SwipeUp.shuffleManagement.ShuffleFragment;
 
 public class ShuffleOnGestureListener implements GestureDetector.OnGestureListener {
 
     private ShuffleFragment mShuffleFragment;
     private int displayWidth;
+    private ShuffleActivity shuffleActivity;
 
     public ShuffleOnGestureListener(ShuffleFragment mShuffleFragment, int displayWidth) {
         this.mShuffleFragment = mShuffleFragment;
         this.displayWidth = displayWidth;
+        shuffleActivity=(ShuffleActivity) mShuffleFragment.getActivity();
 
     }
 
@@ -39,7 +42,7 @@ public class ShuffleOnGestureListener implements GestureDetector.OnGestureListen
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
         tapCalculation(e);
-        return true;
+        return false;
     }
 
 
@@ -52,6 +55,8 @@ public class ShuffleOnGestureListener implements GestureDetector.OnGestureListen
     @Override
     public void onLongPress(MotionEvent e) {
         mShuffleFragment.hideButtons();
+        ShuffleActivity shuffleActivity=(ShuffleActivity) mShuffleFragment.getActivity();
+        shuffleActivity.disbleScroll(true);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)

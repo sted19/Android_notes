@@ -127,7 +127,9 @@ public class ShuffleActivity extends AppCompatActivity {
         Log.e("settato","settato");
     }
 
-
+    public void disbleScroll(boolean b){
+        this.viewPager.disableScroll(b);
+    }
 
 
 }

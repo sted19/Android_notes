@@ -216,9 +216,14 @@ public class ShuffleFragment extends Fragment{
     public void hideButtons(){
         hidden = true;
         Animation disappearance=AnimationUtils.loadAnimation(getContext(), R.anim.disappearance);
+
+        xButton.setVisibility(View.INVISIBLE);
         dislike.setVisibility(View.INVISIBLE);
         like.setVisibility(View.INVISIBLE);
         swipeArrow.setVisibility(View.INVISIBLE);
+        progressBarWrapper.hideBars();
+
+        xButton.startAnimation(disappearance);
         dislike.startAnimation(disappearance);
         like.startAnimation(disappearance);
         swipeArrow.startAnimation(disappearance);
@@ -227,9 +232,14 @@ public class ShuffleFragment extends Fragment{
     public void showButtons(){
         hidden = false;
         Animation appearance=AnimationUtils.loadAnimation(getContext(), R.anim.appearance);
+
+        xButton.setVisibility(View.VISIBLE);
         dislike.setVisibility(View.VISIBLE);
         like.setVisibility(View.VISIBLE);
         swipeArrow.setVisibility(View.VISIBLE);
+        progressBarWrapper.showBars();
+
+        xButton.setAnimation(appearance);
         dislike.startAnimation(appearance);
         like.startAnimation(appearance);
         swipeArrow.startAnimation(appearance);
@@ -244,7 +254,12 @@ public class ShuffleFragment extends Fragment{
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == ACTION_UP){
-                    if(hidden)showButtons();
+                    if(hidden){
+                        Log.e("ACTION_UP","ACTION_UP");
+                        showButtons();
+                        ShuffleActivity shuffleActivity=(ShuffleActivity) getActivity();
+                        shuffleActivity.disbleScroll(false);
+                    }
                     progressBarWrapper.resumeBarAnimation();
                 }
                 gestureDetector.onTouchEvent(event);
