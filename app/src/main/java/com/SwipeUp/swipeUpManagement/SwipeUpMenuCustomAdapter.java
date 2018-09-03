@@ -26,7 +26,7 @@ public class SwipeUpMenuCustomAdapter extends PagerAdapter{
 
     @Override
     public int getCount() {
-        return 3;
+        return 1;
     }
 
     @Override
@@ -45,6 +45,10 @@ public class SwipeUpMenuCustomAdapter extends PagerAdapter{
 
         switch(position){
 
+            /**
+             * Quando faccio zoom-out dalla size minima, si vede la foto che si riduce, ma dietro resta la foto intera
+             * questo accade solo con la prima e l'ultima foto, quando sono 3.
+             */
             case 0:
                 image.setImageDrawable(miniWearingfactory.getImage(index));
                 break;
@@ -56,21 +60,6 @@ public class SwipeUpMenuCustomAdapter extends PagerAdapter{
             case 2:
                 image.setImageDrawable(miniWearingfactory.getImage(index));
                 break;
-            /*
-            case 0:
-                /**
-                 * Quando faccio zoom-out dalla size minima, si vede la foto che si riduce, ma dietro resta la foto intera
-                 * questo accade solo con gigi e con il cuore, con la foto dei pantaloni va bene invece.
-
-                image.setImageResource(R.drawable.gigiproietti);
-                break;
-            case 1:
-                image.setImageResource(R.drawable.pants);
-                break;
-            case 2:
-                image.setImageResource(R.drawable.green_heart);
-                break;
-                */
         }
 
 

@@ -65,6 +65,7 @@ public class ShuffleActivity extends AppCompatActivity {
         mShuffleAdapter = new ShuffleFragmentAdapter(fm);
         viewPager.setAdapter(mShuffleAdapter);
         viewPager.setPageTransformer(true, new CubeTransformer());
+        viewPager.setOffscreenPageLimit(5);
 
     }
 

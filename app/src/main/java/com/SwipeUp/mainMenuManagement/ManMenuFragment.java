@@ -9,16 +9,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.SwipeUp.shuffleManagement.ShuffleActivity;
 import com.SwipeUp.utilities.R;
 
 public class ManMenuFragment extends Fragment {
 
-    private FrameLayout topHits;
-    private FrameLayout news;
-    private FrameLayout tShirts;
-    private FrameLayout pants;
+    private RelativeLayout topHits;
+    private RelativeLayout news;
+    private RelativeLayout tShirts;
+    private RelativeLayout pants;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

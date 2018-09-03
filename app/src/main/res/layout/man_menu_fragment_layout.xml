@@ -1,206 +1,242 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/background_light">
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guidelineMiddle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent=".4" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guidelineFirst"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".15" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guidelineSecond"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".40" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guidelineThird"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".65" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guidelineFourth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".90" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guidelineSpace1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".20" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guidelineSpace2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".45" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guidelineSpace3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".70" />
-
-    <FrameLayout
-        android:id="@+id/top_hits_layout"
-        android:layout_width="0dp"
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/top_hits_bottom"
-        app:layout_constraintBottom_toTopOf="@id/guidelineFirst"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-    </FrameLayout>
-
-    <ImageView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@drawable/top_hits_shuffle"
-        app:layout_constraintBottom_toTopOf="@id/guidelineFirst"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/guidelineMiddle"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/top_hits"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/guidelineFirst"
-        app:layout_constraintEnd_toEndOf="@id/guidelineMiddle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <FrameLayout
-        android:id="@+id/news_layout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/shuffle_background_color"
-        app:layout_constraintBottom_toTopOf="@id/guidelineSecond"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guidelineSpace1">
-    </FrameLayout>
-
-    <ImageView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@drawable/new_shuffle"
-        app:layout_constraintBottom_toTopOf="@id/guidelineSecond"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/guidelineMiddle"
-        app:layout_constraintTop_toBottomOf="@id/guidelineSpace1" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:text="@string/new_str"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/guidelineSecond"
-        app:layout_constraintEnd_toEndOf="@id/guidelineMiddle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guidelineSpace1" />
+            <include layout="@layout/man_menu_fragment_rounds_layout"/>
+
+
+            <RelativeLayout
+                android:id="@+id/top_hits_layout"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:background="@color/top_hits_bottom"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/top_hits"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginLeft="32dp" />
+
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/top_hits_shuffle"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="64dp"
+                    android:layout_marginEnd="64dp"/>
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/left_arrow"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="18dp"
+                    android:layout_marginEnd="18dp"/>
+
+            </RelativeLayout>
 
 
 
+            <RelativeLayout
+                android:id="@+id/news_layout"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@color/shuffle_background_color"
+                android:layout_marginTop="32dp"
+                android:orientation="horizontal">
 
-    <FrameLayout
-        android:id="@+id/tshirts_layout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/shuffle_background_color"
-        app:layout_constraintBottom_toTopOf="@id/guidelineThird"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guidelineSpace2">
-    </FrameLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/new_str"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginLeft="32dp" />
 
-    <ImageView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@drawable/tshirt_shuffle"
-        app:layout_constraintBottom_toTopOf="@id/guidelineThird"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/guidelineMiddle"
-        app:layout_constraintTop_toBottomOf="@id/guidelineSpace2" />
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/new_shuffle"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="64dp"
+                    android:layout_marginEnd="64dp"/>
 
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/left_arrow"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="18dp"
+                    android:layout_marginEnd="18dp"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:text="@string/thirts"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/guidelineThird"
-        app:layout_constraintEnd_toEndOf="@id/guidelineMiddle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guidelineSpace2" />
-
-
-
-
-    <FrameLayout
-        android:id="@+id/pants_layout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/shuffle_background_color"
-        app:layout_constraintBottom_toTopOf="@id/guidelineFourth"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guidelineSpace3">
-    </FrameLayout>
-
-    <ImageView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@drawable/pants_shuffle"
-        app:layout_constraintBottom_toTopOf="@id/guidelineFourth"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/guidelineMiddle"
-        app:layout_constraintTop_toBottomOf="@id/guidelineSpace3" />
+            </RelativeLayout>
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:text="@string/pants"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/guidelineFourth"
-        app:layout_constraintEnd_toEndOf="@id/guidelineMiddle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guidelineSpace3" />
+            <RelativeLayout
+                android:id="@+id/tshirts_layout"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@color/shuffle_background_color"
+                android:layout_marginTop="32dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tshirts"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginLeft="32dp" />
+
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/tshirt_shuffle"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="64dp"
+                    android:layout_marginEnd="64dp"/>
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/left_arrow"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="18dp"
+                    android:layout_marginEnd="18dp"/>
+
+            </RelativeLayout>
 
 
+            <RelativeLayout
+                android:id="@+id/pants_layout"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@color/shuffle_background_color"
+                android:layout_marginTop="32dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pants"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginLeft="32dp" />
+
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/pants_shuffle"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="64dp"
+                    android:layout_marginEnd="64dp"/>
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/left_arrow"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="18dp"
+                    android:layout_marginEnd="18dp"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/jackets_layout"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@color/shuffle_background_color"
+                android:layout_marginTop="32dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/jackets"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginLeft="32dp" />
+
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/jackets_shuffle"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="64dp"
+                    android:layout_marginEnd="64dp"/>
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/left_arrow"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="18dp"
+                    android:layout_marginEnd="18dp"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 
 </android.support.constraint.ConstraintLayout>
