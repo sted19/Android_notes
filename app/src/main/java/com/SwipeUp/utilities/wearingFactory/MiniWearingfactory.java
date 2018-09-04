@@ -18,12 +18,12 @@ public class MiniWearingfactory {
         AssetManager assetManager = fragmentCaller.getActivity().getAssets();
         Resources resources = fragmentCaller.getResources();
         createDrawables = new CreateDrawables(position,assetManager,resources);
-        createDrawables.run();
+        //createDrawables.run();
 
         //TODO mettere il thread con t.start fa fare male l animazione di swipe
 
-        //Thread t=new Thread(createDrawables);
-        //t.start();
+        Thread t=new Thread(createDrawables);
+        t.start();
         String[] images = null;
         try {
             images = assetManager.list(position.toString());

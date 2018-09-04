@@ -70,10 +70,11 @@ public class ShuffleFragment extends Fragment{
 
 
 
-    public static ShuffleFragment newInstance(int position,int index){
+    public static ShuffleFragment newInstance(int position,int index,boolean createNext){
         Bundle args = new Bundle();
         args.putInt(Constants.POSITION, position);
         args.putInt(Constants.INDEX,index);
+        args.putBoolean("createNext",createNext);
 
         ShuffleFragment shuffleFragment = new ShuffleFragment();
         shuffleFragment.setArguments(args);
@@ -88,7 +89,34 @@ public class ShuffleFragment extends Fragment{
 
         position = getArguments().getInt(Constants.POSITION);
         index = getArguments().getInt(Constants.INDEX);
+        boolean createNext=getArguments().getBoolean("createNext");
 
+
+        if(position==-1){//creo sia per 0 che per 1
+            MiniWearingfactory next=new MiniWearingfactory(this,1);
+            miniWearingfactory=new MiniWearingfactory(this,0);
+
+            WearingFactoryNew wearingFactoryNew=WearingFactoryNew.getInstance();
+            wearingFactoryNew.addMiniWearingFactory(miniWearingfactory,0);
+            wearingFactoryNew.addMiniWearingFactory(next,1);
+        }
+        else if(createNext){
+            MiniWearingfactory next=new MiniWearingfactory(this,position+1);
+            WearingFactoryNew wearingFactoryNew=WearingFactoryNew.getInstance();
+            wearingFactoryNew.addMiniWearingFactory(next,position+1);
+
+            miniWearingfactory=wearingFactoryNew.getMiniWearingFactory(position);
+        }
+        else{
+            MiniWearingfactory next=new MiniWearingfactory(this,position-1);
+            WearingFactoryNew wearingFactoryNew=WearingFactoryNew.getInstance();
+            wearingFactoryNew.addMiniWearingFactory(next,position-1);
+
+            miniWearingfactory=wearingFactoryNew.getMiniWearingFactory(position);
+        }
+
+        availableImages = miniWearingfactory.getAvailableImages();
+        /*
         //wearingFactory = WearingFactory.getInstance(this, 1);
         //availableImages = NUM_ELEMENTS;
 
@@ -98,6 +126,7 @@ public class ShuffleFragment extends Fragment{
         WearingFactoryNew wearingFactory = WearingFactoryNew.getInstance();
         wearingFactory.addMiniWearingFactory(miniWearingfactory,position);
 
+        */
 
     }
 

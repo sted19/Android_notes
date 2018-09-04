@@ -30,10 +30,14 @@ public class ShuffleFragmentAdapter extends FragmentStatePagerAdapter{
 
         if (lastPosition == -1) {
             lastPosition = 0;
-            lastCreated = ShuffleFragment.newInstance(-1, indexes[position]);
-        } else {
-            lastCreated = ShuffleFragment.newInstance(position, indexes[position]);
+            lastCreated = ShuffleFragment.newInstance(-1, indexes[position],true);
+        } else if(position > lastPosition){
+            lastCreated = ShuffleFragment.newInstance(position, indexes[position],true);
         }
+        else{
+            lastCreated = ShuffleFragment.newInstance(position, indexes[position],false);
+        }
+
         return lastCreated;
     }
     @Override
