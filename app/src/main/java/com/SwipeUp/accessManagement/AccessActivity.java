@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.SwipeUp.utilities.R;
@@ -21,6 +22,7 @@ public class AccessActivity extends AppCompatActivity{
     private View registratiView;
     private TextView accedi;
     private TextView registrati;
+    private ImageButton xButton;
 
     private int color;
 
@@ -58,6 +60,14 @@ public class AccessActivity extends AppCompatActivity{
         registratiView = findViewById(R.id.registrati_view);
         accedi = findViewById(R.id.accedi);
         registrati = findViewById(R.id.registrati);
+        xButton = findViewById(R.id.x_button_access);
+
+        xButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
 

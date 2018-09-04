@@ -50,6 +50,20 @@ public class ShuffleActivity extends AppCompatActivity {
 
     }
 
+
+    /**
+     * faccio override di onBackPressed per fargli fare la stessa cosa del xButtonPressed nel fragment, ma non dovrebbe funzionare così
+     * in generale, perché crea la mainActivity anche se non ci siamo mai passati prima.
+     */
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this,MainMenuActivity.class);
+        overridePendingTransition(R.anim.slide_out, R.anim.slide_in);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     private void setupViewPager() {
 

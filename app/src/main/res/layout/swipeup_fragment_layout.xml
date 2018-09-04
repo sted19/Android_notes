@@ -45,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5"/>
+        app:layout_constraintGuide_percent="0.5" />
 
     <android.support.constraint.Guideline
         android:id="@+id/sm_guideline0vertical"
@@ -129,7 +129,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent=".95" />
+        app:layout_constraintGuide_percent=".99" />
 
     <android.support.constraint.Guideline
         android:id="@+id/sm_subGuideline01horizontal"
@@ -143,10 +143,20 @@
         android:id="@+id/swipeUp_menu_viewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/sm_guideline0horizontal"
-        app:layout_constraintBottom_toTopOf="@id/sm_guideline70horizontal">
+        app:layout_constraintBottom_toTopOf="@id/sm_guideline70horizontal"
+        app:layout_constraintTop_toBottomOf="@id/sm_guideline0horizontal">
 
     </android.support.v4.view.ViewPager>
+
+    <ImageView
+        android:id="@+id/downArrow"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:contentDescription="@string/downArrow"
+        android:padding="10dp"
+        android:src="@drawable/down_arrow"
+        app:layout_constraintRight_toLeftOf="@id/sm_subGuideline95vertical"
+        app:layout_constraintTop_toBottomOf="@id/sm_subGuideline01horizontal" />
 
     <!-- First Block -->
 
@@ -266,9 +276,9 @@
         android:text="@string/brand"
         android:textColor="@color/dark_grey"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/sm_subGuideline75horizontal"
         app:layout_constraintStart_toStartOf="@id/sm_subGuideline05vertical"
-        app:layout_constraintTop_toBottomOf="@id/sm_guideline70horizontal"
-        app:layout_constraintBottom_toTopOf="@id/sm_subGuideline75horizontal"/>
+        app:layout_constraintTop_toBottomOf="@id/sm_guideline70horizontal" />
 
     <TextView
         android:id="@+id/priceTag"
@@ -278,8 +288,8 @@
         android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/sm_guideline80horizontal"
-        app:layout_constraintTop_toBottomOf="@id/sm_subGuideline75horizontal"
-        app:layout_constraintStart_toStartOf="@id/sm_subGuideline05vertical" />
+        app:layout_constraintStart_toStartOf="@id/sm_subGuideline05vertical"
+        app:layout_constraintTop_toBottomOf="@id/sm_subGuideline75horizontal" />
 
     <TextView
         android:id="@+id/price"
@@ -290,8 +300,8 @@
         android:text="@string/price"
         android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@id/sm_guideline80horizontal"
-        app:layout_constraintTop_toBottomOf="@id/sm_subGuideline75horizontal"
-        app:layout_constraintLeft_toRightOf="@id/priceTag" />
+        app:layout_constraintLeft_toRightOf="@id/priceTag"
+        app:layout_constraintTop_toBottomOf="@id/sm_subGuideline75horizontal" />
 
     <TextView
         android:id="@+id/Guidataglie"
@@ -299,28 +309,28 @@
         android:layout_height="wrap_content"
         android:text="@string/taglie"
         android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="@id/sm_subGuideline55vertical"
+        app:layout_constraintBottom_toTopOf="@id/sm_guideline80horizontal"
         app:layout_constraintEnd_toEndOf="@id/sm_subGuideline95vertical"
-        app:layout_constraintTop_toBottomOf="@id/sm_guideline70horizontal"
-        app:layout_constraintBottom_toTopOf="@id/sm_guideline80horizontal"/>
+        app:layout_constraintStart_toStartOf="@id/sm_subGuideline55vertical"
+        app:layout_constraintTop_toBottomOf="@id/sm_guideline70horizontal" />
 
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/sm_guideline90horizontal"
-        app:layout_constraintStart_toStartOf="@id/sm_guideline0vertical"
         app:layout_constraintEnd_toEndOf="@id/sm_guideline50vertical"
+        app:layout_constraintStart_toStartOf="@id/sm_guideline0vertical"
         app:layout_constraintTop_toBottomOf="@id/sm_guideline80horizontal">
 
         <Spinner
             android:id="@+id/color_spinner"
+            style="@style/Base.Widget.AppCompat.TextView.SpinnerItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/Base.Widget.AppCompat.TextView.SpinnerItem"
-            android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:popupBackground="@color/white"
-            android:textAlignment="center"/>
+            android:textAlignment="center" />
 
     </RelativeLayout>
 
@@ -328,19 +338,19 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/sm_subGuideline89horizontal"
-        app:layout_constraintStart_toStartOf="@id/sm_subGuideline55vertical"
         app:layout_constraintEnd_toEndOf="@id/sm_subGuideline95vertical"
+        app:layout_constraintStart_toStartOf="@id/sm_subGuideline55vertical"
         app:layout_constraintTop_toBottomOf="@id/sm_subGuideline81horizontal">
 
         <Spinner
             android:id="@+id/taglia_spinner"
-            android:layout_width="wrap_content"
             style="@style/Base.Widget.AppCompat.TextView.SpinnerItem"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:popupBackground="@color/white"
             android:layout_centerVertical="true"
-            android:textAlignment="center"/>
+            android:popupBackground="@color/white"
+            android:textAlignment="center" />
 
     </RelativeLayout>
 
@@ -354,16 +364,6 @@
         app:layout_constraintLeft_toRightOf="@id/sm_subGuideline05vertical"
         app:layout_constraintRight_toLeftOf="@id/sm_subGuideline95vertical"
         app:layout_constraintTop_toBottomOf="@id/sm_subGuideline91horizontal" />
-
-    <ImageView
-        android:contentDescription="@string/downArrow"
-        android:id="@+id/downArrow"
-        android:layout_width="30dp"
-        android:layout_height="40dp"
-        android:src="@drawable/down_arrow"
-        app:layout_constraintRight_toLeftOf="@id/sm_subGuideline95vertical"
-        app:layout_constraintTop_toBottomOf="@id/sm_subGuideline01horizontal"/>
-
 
 
 </android.support.constraint.ConstraintLayout>

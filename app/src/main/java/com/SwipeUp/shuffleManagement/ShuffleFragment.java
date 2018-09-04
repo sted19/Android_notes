@@ -119,16 +119,16 @@ public class ShuffleFragment extends Fragment{
 
         switch (position){
             case 0:
-                brandLogo.setImageResource(R.drawable.asos_logo);
+                brandLogo.setImageResource(R.drawable.brand_logo);
                 break;
             case 1:
-                brandLogo.setImageResource(R.drawable.fila_logo);
+                brandLogo.setImageResource(R.drawable.brand_logo);
                 break;
             case 2:
-                brandLogo.setImageResource(R.drawable.m_dutti_logo);
+                brandLogo.setImageResource(R.drawable.brand_logo);
                 break;
             default:
-                brandLogo.setImageResource(R.drawable.blue_round);
+                brandLogo.setImageResource(R.drawable.brand_logo);
 
 
         }
