@@ -62,9 +62,10 @@ public class ShuffleFragment extends Fragment{
     private ImageView swipeUpLogo;
     private ImageButton dislike;
     private ImageButton like;
-    private ImageView heart;
     private ImageButton xButton;
-    private LinearLayout progressBarLayout;
+    private ImageButton brandLogo;
+    private ImageView heart;
+
 
     private View view;
 
@@ -145,6 +146,22 @@ public class ShuffleFragment extends Fragment{
                 .load(miniWearingfactory.getImage(index))
                 .into(swipeImage);
 
+        switch (position){
+            case 0:
+                brandLogo.setImageResource(R.drawable.asos_logo);
+                break;
+            case 1:
+                brandLogo.setImageResource(R.drawable.fila_logo);
+                break;
+            case 2:
+                brandLogo.setImageResource(R.drawable.m_dutti_logo);
+                break;
+            default:
+                brandLogo.setImageResource(R.drawable.blue_round);
+
+
+        }
+
         return view;
     }
 
@@ -169,7 +186,7 @@ public class ShuffleFragment extends Fragment{
         like = v.findViewById(R.id.like);
         heart = v.findViewById(R.id.heart);
         xButton = v.findViewById(R.id.x_button);
-        progressBarLayout = v.findViewById(R.id.progress_bar_layout);
+        brandLogo = v.findViewById(R.id.brand_logo);
 
 
         like.setOnClickListener(new View.OnClickListener() {
