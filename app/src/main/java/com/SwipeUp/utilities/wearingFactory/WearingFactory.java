@@ -110,7 +110,6 @@ public class WearingFactory {
     {
         System.out.println("I'm giving you a "+color+" wear");
         System.out.println("I'm giving you a "+wtype);
-
     }
 
 }

@@ -2,7 +2,6 @@ package com.SwipeUp.shuffleManagement.shuffleListeners;
 
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
@@ -56,7 +55,7 @@ public class ShuffleOnGestureListener implements GestureDetector.OnGestureListen
     public void onLongPress(MotionEvent e) {
         mShuffleFragment.hideButtons();
         ShuffleActivity shuffleActivity=(ShuffleActivity) mShuffleFragment.getActivity();
-        shuffleActivity.disbleScroll(true);
+        shuffleActivity.disableScroll(true);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)

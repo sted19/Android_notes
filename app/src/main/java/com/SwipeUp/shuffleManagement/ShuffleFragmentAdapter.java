@@ -23,7 +23,6 @@ public class ShuffleFragmentAdapter extends FragmentStatePagerAdapter{
         }
     }
 
-
     @Override
     public Fragment getItem(int position) {
         Log.e("getItem", "getItem");
@@ -36,6 +35,7 @@ public class ShuffleFragmentAdapter extends FragmentStatePagerAdapter{
         }
         return lastCreated;
     }
+
     @Override
     public int getCount() {
         return 3;
@@ -50,22 +50,17 @@ public class ShuffleFragmentAdapter extends FragmentStatePagerAdapter{
 
     }
 
-
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void setPrimaryItem(ViewGroup container, int position, Object object) {
 
-
         ShuffleFragment shuffleFragment = (ShuffleFragment) object;
 
-
         if (shuffleFragment != mCurrentFragment) {
-            if (mCurrentFragment != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                    mCurrentFragment.startProgressBar();
-                    mCurrentFragment.stopBarAnimation();
-                }
+            if (mCurrentFragment != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                mCurrentFragment.startProgressBar();
+                mCurrentFragment.stopBarAnimation();
+//                mCurrentFragment.interruptShowLogo();
             }
             if (shuffleFragment != null) {
                 shuffleFragment.startProgressBar();
@@ -74,15 +69,15 @@ public class ShuffleFragmentAdapter extends FragmentStatePagerAdapter{
         }
         lastPosition = position;
 
-        if(shuffleFragment != null)
+        if(shuffleFragment != null) {
             shuffleFragment.resumeProgressBar();
-
-
+//            shuffleFragment.startShowLogo();
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public void resumeFragment(){//da chiamare per far ripartire il fragment, quando l activity fa onResume()
-
+    public void resumeFragment(){
+        //da chiamare per far ripartire il fragment, quando l activity fa onResume()
 
         if(mCurrentFragment!=null)
             mCurrentFragment.resumeProgressBar();

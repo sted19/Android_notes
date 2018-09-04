@@ -1,6 +1,5 @@
 package com.SwipeUp.shuffleManagement;
 
-import android.animation.StateListAnimator;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Color;
@@ -29,9 +28,9 @@ import com.SwipeUp.shuffleManagement.shuffleListeners.ShuffleOnGestureListener;
 import com.SwipeUp.swipeUpManagement.SwipeUpActivity;
 import com.SwipeUp.utilities.Constants;
 import com.SwipeUp.utilities.R;
+import com.SwipeUp.utilities.asyncTasks.ShowLogo;
 import com.SwipeUp.utilities.progressBar.ProgressBarWrapper;
 import com.SwipeUp.utilities.wearingFactory.MiniWearingfactory;
-import com.SwipeUp.utilities.wearingFactory.WearingFactory;
 import com.SwipeUp.utilities.wearingFactory.WearingFactoryNew;
 import com.bumptech.glide.Glide;
 
@@ -51,7 +50,7 @@ public class ShuffleFragment extends Fragment{
 
     private int displayWidth;
 
-    private  int position;
+    private int position;
     private int index;
     private int availableImages = 0;
 
@@ -65,11 +64,11 @@ public class ShuffleFragment extends Fragment{
     private ImageButton xButton;
     private ImageButton brandLogo;
     private ImageView heart;
-
+    private ImageView mBlueRound;
 
     private View view;
 
-
+    private ShowLogo mShowLogo;
 
     public static ShuffleFragment newInstance(int position,int index){
         Bundle args = new Bundle();
@@ -117,21 +116,7 @@ public class ShuffleFragment extends Fragment{
                 .load(miniWearingfactory.getImage(index))
                 .into(swipeImage);
 
-        switch (position){
-            case 0:
-                brandLogo.setImageResource(R.drawable.brand_logo);
-                break;
-            case 1:
-                brandLogo.setImageResource(R.drawable.brand_logo);
-                break;
-            case 2:
-                brandLogo.setImageResource(R.drawable.brand_logo);
-                break;
-            default:
-                brandLogo.setImageResource(R.drawable.brand_logo);
-
-
-        }
+        brandLogo.setImageResource(R.drawable.brand_logo);
 
         return view;
     }
@@ -158,7 +143,7 @@ public class ShuffleFragment extends Fragment{
         heart = v.findViewById(R.id.heart);
         xButton = v.findViewById(R.id.x_button);
         brandLogo = v.findViewById(R.id.brand_logo);
-
+        mBlueRound = v.findViewById(R.id.brand_logo_blue_round);
 
         like.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,7 +165,6 @@ public class ShuffleFragment extends Fragment{
                 xButtonPressed();
             }
         });
-
 
     }
 
@@ -232,34 +216,43 @@ public class ShuffleFragment extends Fragment{
 
     public void hideButtons(){
         hidden = true;
-        Animation disappearance=AnimationUtils.loadAnimation(getContext(), R.anim.disappearance);
+        Animation disappearance = AnimationUtils.loadAnimation(getContext(), R.anim.disappearance);
 
         xButton.setVisibility(View.INVISIBLE);
         dislike.setVisibility(View.INVISIBLE);
         like.setVisibility(View.INVISIBLE);
         swipeArrow.setVisibility(View.INVISIBLE);
+        brandLogo.setVisibility(View.INVISIBLE);
+        mBlueRound.setVisibility(View.INVISIBLE);
+
         progressBarWrapper.hideBars();
 
         xButton.startAnimation(disappearance);
         dislike.startAnimation(disappearance);
         like.startAnimation(disappearance);
         swipeArrow.startAnimation(disappearance);
+        brandLogo.startAnimation(disappearance);
+        mBlueRound.startAnimation(disappearance);
     }
 
     public void showButtons(){
         hidden = false;
-        Animation appearance=AnimationUtils.loadAnimation(getContext(), R.anim.appearance);
+        Animation appearance = AnimationUtils.loadAnimation(getContext(), R.anim.appearance);
 
         xButton.setVisibility(View.VISIBLE);
         dislike.setVisibility(View.VISIBLE);
         like.setVisibility(View.VISIBLE);
         swipeArrow.setVisibility(View.VISIBLE);
+        mBlueRound.setVisibility(View.VISIBLE);
+        brandLogo.setVisibility(View.VISIBLE);
         progressBarWrapper.showBars();
 
         xButton.setAnimation(appearance);
         dislike.startAnimation(appearance);
         like.startAnimation(appearance);
         swipeArrow.startAnimation(appearance);
+        mBlueRound.startAnimation(appearance);
+        brandLogo.startAnimation(appearance);
     }
 
     public void setupListener(View v){
@@ -275,7 +268,7 @@ public class ShuffleFragment extends Fragment{
                         Log.e("ACTION_UP","ACTION_UP");
                         showButtons();
                         ShuffleActivity shuffleActivity=(ShuffleActivity) getActivity();
-                        shuffleActivity.disbleScroll(false);
+                        shuffleActivity.disableScroll(false);
                     }
                     progressBarWrapper.resumeBarAnimation();
                 }
@@ -294,6 +287,7 @@ public class ShuffleFragment extends Fragment{
         //like.clearAnimation();
         likesPressed = false;
         dislikesPressed = false;
+//        swipeUpLogo.setVisibility(View.INVISIBLE);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -366,14 +360,20 @@ public class ShuffleFragment extends Fragment{
             progressBarWrapper.restartAnimation();
     }
 
+    /**
+     * Reset current used bar
+     */
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
     public void resetLastBar(){
-        Log.e("resetlastbar","resetlastbar");progressBarWrapper.resetLastBarAnimation();
+        Log.e("resetlastbar","resetlastbar");
+        progressBarWrapper.resetLastBarAnimation();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void leftTap(){
+//        interruptShowLogo();
+
         Log.i("imageIndex", "is "+index);
         if(index == 0) {
             if(position == 0)
@@ -399,11 +399,14 @@ public class ShuffleFragment extends Fragment{
     @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void rightTap(){
+//        interruptShowLogo();
+
         Log.i("imageIndex", "is "+index);
         if(index == availableImages - 1){
-            mShuffleActivity.triggerRightSwipe(position);
-            progressBarWrapper.restartAnimation();
-            progressBarWrapper.stopBarAnimation();
+            if(mShuffleActivity.triggerRightSwipe(position)) {
+                progressBarWrapper.restartAnimation();
+                progressBarWrapper.stopBarAnimation();
+            }
         }
         else {
             progressBarWrapper.startNextAnimation();
@@ -415,6 +418,7 @@ public class ShuffleFragment extends Fragment{
             Drawable image = miniWearingfactory.getImage(index);
             setNextImage(image);
         }
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -424,7 +428,10 @@ public class ShuffleFragment extends Fragment{
             progressBarWrapper.resumeBarAnimation();
     }
 
-    public void setNextImage(Drawable image){
+    /**
+     * Load image in the current ImageView
+     */
+    private void setNextImage(Drawable image){
         Glide
                 .with(view)
                 .load(image)
@@ -437,6 +444,23 @@ public class ShuffleFragment extends Fragment{
 
     public void upgradeView(){
         setNextImage(miniWearingfactory.getImage(index));
+    }
+
+    /**
+     * Start showLogo AsyncTask
+     */
+    public void startShowLogo(){
+        mShowLogo = new ShowLogo();
+        mShowLogo.execute(this);
+    }
+
+    /**
+     * Interrupt ShowLogo AsyncTask
+     */
+    public void interruptShowLogo(){ mShowLogo.cancel(true); }
+
+    public void setSwipeUpImage(){
+        swipeUpLogo.setVisibility(View.VISIBLE);
     }
 
 }

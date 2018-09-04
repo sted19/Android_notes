@@ -25,13 +25,10 @@ public class ShowLogo extends AsyncTask<ViewModelStoreOwner, Void, ViewModelStor
         return viewModelStoreOwners[0];
     }
 
-    /*
-
     @Override
     protected void onPostExecute(ViewModelStoreOwner aViewModelStoreOwner) {
         if(aViewModelStoreOwner != null)
             ((ShuffleFragment)aViewModelStoreOwner).setSwipeUpImage();
     }
 
-    */
 }

@@ -79,7 +79,7 @@ public class ShuffleActivity extends AppCompatActivity {
         mShuffleAdapter = new ShuffleFragmentAdapter(fm);
         viewPager.setAdapter(mShuffleAdapter);
         viewPager.setPageTransformer(true, new CubeTransformer());
-        viewPager.setOffscreenPageLimit(5);
+//        viewPager.setOffscreenPageLimit(5);
 
     }
 
@@ -88,9 +88,8 @@ public class ShuffleActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         fullScreen.setUIFullScreen();
-        mShuffleAdapter.resumeFragment();//aggiunto
+        mShuffleAdapter.resumeFragment();
     }
-
 
     public void findDisplayWidth(){
         DisplayMetrics metrics = new DisplayMetrics();
@@ -101,7 +100,6 @@ public class ShuffleActivity extends AppCompatActivity {
     public int getDisplayWidth(){
         return displayWidth;
     }
-
 
     public void triggerLeftSwipe(int position){
         if(position > 0){
@@ -117,7 +115,12 @@ public class ShuffleActivity extends AppCompatActivity {
         }
     }
 
-    public void triggerRightSwipe(int position){
+    /**
+     * Trigger a right swipe by changing the position of the pager if possible
+     * @param position the new position of the pager
+     * @return true if page is changed, false otherwise
+     */
+    public boolean triggerRightSwipe(int position){
         if(position < mShuffleAdapter.getCount() - 1){
             viewPager.setCurrentItem(position+1);
             /*
@@ -129,20 +132,18 @@ public class ShuffleActivity extends AppCompatActivity {
                     viewPager.setDoubleTapBug(false);
                 }
             }, 5);*/ //TODO può funzionare per gestire il doppio tap che non fa fare lo swipe
+            return true;
         }
         else{  // all'ultimo swipe si va al menu
             Intent intent = new Intent(getBaseContext(),MainMenuActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();
+            return false;
         }
-
-
-
-        Log.e("settato","settato");
     }
 
-    public void disbleScroll(boolean b){
+    public void disableScroll(boolean b){
         this.viewPager.disableScroll(b);
     }
 
