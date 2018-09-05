@@ -48,6 +48,7 @@ public class ShuffleActivity extends AppCompatActivity {
 
         setupViewPager();
 
+
     }
 
 

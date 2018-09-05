@@ -22,6 +22,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.SwipeUp.mainMenuManagement.MainMenuActivity;
 import com.SwipeUp.shuffleManagement.shuffleListeners.ShuffleOnGestureListener;
@@ -64,6 +65,7 @@ public class ShuffleFragment extends Fragment{
     private ImageButton brandLogo;
     private ImageView heart;
     private ImageView mBlueRound;
+    private TextView swipeUpText;
 
     private View view;
     
@@ -71,6 +73,8 @@ public class ShuffleFragment extends Fragment{
     private Animation mPulse;
     private Animation mAppearance;
     private Animation mDisappearance;
+    private Animation mAppearanceFading;
+    private Animation mDisappearanceFading;
 
     private ShowLogo mShowLogo;
 
@@ -151,6 +155,7 @@ public class ShuffleFragment extends Fragment{
         swipeImage = v.findViewById(R.id.swipe_image);
         swipeArrow = v.findViewById(R.id.swipe_arrow);
         swipeUpLogo = v.findViewById(R.id.swipe_up_logo);
+        swipeUpText = v.findViewById(R.id.swipe_up_text);
         dislike = v.findViewById(R.id.dislike);
         like = v.findViewById(R.id.like);
         heart = v.findViewById(R.id.heart);
@@ -162,6 +167,8 @@ public class ShuffleFragment extends Fragment{
         mAppearance = AnimationUtils.loadAnimation(getContext(), R.anim.appearance);
         mPulse = AnimationUtils.loadAnimation(getContext(), R.anim.zoom_and_disappearance);
         mDisappearance = AnimationUtils.loadAnimation(getContext(), R.anim.disappearance);
+        mAppearanceFading = AnimationUtils.loadAnimation(getContext(),R.anim.appearance_fading);
+        mDisappearanceFading = AnimationUtils.loadAnimation(getContext(),R.anim.disappearance_fading);
     }
 
     /**
@@ -263,41 +270,48 @@ public class ShuffleFragment extends Fragment{
     public void hideButtons(){
         hidden = true;
 
-        xButton.setVisibility(View.INVISIBLE);
+
         dislike.setVisibility(View.INVISIBLE);
-        like.setVisibility(View.INVISIBLE);
-        swipeArrow.setVisibility(View.INVISIBLE);
-        brandLogo.setVisibility(View.INVISIBLE);
         mBlueRound.setVisibility(View.INVISIBLE);
+        brandLogo.setVisibility(View.INVISIBLE);
+        like.setVisibility(View.INVISIBLE);
+        xButton.setVisibility(View.INVISIBLE);
+        swipeArrow.setVisibility(View.INVISIBLE);
+        swipeUpText.setVisibility(View.INVISIBLE);
 
         progressBarWrapper.hideBars();
 
-        xButton.startAnimation(mDisappearance);
+
         dislike.startAnimation(mDisappearance);
-        like.startAnimation(mDisappearance);
-        swipeArrow.startAnimation(mDisappearance);
-        brandLogo.startAnimation(mDisappearance);
         mBlueRound.startAnimation(mDisappearance);
+        brandLogo.startAnimation(mDisappearance);
+        like.startAnimation(mDisappearance);
+        xButton.startAnimation(mDisappearanceFading);
+        swipeArrow.startAnimation(mDisappearanceFading);
+        swipeUpText.startAnimation(mDisappearanceFading);
     }
 
     public void showButtons(){
         hidden = false;
 
-        xButton.setVisibility(View.VISIBLE);
+
         dislike.setVisibility(View.VISIBLE);
-        like.setVisibility(View.VISIBLE);
-        swipeArrow.setVisibility(View.VISIBLE);
         mBlueRound.setVisibility(View.VISIBLE);
         brandLogo.setVisibility(View.VISIBLE);
+        like.setVisibility(View.VISIBLE);
+        xButton.setVisibility(View.VISIBLE);
+        swipeArrow.setVisibility(View.VISIBLE);
+        swipeUpText.setVisibility(View.VISIBLE);
 
         progressBarWrapper.showBars();
 
-        xButton.setAnimation(mAppearance);
         dislike.startAnimation(mAppearance);
-        like.startAnimation(mAppearance);
-        swipeArrow.startAnimation(mAppearance);
         mBlueRound.startAnimation(mAppearance);
         brandLogo.startAnimation(mAppearance);
+        like.startAnimation(mAppearance);
+        xButton.setAnimation(mAppearanceFading);
+        swipeArrow.startAnimation(mAppearanceFading);
+        swipeUpText.startAnimation(mAppearanceFading);
     }
 
     private void resetButtons(){

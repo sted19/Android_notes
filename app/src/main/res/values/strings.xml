@@ -29,6 +29,7 @@
     <string name="birthday">Data di nascita</string>
     <string name="completa">INSERISCI I TUOI DATI PER COMPLETARE LA REGISTRAZIONE</string>
     <string name="swipe_up">SWIPE UP</string>
+    <string name="swipe_up_text">Swipe Up</string>
     <!-- fine scritte da sted-->
 
     <string-array name="color_spinner_array">

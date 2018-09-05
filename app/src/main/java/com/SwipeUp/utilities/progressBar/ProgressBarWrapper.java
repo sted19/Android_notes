@@ -28,8 +28,15 @@ public class ProgressBarWrapper {
         this.mShuffleFragment = shuffleFragment;
         setUpBar();
 
-        for(int i=0;i<index;i++){
-            startNextAnimation();
+        /**
+         * sted: meglio mettere gli "if" quando l'sdk richiesto è troppo elevato (Lollipop), così in caso non sia abbastanza al massimo
+         * funziona male, ma non crasha.
+         */
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            for (int i = 0; i < index; i++) {
+                startNextAnimation();
+            }
         }
     }
 

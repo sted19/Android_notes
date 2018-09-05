@@ -34,13 +34,6 @@
         app:layout_constraintGuide_percent=".90" />
 
     <android.support.constraint.Guideline
-        android:id="@+id/sm_guideline100horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="1" />
-
-    <android.support.constraint.Guideline
         android:id="@+id/sm_guideline50vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -53,13 +46,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/sm_guideline100vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="100" />
 
     <android.support.constraint.Guideline
         android:id="@+id/sm_subGuideline05vertical"
@@ -125,7 +111,7 @@
         app:layout_constraintGuide_percent=".99" />
 
     <android.support.constraint.Guideline
-        android:id="@+id/sm_subGuideline95vertical"
+        android:id="@+id/sm_subGuideline99vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -138,6 +124,20 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent=".01" />
 
+    <android.support.constraint.Guideline
+        android:id="@+id/sm_subGuideline1Vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".01" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/sm_subGuideline10Horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".10" />
+
 
     <android.support.v4.view.ViewPager
         android:id="@+id/swipeUp_menu_viewPager"
@@ -148,6 +148,40 @@
 
     </android.support.v4.view.ViewPager>
 
+    <ImageButton
+        android:id="@+id/brand_logo"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@null"
+        android:scaleType="centerInside"
+        android:src="@drawable/brand_logo"
+        app:layout_constraintRight_toLeftOf="@id/sm_subGuideline99vertical"
+        app:layout_constraintTop_toBottomOf="@id/sm_subGuideline01horizontal" />
+
+    <ImageButton
+        android:id="@+id/brand_logo_blue_round"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@null"
+        android:scaleType="centerInside"
+        android:src="@drawable/blue_round"
+        app:layout_constraintRight_toLeftOf="@id/sm_subGuideline99vertical"
+        app:layout_constraintTop_toBottomOf="@id/sm_subGuideline01horizontal" />
+
+    <ImageButton
+        android:id="@+id/like"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@null"
+        android:scaleType="centerInside"
+        android:src="@drawable/like"
+        app:layout_constraintRight_toLeftOf="@id/sm_subGuideline99vertical"
+        app:layout_constraintTop_toBottomOf="@id/sm_subGuideline10Horizontal"/>
+
     <ImageView
         android:id="@+id/downArrow"
         android:layout_width="50dp"
@@ -155,7 +189,7 @@
         android:contentDescription="@string/downArrow"
         android:padding="10dp"
         android:src="@drawable/down_arrow"
-        app:layout_constraintRight_toLeftOf="@id/sm_subGuideline95vertical"
+        app:layout_constraintStart_toEndOf="@id/sm_subGuideline1Vertical"
         app:layout_constraintTop_toBottomOf="@id/sm_subGuideline01horizontal" />
 
     <!-- First Block -->
@@ -181,7 +215,7 @@
         android:layout_height="0dp"
         android:background="@color/white"
         app:layout_constraintBottom_toTopOf="@id/sm_guideline80horizontal"
-        app:layout_constraintEnd_toEndOf="@id/sm_guideline100vertical"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/sm_guideline50vertical"
         app:layout_constraintTop_toBottomOf="@id/sm_guideline70horizontal">
 
@@ -210,7 +244,7 @@
         android:layout_height="0dp"
         android:background="@color/white"
         app:layout_constraintBottom_toTopOf="@id/sm_guideline90horizontal"
-        app:layout_constraintEnd_toEndOf="@id/sm_guideline100vertical"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/sm_guideline50vertical"
         app:layout_constraintTop_toBottomOf="@id/sm_guideline80horizontal">
 
@@ -223,8 +257,8 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/white"
-        app:layout_constraintBottom_toBottomOf="@id/sm_guideline100horizontal"
-        app:layout_constraintEnd_toEndOf="@id/sm_guideline100vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/sm_guideline0vertical"
         app:layout_constraintTop_toBottomOf="@id/sm_guideline90horizontal">
 
@@ -310,7 +344,7 @@
         android:text="@string/taglie"
         android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@id/sm_guideline80horizontal"
-        app:layout_constraintEnd_toEndOf="@id/sm_subGuideline95vertical"
+        app:layout_constraintEnd_toEndOf="@id/sm_subGuideline99vertical"
         app:layout_constraintStart_toStartOf="@id/sm_subGuideline55vertical"
         app:layout_constraintTop_toBottomOf="@id/sm_guideline70horizontal" />
 
@@ -338,7 +372,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/sm_subGuideline89horizontal"
-        app:layout_constraintEnd_toEndOf="@id/sm_subGuideline95vertical"
+        app:layout_constraintEnd_toEndOf="@id/sm_subGuideline99vertical"
         app:layout_constraintStart_toStartOf="@id/sm_subGuideline55vertical"
         app:layout_constraintTop_toBottomOf="@id/sm_subGuideline81horizontal">
 
@@ -362,8 +396,10 @@
         android:text="@string/buy_text"
         app:layout_constraintBottom_toTopOf="@id/sm_subGuideline99horizontal"
         app:layout_constraintLeft_toRightOf="@id/sm_subGuideline05vertical"
-        app:layout_constraintRight_toLeftOf="@id/sm_subGuideline95vertical"
+        app:layout_constraintRight_toLeftOf="@id/sm_subGuideline99vertical"
         app:layout_constraintTop_toBottomOf="@id/sm_subGuideline91horizontal" />
+
+
 
 
 </android.support.constraint.ConstraintLayout>
