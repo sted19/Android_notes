@@ -11,11 +11,11 @@ import java.io.InputStream;
 
 public class CreateDrawables implements Runnable{
 
-    private boolean executed;
     private AssetManager assetManager;
     private Integer position;
     private Drawable[] drawables;
     private Resources resources;
+    private boolean executed;
     private boolean failed;
 
     public CreateDrawables(Integer position, AssetManager assetManager, Resources resources){
@@ -25,10 +25,9 @@ public class CreateDrawables implements Runnable{
     }
 
     @Override
-    public  void run() {
+    public void run() {
         Log.e("iniziio run","inizio run");
         if(executed) return;
-
 
         try {
             String[] images = assetManager.list(position.toString());
@@ -50,16 +49,16 @@ public class CreateDrawables implements Runnable{
         executed = true;
     }
 
-    public  boolean getFailed(){
+    public boolean getFailed(){
         return  failed;
     }
 
-    public  Drawable[] getDrawables(){
+    public Drawable[] getDrawables(){
         Log.e("iniziio get","inizio get");
         return drawables;
     }
 
-    public  boolean getExecuted(){
+    public boolean getExecuted(){
         return executed;
     }
 }

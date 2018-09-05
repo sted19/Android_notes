@@ -8,30 +8,27 @@ import android.util.Log;
 
 import java.io.IOException;
 
-public class MiniWearingfactory {
+public class MiniWearingFactory {
 
     private int availableImages;
     private Drawable[] drawables;
     private CreateDrawables createDrawables;
 
-    public MiniWearingfactory(Fragment fragmentCaller, Integer position){
+    public MiniWearingFactory(Fragment fragmentCaller, Integer position){
         AssetManager assetManager = fragmentCaller.getActivity().getAssets();
         Resources resources = fragmentCaller.getResources();
-        createDrawables = new CreateDrawables(position,assetManager,resources);
+        createDrawables = new CreateDrawables(position, assetManager, resources);
         createDrawables.run();
 
         //TODO mettere il thread con t.start fa fare male l animazione di swipe
 
-        //Thread t=new Thread(createDrawables);
-        //t.start();
-        String[] images = null;
+        String[] images;
         try {
             images = assetManager.list(position.toString());
+            availableImages = images.length;
         } catch (IOException e) {
             e.printStackTrace();
         }
-        availableImages = images.length;
-        //Log.e("AVAILABLE_IMAGES",availableImages+"");
     }
 
     public int getAvailableImages(){
@@ -40,9 +37,8 @@ public class MiniWearingfactory {
 
     public Drawable getImage(int index){
         if(drawables == null)
-            drawables=createDrawables.getDrawables();
+            drawables = createDrawables.getDrawables();
         return drawables[index];
     }
-
 
 }

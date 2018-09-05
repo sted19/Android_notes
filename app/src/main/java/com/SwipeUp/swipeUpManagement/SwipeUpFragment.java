@@ -12,19 +12,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
-import com.SwipeUp.shuffleManagement.ShuffleFragment;
 import com.SwipeUp.utilities.Constants;
 import com.SwipeUp.utilities.R;
-import com.SwipeUp.utilities.wearingFactory.MiniWearingfactory;
-import com.SwipeUp.utilities.wearingFactory.WearingFactory;
-import com.SwipeUp.utilities.wearingFactory.WearingFactoryNew;
+import com.SwipeUp.utilities.wearingFactory.MiniWearingFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class SwipeUpFragment extends Fragment {
 
-    private MiniWearingfactory miniWearingfactory;
+    private MiniWearingFactory miniWearingFactory;
 
     private int position;
     private int index;

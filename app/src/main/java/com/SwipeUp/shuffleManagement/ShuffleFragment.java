@@ -31,8 +31,8 @@ import com.SwipeUp.utilities.Constants;
 import com.SwipeUp.utilities.R;
 import com.SwipeUp.utilities.asyncTasks.ShowLogo;
 import com.SwipeUp.utilities.progressBar.ProgressBarWrapper;
-import com.SwipeUp.utilities.wearingFactory.MiniWearingfactory;
-import com.SwipeUp.utilities.wearingFactory.WearingFactoryNew;
+import com.SwipeUp.utilities.wearingFactory.MiniWearingFactory;
+import com.SwipeUp.utilities.wearingFactory.WearingFactory;
 import com.bumptech.glide.Glide;
 
 import static android.view.MotionEvent.ACTION_UP;
@@ -41,7 +41,7 @@ public class ShuffleFragment extends Fragment{
     private static final int progressBarPadding = 5;
 
     private ShuffleActivity mShuffleActivity;
-    private MiniWearingfactory miniWearingfactory;
+    private MiniWearingFactory miniWearingFactory;
     private GestureDetector mGestureDetector;
 
     private boolean mLikePressed;
@@ -111,10 +111,10 @@ public class ShuffleFragment extends Fragment{
      * Initialize the wearing factory, called by onCreate
      */
     private void initializeWearingFactory(){
-        miniWearingfactory = new MiniWearingfactory(this, position == -1 ? 0 : position);
-        availableImages = miniWearingfactory.getAvailableImages();
-        WearingFactoryNew wearingFactory = WearingFactoryNew.getInstance();
-        wearingFactory.addMiniWearingFactory(miniWearingfactory,position);
+        miniWearingFactory = new MiniWearingFactory(this, position == -1 ? 0 : position);
+        availableImages = miniWearingFactory.getAvailableImages();
+        WearingFactory wearingFactory = WearingFactory.getInstance();
+        wearingFactory.addMiniWearingFactory(miniWearingFactory,position);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -128,7 +128,7 @@ public class ShuffleFragment extends Fragment{
         setupListener(view);
         instantiateProgressBars(view);
 
-        loadImage(miniWearingfactory.getImage(index));
+        loadImage(miniWearingFactory.getImage(index));
 
         //Just for now every image will have the same generic brand
         brandLogo.setImageResource(R.drawable.brand_logo);
@@ -281,7 +281,6 @@ public class ShuffleFragment extends Fragment{
 
         progressBarWrapper.hideBars();
 
-
         dislike.startAnimation(mDisappearance);
         mBlueRound.startAnimation(mDisappearance);
         brandLogo.startAnimation(mDisappearance);
@@ -293,7 +292,6 @@ public class ShuffleFragment extends Fragment{
 
     public void showButtons(){
         hidden = false;
-
 
         dislike.setVisibility(View.VISIBLE);
         mBlueRound.setVisibility(View.VISIBLE);
@@ -417,7 +415,7 @@ public class ShuffleFragment extends Fragment{
             progressBarWrapper.startPrevAnimation();
             resetButtons();
             index = (--index) % availableImages;
-            loadImage(miniWearingfactory.getImage(index));
+            loadImage(miniWearingFactory.getImage(index));
         }
 
     }
@@ -434,7 +432,7 @@ public class ShuffleFragment extends Fragment{
             progressBarWrapper.startNextAnimation();
             resetButtons();
             index = (++index) % availableImages;
-            loadImage(miniWearingfactory.getImage(index));
+            loadImage(miniWearingFactory.getImage(index));
         }
 
     }
@@ -461,7 +459,7 @@ public class ShuffleFragment extends Fragment{
     }
 
     public void upgradeView(){
-        loadImage(miniWearingfactory.getImage(index));
+        loadImage(miniWearingFactory.getImage(index));
     }
 
     /**

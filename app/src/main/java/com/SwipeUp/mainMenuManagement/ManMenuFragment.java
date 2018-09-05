@@ -40,6 +40,7 @@ public class ManMenuFragment extends Fragment {
         news = v.findViewById(R.id.news_layout);
         tShirts = v.findViewById(R.id.tshirts_layout);
         pants = v.findViewById(R.id.pants_layout);
+
         topHits.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

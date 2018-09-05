@@ -24,8 +24,8 @@ public class NeuralNetwork {
     private Map<Integer, Double> wearType;
     
     private static final double speed= 2d;
-    
     private WearingFactory factory;
+
     public NeuralNetwork() {
         //initializing
         
@@ -64,7 +64,7 @@ public class NeuralNetwork {
             randResult2 -= wearType.get(j);
         }
         
-        factory.getWearing(i, j);
+//        factory.getWearing(i, j);
         
         int [] result = {i, j};
         

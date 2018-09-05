@@ -27,7 +27,6 @@ public class FirstPageActivity extends AppCompatActivity{
         FullScreen fullScreen = new FullScreen(getWindow().getDecorView());
         fullScreen.setUIFullScreen();
         fullScreen.fullScreenKeeper();
-
     }
 
     public void firstScreenManButtonPressed(View v){
