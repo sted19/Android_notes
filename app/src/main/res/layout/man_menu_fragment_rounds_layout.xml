@@ -27,7 +27,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginEnd="10dp"
-                android:src="@drawable/brand_logo"/>
+                android:src="@drawable/asos_logo"/>
 
             <ImageView
                 android:id="@+id/blue_round"
@@ -73,7 +73,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginEnd="10dp"
-                android:src="@drawable/brand_logo"/>
+                android:src="@drawable/fila_logo"/>
 
             <ImageView
                 android:id="@+id/second_blue_round"
@@ -118,7 +118,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginEnd="10dp"
-                android:src="@drawable/brand_logo"/>
+                android:src="@drawable/m_dutti_logo"/>
 
             <ImageView
                 android:id="@+id/third_blue_round"

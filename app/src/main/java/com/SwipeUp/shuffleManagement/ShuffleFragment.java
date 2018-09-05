@@ -22,6 +22,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.SwipeUp.mainMenuManagement.MainMenuActivity;
@@ -55,6 +56,8 @@ public class ShuffleFragment extends Fragment{
     private int availableImages = 0;
 
     private ProgressBarWrapper progressBarWrapper;
+
+    private RelativeLayout blueBar;
 
     private ImageView swipeImage;
     private ImageView swipeArrow;
@@ -162,6 +165,7 @@ public class ShuffleFragment extends Fragment{
         xButton = v.findViewById(R.id.x_button);
         brandLogo = v.findViewById(R.id.brand_logo);
         mBlueRound = v.findViewById(R.id.brand_logo_blue_round);
+        blueBar = v.findViewById(R.id.blue_bar);
 
         mAppearanceLikeX = AnimationUtils.loadAnimation(getContext(), R.anim.appearance_like_x);
         mAppearance = AnimationUtils.loadAnimation(getContext(), R.anim.appearance);
@@ -278,6 +282,7 @@ public class ShuffleFragment extends Fragment{
         xButton.setVisibility(View.INVISIBLE);
         swipeArrow.setVisibility(View.INVISIBLE);
         swipeUpText.setVisibility(View.INVISIBLE);
+        blueBar.setVisibility(View.INVISIBLE);
 
         progressBarWrapper.hideBars();
 
@@ -289,6 +294,7 @@ public class ShuffleFragment extends Fragment{
         xButton.startAnimation(mDisappearanceFading);
         swipeArrow.startAnimation(mDisappearanceFading);
         swipeUpText.startAnimation(mDisappearanceFading);
+        blueBar.startAnimation(mDisappearanceFading);
     }
 
     public void showButtons(){
@@ -302,6 +308,7 @@ public class ShuffleFragment extends Fragment{
         xButton.setVisibility(View.VISIBLE);
         swipeArrow.setVisibility(View.VISIBLE);
         swipeUpText.setVisibility(View.VISIBLE);
+        blueBar.setVisibility(View.VISIBLE);
 
         progressBarWrapper.showBars();
 
@@ -312,6 +319,7 @@ public class ShuffleFragment extends Fragment{
         xButton.setAnimation(mAppearanceFading);
         swipeArrow.startAnimation(mAppearanceFading);
         swipeUpText.startAnimation(mAppearanceFading);
+        blueBar.startAnimation(mAppearanceFading);
     }
 
     private void resetButtons(){
