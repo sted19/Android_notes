@@ -37,15 +37,14 @@ import com.bumptech.glide.Glide;
 import static android.view.MotionEvent.ACTION_UP;
 
 public class ShuffleFragment extends Fragment{
-
-    //private final static int NUM_ELEMENTS = 3;      // provvisorio, verrà preso dalla wearing
+    private static final int progressBarPadding = 5;
 
     private ShuffleActivity mShuffleActivity;
-    //private WearingFactory wearingFactory;
     private MiniWearingfactory miniWearingfactory;
+    private GestureDetector mGestureDetector;
 
-    private boolean likesPressed;
-    private boolean dislikesPressed;
+    private boolean mLikePressed;
+    private boolean mDislikesPressed;
     private boolean hidden;
 
     private int displayWidth;
@@ -67,13 +66,18 @@ public class ShuffleFragment extends Fragment{
     private ImageView mBlueRound;
 
     private View view;
+    
+    private Animation mAppearanceLikeX;
+    private Animation mPulse;
+    private Animation mAppearance;
+    private Animation mDisappearance;
 
     private ShowLogo mShowLogo;
 
     public static ShuffleFragment newInstance(int position,int index){
         Bundle args = new Bundle();
         args.putInt(Constants.POSITION, position);
-        args.putInt(Constants.INDEX,index);
+        args.putInt(Constants.INDEX, index);
 
         ShuffleFragment shuffleFragment = new ShuffleFragment();
         shuffleFragment.setArguments(args);
@@ -86,41 +90,47 @@ public class ShuffleFragment extends Fragment{
         mShuffleActivity = (ShuffleActivity) getActivity();
         displayWidth = mShuffleActivity.getDisplayWidth();
 
+        retrieveArguments();
+
+        initializeWearingFactory();
+    }
+
+    /**
+     * Get variables among the arguments, called by onCreate
+     */
+    private void retrieveArguments(){
         position = getArguments().getInt(Constants.POSITION);
         index = getArguments().getInt(Constants.INDEX);
+    }
 
-        //wearingFactory = WearingFactory.getInstance(this, 1);
-        //availableImages = NUM_ELEMENTS;
-
-
-        miniWearingfactory = new MiniWearingfactory(this,position == -1 ? 0 : position);
+    /**
+     * Initialize the wearing factory, called by onCreate
+     */
+    private void initializeWearingFactory(){
+        miniWearingfactory = new MiniWearingfactory(this, position == -1 ? 0 : position);
         availableImages = miniWearingfactory.getAvailableImages();
         WearingFactoryNew wearingFactory = WearingFactoryNew.getInstance();
         wearingFactory.addMiniWearingFactory(miniWearingfactory,position);
-
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.shuffle_viewpager_fragment_item,container,false);
 
         findUIElements(view);
         setupListener(view);
         instantiateProgressBars(view);
 
-        Glide
-                .with(view)
-                .load(miniWearingfactory.getImage(index))
-                .into(swipeImage);
+        loadImage(miniWearingfactory.getImage(index));
 
+        //Just for now every image will have the same generic brand
         brandLogo.setImageResource(R.drawable.brand_logo);
 
         return view;
     }
-
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void onStop(){
@@ -129,12 +139,15 @@ public class ShuffleFragment extends Fragment{
     }
 
     @Override
-    public void onDestroy() {
+    public void onDestroy(){
         super.onDestroy();
         progressBarWrapper.destroyBars();
     }
 
-    public void findUIElements(View v){
+    /**
+     * Finds fragment elements and stores them in instance variables
+     */
+    private void findUIElements(View v){
         swipeImage = v.findViewById(R.id.swipe_image);
         swipeArrow = v.findViewById(R.id.swipe_arrow);
         swipeUpLogo = v.findViewById(R.id.swipe_up_logo);
@@ -144,6 +157,17 @@ public class ShuffleFragment extends Fragment{
         xButton = v.findViewById(R.id.x_button);
         brandLogo = v.findViewById(R.id.brand_logo);
         mBlueRound = v.findViewById(R.id.brand_logo_blue_round);
+
+        mAppearanceLikeX = AnimationUtils.loadAnimation(getContext(), R.anim.appearance_like_x);
+        mAppearance = AnimationUtils.loadAnimation(getContext(), R.anim.appearance);
+        mPulse = AnimationUtils.loadAnimation(getContext(), R.anim.zoom_and_disappearance);
+        mDisappearance = AnimationUtils.loadAnimation(getContext(), R.anim.disappearance);
+    }
+
+    /**
+     * Set up listeners for the elements in the fragment
+     */
+    private void setupListener(@NonNull View v){
 
         like.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,98 +190,8 @@ public class ShuffleFragment extends Fragment{
             }
         });
 
-    }
-
-    public void likePressed(){
-        if(!likesPressed){
-            likesPressed = true;
-            dislikesPressed = false;
-            like.setImageResource(R.drawable.like_pressed);
-            dislike.setImageResource(R.drawable.dislike);
-            Animation appearance = AnimationUtils.loadAnimation(getContext(),R.anim.appearance);
-            like.startAnimation(appearance);
-            Animation pulse = AnimationUtils.loadAnimation(getContext(),R.anim.zoom_and_disappearance);
-            heart.startAnimation(pulse);
-        }
-        else{
-            Animation appearence=AnimationUtils.loadAnimation(getContext(), R.anim.appearance_like_x);
-            likesPressed = false;
-            like.setImageResource(R.drawable.like);
-            like.startAnimation(appearence);
-        }
-
-    }
-
-    public void dislikePressed(){
-        if(!dislikesPressed){
-            likesPressed = false;
-            dislikesPressed=true;
-            like.setImageResource(R.drawable.like);
-            dislike.setImageResource(R.drawable.dislike_pressed);
-            Animation appearance=AnimationUtils.loadAnimation(getContext(), R.anim.appearance_like_x);
-            dislike.startAnimation(appearance);
-        }
-        else{
-            dislikesPressed = false;
-            dislike.setImageResource(R.drawable.dislike);
-            Animation appearance=AnimationUtils.loadAnimation(getContext(), R.anim.appearance_like_x);
-            dislike.startAnimation(appearance);
-        }
-
-    }
-
-    public void xButtonPressed(){
-        Intent intent = new Intent(getActivity(),MainMenuActivity.class);
-        getActivity().overridePendingTransition(R.anim.slide_out, R.anim.slide_in);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        getActivity().finish();
-    }
-
-    public void hideButtons(){
-        hidden = true;
-        Animation disappearance = AnimationUtils.loadAnimation(getContext(), R.anim.disappearance);
-
-        xButton.setVisibility(View.INVISIBLE);
-        dislike.setVisibility(View.INVISIBLE);
-        like.setVisibility(View.INVISIBLE);
-        swipeArrow.setVisibility(View.INVISIBLE);
-        brandLogo.setVisibility(View.INVISIBLE);
-        mBlueRound.setVisibility(View.INVISIBLE);
-
-        progressBarWrapper.hideBars();
-
-        xButton.startAnimation(disappearance);
-        dislike.startAnimation(disappearance);
-        like.startAnimation(disappearance);
-        swipeArrow.startAnimation(disappearance);
-        brandLogo.startAnimation(disappearance);
-        mBlueRound.startAnimation(disappearance);
-    }
-
-    public void showButtons(){
-        hidden = false;
-        Animation appearance = AnimationUtils.loadAnimation(getContext(), R.anim.appearance);
-
-        xButton.setVisibility(View.VISIBLE);
-        dislike.setVisibility(View.VISIBLE);
-        like.setVisibility(View.VISIBLE);
-        swipeArrow.setVisibility(View.VISIBLE);
-        mBlueRound.setVisibility(View.VISIBLE);
-        brandLogo.setVisibility(View.VISIBLE);
-        progressBarWrapper.showBars();
-
-        xButton.setAnimation(appearance);
-        dislike.startAnimation(appearance);
-        like.startAnimation(appearance);
-        swipeArrow.startAnimation(appearance);
-        mBlueRound.startAnimation(appearance);
-        brandLogo.startAnimation(appearance);
-    }
-
-    public void setupListener(View v){
-
-        final GestureDetector gestureDetector = new GestureDetector(getContext(),new ShuffleOnGestureListener(this,displayWidth));
+        mGestureDetector = new GestureDetector(getContext(), new ShuffleOnGestureListener(this,
+                displayWidth));
 
         v.setOnTouchListener(new View.OnTouchListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -272,75 +206,157 @@ public class ShuffleFragment extends Fragment{
                     }
                     progressBarWrapper.resumeBarAnimation();
                 }
-                gestureDetector.onTouchEvent(event);
+                mGestureDetector.onTouchEvent(event);
                 return true;
             }
         });
 
     }
 
-    public void resetButtons(){
-        if(likesPressed)
+    private void likePressed(){
+        if(!mLikePressed){
+            mLikePressed = true;
+            mDislikesPressed = false;
+
+            //properly sets images of the buttons
+            like.setImageResource(R.drawable.like_pressed);
+            dislike.setImageResource(R.drawable.dislike);
+
+            like.startAnimation(mAppearance);
+            heart.startAnimation(mPulse);
+        }
+        else{
+            mLikePressed = false;
             like.setImageResource(R.drawable.like);
-        if(dislikesPressed)
+            like.startAnimation(mAppearanceLikeX);
+        }
+
+    }
+
+    private void dislikePressed(){
+        if(!mDislikesPressed){
+            mLikePressed = false;
+            mDislikesPressed =true;
+
+            //properly sets images of the buttons
+            like.setImageResource(R.drawable.like);
+
+            dislike.setImageResource(R.drawable.dislike_pressed);
+            dislike.startAnimation(mAppearanceLikeX);
+        }
+        else{
+            mDislikesPressed = false;
+            dislike.setImageResource(R.drawable.dislike);
+            dislike.startAnimation(mAppearanceLikeX);
+        }
+
+    }
+
+    private void xButtonPressed(){
+        Intent intent = new Intent(getActivity(),MainMenuActivity.class);
+        getActivity().overridePendingTransition(R.anim.slide_out, R.anim.slide_in);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        getActivity().finish();
+    }
+
+    public void hideButtons(){
+        hidden = true;
+
+        xButton.setVisibility(View.INVISIBLE);
+        dislike.setVisibility(View.INVISIBLE);
+        like.setVisibility(View.INVISIBLE);
+        swipeArrow.setVisibility(View.INVISIBLE);
+        brandLogo.setVisibility(View.INVISIBLE);
+        mBlueRound.setVisibility(View.INVISIBLE);
+
+        progressBarWrapper.hideBars();
+
+        xButton.startAnimation(mDisappearance);
+        dislike.startAnimation(mDisappearance);
+        like.startAnimation(mDisappearance);
+        swipeArrow.startAnimation(mDisappearance);
+        brandLogo.startAnimation(mDisappearance);
+        mBlueRound.startAnimation(mDisappearance);
+    }
+
+    public void showButtons(){
+        hidden = false;
+
+        xButton.setVisibility(View.VISIBLE);
+        dislike.setVisibility(View.VISIBLE);
+        like.setVisibility(View.VISIBLE);
+        swipeArrow.setVisibility(View.VISIBLE);
+        mBlueRound.setVisibility(View.VISIBLE);
+        brandLogo.setVisibility(View.VISIBLE);
+
+        progressBarWrapper.showBars();
+
+        xButton.setAnimation(mAppearance);
+        dislike.startAnimation(mAppearance);
+        like.startAnimation(mAppearance);
+        swipeArrow.startAnimation(mAppearance);
+        mBlueRound.startAnimation(mAppearance);
+        brandLogo.startAnimation(mAppearance);
+    }
+
+    private void resetButtons(){
+        if(mLikePressed)
+            like.setImageResource(R.drawable.like);
+        else if(mDislikesPressed)
             dislike.setImageResource(R.drawable.dislike);
         //like.clearAnimation();
-        likesPressed = false;
-        dislikesPressed = false;
-//        swipeUpLogo.setVisibility(View.INVISIBLE);
+        mLikePressed = false;
+        mDislikesPressed = false;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public void instantiateProgressBars(View v){
+    private void instantiateProgressBars(View v){
+        ProgressBar[] vectProgressBar = drawBarVector(v);
 
-        ProgressBar[] vectProgressBar = new ProgressBar[availableImages];
-
-        LinearLayout linearLayout = v.findViewById(R.id.progress_bar_layout);
-
-        int padding=5;
-
-        for(int i=0; i<availableImages; i++){
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    (displayWidth - (2 * padding * (availableImages+1))) / availableImages, 6);
-            if(i==0) {
-                layoutParams.setMargins(padding*2, 15 ,padding, 5);
-            }
-            else if(i==availableImages-1){
-                layoutParams.setMargins(padding, 15 ,padding*2, 5);
-            }
-            else{
-                layoutParams.setMargins(padding, 15 ,padding, 5);
-            }
-
-
-            ProgressBar progressBar=new ProgressBar(getContext(),
-                    null, android.R.attr.progressBarStyleHorizontal);
-            progressBar.setLayoutParams(layoutParams);
-
-            progressBar.setBackgroundColor(Color.GRAY);
-            progressBar.getProgressDrawable().setColorFilter(Color.WHITE,android.graphics.PorterDuff.Mode.SRC_IN);
-
-
-            vectProgressBar[i]=progressBar;
-            linearLayout.addView(progressBar);
-
-        }
-
-        progressBarWrapper= new ProgressBarWrapper(vectProgressBar, this,index);
-
+        progressBarWrapper= new ProgressBarWrapper(vectProgressBar, this, index);
         progressBarWrapper.stopBarAnimation();
 
         if(position == -1){
             progressBarWrapper.restartAnimation();
             position = 0;
         }
+    }
 
+    /**
+     * Allocates the vector of progress bars and draws each element
+     */
+    private ProgressBar[] drawBarVector(View v){
+        ProgressBar[] vectProgressBar = new ProgressBar[availableImages];
+        LinearLayout linearLayout = v.findViewById(R.id.progress_bar_layout);
 
+        for(int i=0; i<availableImages; i++){
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    (displayWidth - ( 2 * progressBarPadding * (availableImages+1))) /
+                            availableImages, 6);
+            if(i==0)
+                layoutParams.setMargins(progressBarPadding *2, 15 , progressBarPadding, 5);
+            else if( i == availableImages - 1 )
+                layoutParams.setMargins(progressBarPadding, 15 , progressBarPadding *2, 5);
+            else
+                layoutParams.setMargins(progressBarPadding, 15 , progressBarPadding, 5);
+
+            //Sets bar appearance
+            ProgressBar progressBar=new ProgressBar(getContext(),
+                    null, android.R.attr.progressBarStyleHorizontal);
+            progressBar.setLayoutParams(layoutParams);
+            progressBar.setBackgroundColor(Color.GRAY);
+            progressBar.getProgressDrawable().setColorFilter(Color.WHITE,android.graphics.PorterDuff.Mode.SRC_IN);
+
+            vectProgressBar[i]=progressBar;
+            linearLayout.addView(progressBar);
+        }
+        return vectProgressBar;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void startSwipeUpActivity(){
-        progressBarWrapper.stopBarAnimation();
+        stopBarAnimation();
 
         Intent intent = new Intent(getContext(), SwipeUpActivity.class);
         intent.putExtra(Constants.POSITION, position);
@@ -362,36 +378,32 @@ public class ShuffleFragment extends Fragment{
 
     /**
      * Reset current used bar
+     * @param stopIfRunning if true the bar will be stopped
      */
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
-    public void resetLastBar(){
-        Log.e("resetlastbar","resetlastbar");
+    public void resetLastBar(boolean stopIfRunning){
         progressBarWrapper.resetLastBarAnimation();
+        if(stopIfRunning)
+            progressBarWrapper.stopBarAnimation();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void leftTap(){
-//        interruptShowLogo();
-
         Log.i("imageIndex", "is "+index);
         if(index == 0) {
             if(position == 0)
-                resetLastBar();
+                resetLastBar(false);
             else{
                 mShuffleActivity.triggerLeftSwipe(position);
-                progressBarWrapper.restartAnimation();
-                progressBarWrapper.stopBarAnimation();
+                resetLastBar(true);
             }
         }
-        else {               //sistemato il fatto che un tap a sx portasse al blocco del primo fragment
+        else {
             progressBarWrapper.startPrevAnimation();
             resetButtons();
-            index--;
-            if(index < 0)
-                index += availableImages;
-            Drawable image = miniWearingfactory.getImage(index);
-            setNextImage(image);
+            index = (--index) % availableImages;
+            loadImage(miniWearingfactory.getImage(index));
         }
 
     }
@@ -399,24 +411,16 @@ public class ShuffleFragment extends Fragment{
     @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void rightTap(){
-//        interruptShowLogo();
-
         Log.i("imageIndex", "is "+index);
         if(index == availableImages - 1){
-            if(mShuffleActivity.triggerRightSwipe(position)) {
-                progressBarWrapper.restartAnimation();
-                progressBarWrapper.stopBarAnimation();
-            }
+            if(mShuffleActivity.triggerRightSwipe(position))
+                resetLastBar(true);
         }
         else {
             progressBarWrapper.startNextAnimation();
             resetButtons();
-            index++;
-            if(index >= availableImages){
-                index = 0;
-            }
-            Drawable image = miniWearingfactory.getImage(index);
-            setNextImage(image);
+            index = (++index) % availableImages;
+            loadImage(miniWearingfactory.getImage(index));
         }
 
     }
@@ -431,7 +435,7 @@ public class ShuffleFragment extends Fragment{
     /**
      * Load image in the current ImageView
      */
-    private void setNextImage(Drawable image){
+    private void loadImage(Drawable image){
         Glide
                 .with(view)
                 .load(image)
@@ -443,7 +447,7 @@ public class ShuffleFragment extends Fragment{
     }
 
     public void upgradeView(){
-        setNextImage(miniWearingfactory.getImage(index));
+        loadImage(miniWearingfactory.getImage(index));
     }
 
     /**
@@ -459,7 +463,7 @@ public class ShuffleFragment extends Fragment{
      */
     public void interruptShowLogo(){ mShowLogo.cancel(true); }
 
-    public void setSwipeUpImage(){
+    public void showSwipeUpImage(){
         swipeUpLogo.setVisibility(View.VISIBLE);
     }
 

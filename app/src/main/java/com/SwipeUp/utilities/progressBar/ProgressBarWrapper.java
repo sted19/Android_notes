@@ -124,7 +124,7 @@ public class ProgressBarWrapper {
     }
 
      public void hideBars(){
-         Animation disappearance= AnimationUtils.loadAnimation(mShuffleFragment.getContext(), R.anim.disappearance);
+        Animation disappearance= AnimationUtils.loadAnimation(mShuffleFragment.getContext(), R.anim.disappearance);
         for(int i=0;i<progressBars.length;i++){
             progressBars[i].setVisibility(View.INVISIBLE);
             progressBars[i].startAnimation(disappearance);

@@ -58,9 +58,7 @@ public class ShuffleFragmentAdapter extends FragmentStatePagerAdapter{
 
         if (shuffleFragment != mCurrentFragment) {
             if (mCurrentFragment != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                mCurrentFragment.startProgressBar();
-                mCurrentFragment.stopBarAnimation();
-//                mCurrentFragment.interruptShowLogo();
+                mCurrentFragment.resetLastBar(true);
             }
             if (shuffleFragment != null) {
                 shuffleFragment.startProgressBar();
@@ -71,7 +69,6 @@ public class ShuffleFragmentAdapter extends FragmentStatePagerAdapter{
 
         if(shuffleFragment != null) {
             shuffleFragment.resumeProgressBar();
-//            shuffleFragment.startShowLogo();
         }
     }
 
