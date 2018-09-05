@@ -3,16 +3,11 @@ package com.SwipeUp.shuffleManagement;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.DragEvent;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -20,7 +15,6 @@ import com.SwipeUp.mainMenuManagement.MainMenuActivity;
 import com.SwipeUp.utilities.R;
 import com.SwipeUp.utilities.fullScreen.FullScreen;
 import com.SwipeUp.utilities.wearingFactory.WearingFactory;
-import com.SwipeUp.utilities.wearingFactory.WearingFactoryNew;
 
 public class ShuffleActivity extends AppCompatActivity {
 
@@ -43,7 +37,7 @@ public class ShuffleActivity extends AppCompatActivity {
 
         findDisplayWidth();
 
-        WearingFactoryNew wearingFactory = WearingFactoryNew.getInstance();
+        WearingFactory wearingFactory = WearingFactory.getInstance();
         wearingFactory.resetWearingFactory();
 
         setupViewPager();

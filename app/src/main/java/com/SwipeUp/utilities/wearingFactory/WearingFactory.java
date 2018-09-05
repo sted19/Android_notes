@@ -1,15 +1,7 @@
 package com.SwipeUp.utilities.wearingFactory;
 
-import android.content.res.AssetManager;
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
-import android.util.TypedValue;
-import android.widget.Toast;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.ConnectException;
+import android.util.Log;
 
 /**
  *     Given some specific characteristics, an instance of this class returns the Drawable of a wearing that
@@ -17,99 +9,81 @@ import java.net.ConnectException;
  */
 public class WearingFactory {
 
+    private MiniWearingFactory previous;
+    private MiniWearingFactory current;
+    private MiniWearingFactory next;
 
-    private Drawable[] drawables;
-    private ImageDownloader imageDownloader;
-    private int availableImages;
-    // sets this variable to false in order to disable connection requests to server and work with
-    // available images in assets folder
-    private static boolean DEBUG_CONNECTION = false;
+    private int next_pos = -1;
+    private int previous_pos = -1;
+    private int current_pos = -1;   //può non essere corretta: quando arrivo all ultimo fragment non viene contato perchè
+                                    //non vengono creati nuovi fragment, quindi non viene aggionrnato
 
-    private android.support.v4.app.Fragment fragmentCaller;
-    private int producer;
-
+    private boolean second = false;
     private static WearingFactory instance;
 
-    public static WearingFactory getInstance(android.support.v4.app.Fragment fragment, int producer){
+    public static WearingFactory getInstance(){
         if(instance == null){
-            instance = new WearingFactory(fragment,producer);
+            instance = new WearingFactory();
         }
         return instance;
     }
 
+    private WearingFactory() {}
 
-    public WearingFactory(android.support.v4.app.Fragment fragment, int producer) {
-
-        this.fragmentCaller = fragment;
-        this.producer = producer;
-
-        if(DEBUG_CONNECTION){
-            try {
-                imageDownloader = new ImageDownloader(fragmentCaller.getActivity().getResources(), fragmentCaller.getContext());
-            } catch (ConnectException e) {
-                Toast.
-                        makeText(fragmentCaller.getContext(), "No connection available, " +
-                                "working locally", Toast.LENGTH_LONG)
-                        .show();
-            }
+    public void addMiniWearingFactory(MiniWearingFactory miniWearingFactory, int position){
+        if(current_pos == -1){
+            current_pos = 0;
+            current = miniWearingFactory;
+            second = true;
         }
-
-        AssetManager assetManager = fragmentCaller.getActivity().getAssets();
-        createDrawables(assetManager);
-
-    }
-
-    /**
-     * Private method called by the constructor
-     */
-    private void createDrawables(AssetManager assetManager) {
-        try {
-            String[] images = assetManager.list("clothes");
-            availableImages = images.length;
-            drawables = new Drawable[availableImages];
-            InputStream inputStream;
-            Resources resources = fragmentCaller.getResources();
-            for (int i = 0; i < images.length; i++) {
-                inputStream = fragmentCaller.getActivity().getAssets().open("clothes/" + images[i]);
-                Drawable drawable = Drawable.createFromResourceStream(resources, new TypedValue(), inputStream, null);
-                drawables[i] = drawable;
-            }
+        else if(second){
+            next= miniWearingFactory;
+            next_pos=position;
+            second=false;
         }
-        catch (IOException e) {
-            Log.e("Wearing factory", "Error in initialization of the images");
-            e.printStackTrace();
-        }
+        else if(position > current_pos){
+            previous = current;
+            current = next;
+            next = miniWearingFactory;
 
-        if(DEBUG_CONNECTION && imageDownloader != null) {
-            drawables[0] = imageDownloader.downloadRandomImage();
-            Log.i("Connection", "Available images fro brand 1: " +
-                    imageDownloader.getAvailableImagesForBrand(1));
+            previous_pos=current_pos;
+            current_pos=next_pos;
+            next_pos=position;
+
+        }
+        else if(position < current_pos){
+            next = current;
+            current = previous;
+            previous = miniWearingFactory;
+
+            next_pos=current_pos;
+            current_pos=previous_pos;
+            previous_pos=position;
         }
     }
 
     /**
-     * @return the number of available images in the assets folder
+     * Sets to null all MiniWearing factories and current position to -1
      */
-    public int getAvailableImages()
-    {
-        return availableImages;
+    public void resetWearingFactory(){
+        previous = null;
+        current = null;
+        next = null;
+        current_pos = -1;
     }
 
-    /**
-     * @return the next image to be drawn on the screen
-     */
-    public Drawable getImage(int index)
-    {
-        return drawables[index];
+    public MiniWearingFactory getMiniWearingFactory(int position) {
+        Log.e("position",position+"");
+        Log.e("current",current_pos+"");
+        if(previous_pos == position){
+            Log.e("previous","prev");
+            return previous;
+        }
+        else if(current_pos == position){
+            Log.e("current","current");
+            return current;
+        }
+        else
+            return next;
     }
-
-    /**
-     * Method not used yet, called by the neural network
-     */
-    public void getWearing(int color, int wtype)
-    {
-        System.out.println("I'm giving you a "+color+" wear");
-        System.out.println("I'm giving you a "+wtype);
-    }
-
 }

@@ -7,19 +7,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.SwipeUp.utilities.R;
-import com.SwipeUp.utilities.wearingFactory.MiniWearingfactory;
-import com.SwipeUp.utilities.wearingFactory.WearingFactoryNew;
+import com.SwipeUp.utilities.wearingFactory.MiniWearingFactory;
+import com.SwipeUp.utilities.wearingFactory.WearingFactory;
 
 
 public class SwipeUpMenuCustomAdapter extends PagerAdapter{
 
     private Context ctx;
     private int index;
-    private MiniWearingfactory miniWearingfactory;
+    private MiniWearingFactory miniWearingFactory;
 
     public SwipeUpMenuCustomAdapter(Context context,int position,int index){
         this.ctx = context;
-        miniWearingfactory= WearingFactoryNew.getInstance().getMiniWearingFactory(position);
+        miniWearingFactory = WearingFactory.getInstance().getMiniWearingFactory(position);
         this.index=index;
 
     }
@@ -50,15 +50,15 @@ public class SwipeUpMenuCustomAdapter extends PagerAdapter{
              * questo accade solo con la prima e l'ultima foto, quando sono 3.
              */
             case 0:
-                image.setImageDrawable(miniWearingfactory.getImage(index));
+                image.setImageDrawable(miniWearingFactory.getImage(index));
                 break;
 
             case 1:
-                image.setImageDrawable(miniWearingfactory.getImage(index));
+                image.setImageDrawable(miniWearingFactory.getImage(index));
                 break;
 
             case 2:
-                image.setImageDrawable(miniWearingfactory.getImage(index));
+                image.setImageDrawable(miniWearingFactory.getImage(index));
                 break;
         }
 

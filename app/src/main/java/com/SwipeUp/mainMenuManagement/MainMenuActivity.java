@@ -10,10 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.SwipeUp.accessManagement.AccessActivity;
 import com.SwipeUp.utilities.fullScreen.FullScreen;
@@ -44,16 +41,8 @@ public class MainMenuActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         setContentView(R.layout.mainmenu_activity_layout);
 
-        fm = getSupportFragmentManager();
-        manMenuFragment = fm.findFragmentById(R.id.mainmenu_fragment_container);
-        womanMenuFragment = fm.findFragmentById(R.id.mainmenu_fragment_container);
-        manMenuFragment = new ManMenuFragment();
-        womanMenuFragment = new WomanMenuFragment();
-
-        //keeps the activity in fullscreen
-        fullScreen = new FullScreen(getWindow().getDecorView());
-        fullScreen.setUIFullScreen();
-        fullScreen.fullScreenKeeper();
+        initializeFragments();
+        keepFullscreen();
 
         color = getResources().getColor(R.color.pressed_button_light_blue);
         findUIElements();
@@ -61,6 +50,20 @@ public class MainMenuActivity extends AppCompatActivity {
         manButtonPressed(null);
     }
 
+    private void initializeFragments(){
+        fm = getSupportFragmentManager();
+        manMenuFragment = fm.findFragmentById(R.id.mainmenu_fragment_container);
+        womanMenuFragment = fm.findFragmentById(R.id.mainmenu_fragment_container);
+        manMenuFragment = new ManMenuFragment();
+        womanMenuFragment = new WomanMenuFragment();
+    }
+
+    //keeps the activity in fullscreen
+    private void keepFullscreen(){
+        fullScreen = new FullScreen(getWindow().getDecorView());
+        fullScreen.setUIFullScreen();
+        fullScreen.fullScreenKeeper();
+    }
 
     private void findUIElements(){
         man = findViewById(R.id.man_button_text);
@@ -102,19 +105,19 @@ public class MainMenuActivity extends AppCompatActivity {
 
     public void setmanUI(){
         manView.setBackgroundColor(color);
-        man.setTypeface(null,Typeface.BOLD);
+        man.setTypeface(null, Typeface.BOLD);
         man.setTextColor(color);
         womanView.setBackgroundColor(Color.LTGRAY);
-        woman.setTypeface(null,Typeface.NORMAL);
+        woman.setTypeface(null, Typeface.NORMAL);
         woman.setTextColor(Color.LTGRAY);
     }
 
     public void setWomanUI(){
         womanView.setBackgroundColor(color);
-        woman.setTypeface(null,Typeface.BOLD);
+        woman.setTypeface(null, Typeface.BOLD);
         woman.setTextColor(color);
         manView.setBackgroundColor(Color.LTGRAY);
-        man.setTypeface(null,Typeface.NORMAL);
+        man.setTypeface(null, Typeface.NORMAL);
         man.setTextColor(Color.LTGRAY);
     }
 
